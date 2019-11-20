@@ -1,0 +1,14 @@
+<app-header [scrollClass]="scrollClass"></app-header>
+<ng-scrollbar #NgScrollbar class="scroll-area" [ngClass]="scrollClass">
+
+    <div class="container-fluid p-0">
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+    </div>
+</ng-scrollbar>
+<div [hidden]="scrollClass !== 'min'"
+    class="back-to-top-button">
+    <button mat-button (click)="scrollToTop()">
+        <fa-icon [icon]="faArrowCircleUp"></fa-icon>
+    </button>
+</div>

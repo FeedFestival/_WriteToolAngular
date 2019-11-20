@@ -1,0 +1,60 @@
+<div [ngClass]="scrollClass" class="row no-gutters header p-1 pt-2">
+    <div class="col-3 pl-3" (click)="goHome()">
+        <img class="logo" src="assets/images/logo.png">
+    </div>
+    <div class="col-6">
+
+    </div>
+    <div class="col-3 d-flex justify-content-center">
+        <div class="account-buttons" [ngClass]="scrollClass">
+            <button mat-button class="ac-but">
+                <fa-icon class="float-right" [icon]="faEnvelope"></fa-icon>
+                <span class="notification-number">2</span>
+            </button>
+            <button mat-button class="ac-but">
+                <fa-icon class="float-right" [icon]="faShoppingCart"></fa-icon>
+                <span class="notification-number">2</span>
+            </button>
+            <button mat-button class="ac-but">
+                <fa-icon class="float-right" [icon]="faHeart"></fa-icon>
+                <span class="notification-number">99</span>
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-center" style="transition: all 1s;"
+            [style.maxWidth]="loggedIn ? '200px' : '0px'">
+
+            <button mat-button class="facebook-button" 
+                [ngClass]="{'p-0': loggedIn}" (click)="login()">
+
+                <div *ngIf="loggedIn && user" class="face-logged-in-info"
+                    [ngClass]="scrollClass">
+
+                    <div>
+                        <img [src]="user.facebook.picture.data.url"/>
+                    </div>
+                    <div>
+                        {{user.email}}
+                    </div>
+                </div>
+
+                <div *ngIf="loggedIn === false">
+                    Login
+                    <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        class="svg-inline--fa fa-facebook fa-w-16 fa-3x">
+                        <path fill="currentColor"
+                            d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"
+                            class=""></path>
+                    </svg>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="col-12 main-menu" *ngIf="!hideMenu">
+        <app-navigation></app-navigation>
+    </div>
+</div>

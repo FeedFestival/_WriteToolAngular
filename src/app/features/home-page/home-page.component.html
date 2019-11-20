@@ -1,0 +1,46 @@
+<div class="row no-gutters container m-auto page-min-width p-3">
+
+    <div class="page">
+
+        <div class="element" *ngFor="let element of elements; let i = index"
+            [ngClass]="element.typeClass">
+
+            <mat-form-field *ngIf="element.type === ElementTypeRef.SCENE_HEADING || element.type === ElementTypeRef.CHARACTER"
+                [ngClass]="element.inputClass">
+                <input matInput
+                    [name]='element.id'
+                    [placeholder]="element.type"
+                    [(ngModel)]="element.text"
+                    (focus)="onEdit()"
+                    (blur)="onChange(i)">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="element.type === ElementTypeRef.ACTION || element.type === ElementTypeRef.DIALOG"
+                [ngClass]="element.inputClass">
+                
+                <textarea  matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="2"
+                    [name]='element.id'
+                    [placeholder]="element.type"
+                    [(ngModel)]="element.text"
+                    (focus)="onEdit()"
+                    (blur)="onChange(i)">
+                </textarea>
+            </mat-form-field>
+
+            <div class="col-12 p-0 cursor" *ngIf="element.type === ElementTypeRef.CURSOR">
+                <div class="w-100 carret">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="element" *ngFor="let element of elements"
+            [ngClass]="element.typeClass">
+            {{element.text}}
+        </div>
+
+    </div>
+
+</div>

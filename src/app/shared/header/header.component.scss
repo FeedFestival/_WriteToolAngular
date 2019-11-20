@@ -1,0 +1,87 @@
+@import "../../theme/overrides/scss/_variables";
+
+.logo {
+    height: 88px;
+    cursor: pointer;
+}
+
+.header {
+    background-color: $dark;
+    transition: all 0.5s;
+
+    .logo {
+        height: 88px;
+        transition: all 0.5s;
+    }
+}
+
+.header.min {
+    height: 0px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    .logo {
+        height: 0px;
+    }
+}
+
+.header.med {
+    height: 50px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    .logo {
+        height: 52px;
+    }
+}
+
+.header.max {
+    height: 100px;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.25rem !important;
+
+    .logo {
+        height: 88px;
+    }
+}
+
+.account-buttons {
+    .ac-but {
+        margin-top: 27px;
+        display: inline-flex;
+        float: right;
+        width: 60px;
+        font-size: 25px;
+        padding: 0;
+        min-width: 0;
+        transition: all 0.5s;
+
+        .notification-number {
+            position: absolute;
+            background-color: red;
+            border-radius: 50%;
+            width: 17px;
+            height: 17px;
+            top: -4px;
+            right: 40%;
+            font-size: 14px;
+            line-height: 19px;
+        }
+    }
+
+    &.min {
+        .ac-but {
+            margin-top: 0px;
+        }
+    }
+    &.med {
+        .ac-but {
+            margin-top: 15px;
+        }
+    }
+    &.max {
+        .ac-but {
+            margin-top: 27px;
+        }
+    }
+}

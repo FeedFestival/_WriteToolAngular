@@ -1,0 +1,14 @@
+.footer {
+    color: #ccc;
+    background-color: #333333;
+    border-top: 1px solid rgba(223, 43, 43, 0.05);
+    clear: both;
+    display: block;
+    width: 100%;
+    height: 150px;
+    padding: 10px 0;
+    margin: 0;
+    box-shadow: inset 0 3px 3px -1px rgba(152, 0, 47, 0.45);
+    bottom: 0;
+    z-index: 99999;
+}
