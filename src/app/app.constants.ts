@@ -3,7 +3,6 @@ export const ElementType = {
     ACTION: 'ACTION',
     CHARACTER: 'CHARACTER',
     DIALOG: 'DIALOG',
-    CURSOR: 'cursor',
 
     getInputClass: (elementType) => {
         switch (elementType) {

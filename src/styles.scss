@@ -398,12 +398,31 @@ fa-icon {
     }
 }
 
+.active {
+    .cursor {
+
+        .carret {
+            background: #3f51b5;
+        }
+    }
+}
+
+.active.editing {
+
+    .cursor {
+
+        .carret {
+            background: rgba(0,0,0,.4);
+        }
+    }
+}
+
 .cursor {
 
     height: 0px;
-
     .carret {
+        transition: all .15s;
         height: 3px;
-        background: #3f51b5;
+        background: transparent;
     }
 }

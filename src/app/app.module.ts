@@ -12,6 +12,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { FormsModule } from '@angular/forms';
+import { ElementComponent } from './features/home-page/element/element.component';
+import { CursorComponent } from './features/home-page/cursor/cursor.component';
 
 const config = new AuthServiceConfig([
     {
@@ -30,7 +32,9 @@ export function provideConfig() {
         HomePageComponent,
         HeaderComponent,
         FooterComponent,
-        NavigationComponent
+        NavigationComponent,
+        ElementComponent,
+        CursorComponent
     ],
     imports: [
         BrowserModule,

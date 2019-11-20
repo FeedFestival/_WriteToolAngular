@@ -1,0 +1,25 @@
+<div *ngIf="loaded === true">
+    <div class="element" [ngClass]="element?.typeClass">
+
+        <mat-form-field
+            *ngIf="element.type === ElementTypeRef.SCENE_HEADING || element.type === ElementTypeRef.CHARACTER"
+            [ngClass]="element.inputClass">
+            <input matInput #inputRef [name]='element.id' [placeholder]="element.type" [(ngModel)]="element.text" (focus)="edit()"
+                (blur)="blur()">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="element.type === ElementTypeRef.ACTION || element.type === ElementTypeRef.DIALOG"
+            [ngClass]="element.inputClass">
+
+            <textarea matInput #inputRef cdkTextareaAutosize cdkAutosizeMinRows="2" [name]="element.id"
+                [placeholder]="element.type" [(ngModel)]="element.text" (focus)="edit()" (blur)="blur()">
+                </textarea>
+        </mat-form-field>
+
+    </div>
+    <app-cursor #cursorRef></app-cursor>
+    <!-- <div class="col-12 p-0 cursor">
+        <div class="w-100 carret">
+        </div>
+    </div> -->
+</div>
