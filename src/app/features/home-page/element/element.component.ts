@@ -37,8 +37,14 @@ export class ElementComponent implements OnInit, OnChanges {
                 this.loaded = true;
             }
             if (changes.underCarret) {
-                console.log(this.element.id + ' - ' + this.underCarret);
-                this.cursorRef.close();
+
+                // console.log(this.element.id + ' - ' + this.underCarret);
+                if (!this.cursorRef) {
+                    console.warn(`Can't get cursor.`);
+                    return;
+                }
+
+                changes.underCarret.currentValue === true ? this.cursorRef.open() : this.cursorRef.close();
             }
         }
     }

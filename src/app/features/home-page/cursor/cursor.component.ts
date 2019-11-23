@@ -4,7 +4,7 @@ import {
 } from '@angular/animations';
 
 const anim = {
-    seconds: '0.2s'
+    seconds: '0.7s'
 }
 
 @Component({
@@ -16,7 +16,7 @@ const anim = {
                 height: '3px',
             })),
             state('closed', style({
-                height: '2px',
+                height: '1px',
             })),
             transition('open => closed', [
                 animate(anim.seconds)

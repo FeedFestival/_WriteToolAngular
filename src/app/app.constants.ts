@@ -34,3 +34,24 @@ export const ElementType = {
         }
     }
 }
+
+export const EditState = {
+    MAIN: 'MAIN',
+    TEXT: 'TEXT',
+    NEW: 'NEW'
+}
+
+export const Key = {
+    ArrowUp: 'ArrowUp',
+    ArrowDown: 'ArrowDown',
+    Tab: 'Tab',
+    //
+    Escape: 'Escape',
+    //
+    Enter: 'Enter',
+    //
+    S: 's',
+    A: 'a',
+    C: 'c',
+    D: 'd'
+}

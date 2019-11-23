@@ -41,11 +41,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
             map((e: any) => {
 
                 // console.log('TCL: AppComponent -> ngAfterViewInit -> e.target.scrollTop', e.target.scrollTop);
-                if (e.target.scrollTop < 150) {
+                if (e.target.scrollTop < 50) {
                     return 'max';
-                } else if (e.target.scrollTop > 150 && e.target.scrollTop < 310) {
+                } else if (e.target.scrollTop > 70 && e.target.scrollTop < 170) {
                     return 'med';
-                } else if (e.target.scrollTop > 310) {
+                } else if (e.target.scrollTop > 170) {
                     return 'min';
                 }
             }),

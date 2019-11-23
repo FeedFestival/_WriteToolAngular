@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { ElementType } from 'src/app/app.constants';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import * as _ from 'lodash';
+import { EditState, ElementType, Key } from 'src/app/app.constants';
 import { Hotkeys } from 'src/app/shared/components/hotkeys.service';
-import { take } from 'rxjs/internal/operators/take';
+import { NavigationService } from 'src/app/shared/navigation/navigation.service';
 import { ElementComponent } from './element/element.component';
+import { ElementsService } from './element/elements.service';
 
 @Component({
     selector: 'app-home-page',
@@ -13,62 +15,73 @@ export class HomePageComponent implements OnInit {
 
     ElementTypeRef = ElementType;
 
-    elements: any[] = [
-        {
-            type: ElementType.SCENE_HEADING,
-            text: 'INT. UNKNOWN LOCATION'
-        },
-        {
-            type: ElementType.ACTION,
-            text: 'Some kids are going to camping'
-        },
-        {
-            type: ElementType.CHARACTER,
-            text: 'Unknown'
-        },
-        {
-            type: ElementType.DIALOG,
-            text: '...'
-        },
-    ];
+    elements: any[];
     currentElement: any;
+
+    editState: string;
 
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
 
     constructor(
-        private hotkeys: Hotkeys
+        private hotkeys: Hotkeys,
+        private elementsService: ElementsService,
+        private navigationService: NavigationService
     ) { }
 
     ngOnInit() {
 
-        let id = 1;
-        this.elements.forEach(e => {
-            e.id = id;
-            e.inputClass = ElementType.getInputClass(e.type);
-            e.typeClass = ElementType.getTypeClass(e.type);
-            id++;
-        });
+        if (!this.elements) {
+            this.elements = this.elementsService.getStartingText();
+        }
 
-        this.currentElement = this.elements[0];
+        this.currentElement = this.elements[this.elements.length - 1];
         this.currentElement.underCarret = true;
 
         console.log("TCL: HomePageComponent -> ngOnInit -> this.elements", this.elements)
 
-        this.hotkeys.addShortcut({ keys: 'ArrowUp' })
+        this.navigationService.getEditStateEmitter()
+            .subscribe((editState) => {
+                this.editState = editState;
+            });
+        this.navigationService.emitEditStateEvent(EditState.MAIN);
+
+        this.hotkeys.addShortcut({ keys: Key.ArrowUp })
             .subscribe(() => {
                 this.onArrowUp();
             });
-        this.hotkeys.addShortcut({ keys: 'ArrowDown' })
+        this.hotkeys.addShortcut({ keys: Key.ArrowDown })
             .subscribe(() => {
                 this.onArrowDown();
             });
-        this.hotkeys.addShortcut({ keys: 'Tab' })
+        this.hotkeys.addShortcut({ keys: Key.Tab })
             .subscribe(() => {
                 this.onTab();
             });
-        this.hotkeys.addShortcut({ keys: 'Escape' })
+        //
+        this.hotkeys.addShortcut({ keys: Key.Escape })
             .subscribe(() => {
                 this.onEscape();
+            });
+        //
+        this.hotkeys.addShortcut({ keys: Key.Enter })
+            .subscribe(() => {
+                this.onEnter();
+            });
+        this.hotkeys.addShortcut({ keys: Key.S })
+            .subscribe(() => {
+                this.onSKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.A })
+            .subscribe(() => {
+                this.onAKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.C })
+            .subscribe(() => {
+                this.onCKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.D })
+            .subscribe(() => {
+                this.onDKey();
             });
     }
 
@@ -84,7 +97,7 @@ export class HomePageComponent implements OnInit {
         this.currentElement.underCarret = true;
         this.currentElement.isEditing = true;
 
-        this.hotkeys.lock();
+        this.navigationService.emitEditStateEvent(EditState.TEXT);
     }
 
     onBlur(index) {
@@ -102,11 +115,14 @@ export class HomePageComponent implements OnInit {
             this.currentElement.isEditing = false;
         }
 
-        this.hotkeys.unlock();
+        this.navigationService.emitEditStateEvent(EditState.MAIN);
     }
 
     onEscape() {
-        console.log('Escape');
+        if (this.editState === EditState.NEW) {
+            this.navigationService.emitEditStateEvent(EditState.MAIN);
+            return;
+        }
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
         el.inputRef.nativeElement.blur();
     }
@@ -114,28 +130,120 @@ export class HomePageComponent implements OnInit {
     onTab() {
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
         el.inputRef.nativeElement.click();
+        this.navigationService.emitEditStateEvent(EditState.TEXT);
     }
 
     onArrowUp(event?) {
+
+        if (this.editState === EditState.NEW) {
+            this.onEscape();
+        }
+
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const newIndex = index - 1;
 
         if (newIndex >= 0) {
-            this.elements[index].underCarret = false;
-            this.currentElement = this.elements[newIndex];
-            this.currentElement.underCarret = true;
+            this.setUnderCarret(index, newIndex);
         }
     }
 
     onArrowDown(event?) {
+
+        if (this.editState === EditState.NEW) {
+            this.onEscape();
+        }
+
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const newIndex = index + 1;
 
         if (newIndex < this.elements.length) {
-            this.elements[index].underCarret = false;
-            this.currentElement = this.elements[newIndex];
-            this.currentElement.underCarret = true;
+            this.setUnderCarret(index, newIndex);
         }
     }
 
+    private setUnderCarret(index, newIndex) {
+        this.elements[index].underCarret = false;
+        this.currentElement = this.elements[newIndex];
+        this.currentElement.underCarret = true;
+    }
+
+    private editElementAtIndex(index, newIndex) {
+        this.setUnderCarret(index, newIndex);
+        setTimeout(__ => this.onTab());
+    }
+
+    onEnter() {
+        if (this.editState === EditState.NEW) {
+            return;
+        }
+        this.navigationService.emitEditStateEvent(EditState.NEW);
+        this.elementsService.setAllowedElements(this.currentElement.type);
+    }
+
+    onSKey() {
+        // console.log('S -> ' + this.editState);
+        if (false === this.elementsService.isValidNewElement(ElementType.SCENE_HEADING)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.SCENE_HEADING);
+    }
+
+    onAKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.ACTION)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.ACTION);
+    }
+
+    onCKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.CHARACTER)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.CHARACTER);
+    }
+
+    onDKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.DIALOG)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.DIALOG);
+    }
+
+    createNew(elementType) {
+
+        const index = this.elements.findIndex(e => e.id === this.currentElement.id);
+        const newId = _.maxBy(this.elements, 'id').id + 1;
+        let newIndex = index + 1;
+
+        const isLastElement = (index === this.elements.length - 1);
+
+        if (isLastElement === false) {
+            const nextElementType = this.elements[newIndex].type;
+            if (false === this.elementsService.canInsert(elementType, nextElementType)) {
+                this.editElementAtIndex(index, newIndex);
+                return;
+            }
+        }
+
+        const newElement = {
+            id: newId,
+            type: elementType,
+            text: this.elementsService.getDefaultText(elementType),
+            inputClass: ElementType.getInputClass(elementType),
+            typeClass: ElementType.getTypeClass(elementType)
+        };
+
+        if (isLastElement) {
+            this.elements.push(newElement);
+        } else {
+            this.elements.splice(index + 1, 0, newElement);
+        }
+        
+        newIndex = this.elements.findIndex(e => e.id === newId);
+        this.editElementAtIndex(index, newIndex);
+    }
 }

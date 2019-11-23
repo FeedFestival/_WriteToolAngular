@@ -2,6 +2,8 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { NavigationService } from '../navigation/navigation.service';
+import { EditState, Key } from 'src/app/app.constants';
 
 type Options = {
     element: any;
@@ -15,15 +17,18 @@ export class Hotkeys {
         element: this.document
     }
 
-    isLocked = false;
+    editState: string;
 
     constructor(
+        private navigationService: NavigationService,
         private eventManager: EventManager,
         @Inject(DOCUMENT) private document: Document
     ) {
-        // this.addShortcut({ keys: 'ArrowUp' }).subscribe(() => {
-        //     this.openHelpModal();
-        // });
+
+        navigationService.getEditStateEmitter()
+            .subscribe((editState) => {
+                this.editState = editState;
+            })
     }
 
     addShortcut(options: Partial<Options>) {
@@ -33,7 +38,9 @@ export class Hotkeys {
         return new Observable(observer => {
             const handler = (e) => {
 
-                if (this.isLocked && e.code !== 'Escape') {
+                // console.log('Hotkeys -> ' + e.key + '(' + this.editState + ')');
+
+                if (this.hasAccessToKey(e.key, this.editState) === false) {
                     return;
                 }
 
@@ -53,15 +60,37 @@ export class Hotkeys {
         })
     }
 
-    openHelpModal() {
-        console.log('opened');
+    private hasAccessToKey(keyCode, editState) {
+        switch (editState) {
+            case EditState.MAIN:
+                if (keyCode === Key.ArrowUp ||
+                    keyCode === Key.ArrowDown ||
+                    keyCode === Key.Tab ||
+                    keyCode === Key.Enter) {
+                    return true;
+                }
+                return false;
+            case EditState.NEW:
+                if (keyCode === Key.S ||
+                    keyCode === Key.A ||
+                    keyCode === Key.C ||
+                    keyCode === Key.D ||
+                    keyCode === Key.Escape ||
+                    // allow arrows to cancel this state
+                    keyCode === Key.ArrowUp ||
+                    keyCode === Key.ArrowDown
+                ) {
+                    return true;
+                }
+                return false;
+            case EditState.TEXT:
+                if (keyCode === Key.Escape) {
+                    return true;
+                }
+                return false;
+            default:
+                break;
+        }
     }
 
-    lock() {
-        this.isLocked = true;
-    }
-
-    unlock() {
-        this.isLocked = false;
-    }
 }
