@@ -55,3 +55,22 @@ export const Key = {
     C: 'c',
     D: 'd'
 }
+
+export const MainAvailableKeys = [
+    { key: '&#8629;' , text: 'Enter', class: 'symbol' },
+    { key: '&#8633;' , text: 'Tab', class: 'symbol' },
+    { key: '&uarr;', text: 'Arrow Up', class: 'symbol'},
+    { key: '&darr;', text: 'Arrow Down', class: 'symbol'}
+];
+
+export const TextAvailableKeys = [
+    { key: 'Esc' , text: 'ape' },
+    { key: '&#8633;' , text: 'Tab', class: 'symbol' }
+];
+
+export const NewAvailableKeys = [
+    { key: 'S' , text: 'cene Heading', id: ElementType.SCENE_HEADING },
+    { key: 'A' , text: 'ction', id: ElementType.ACTION },
+    { key: 'C' , text: 'haracter', id: ElementType.CHARACTER },
+    { key: 'D' , text: 'ialog', id: ElementType.DIALOG }
+];

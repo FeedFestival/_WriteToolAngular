@@ -28,7 +28,7 @@ export class Hotkeys {
         navigationService.getEditStateEmitter()
             .subscribe((editState) => {
                 this.editState = editState;
-            })
+            });
     }
 
     addShortcut(options: Partial<Options>) {
