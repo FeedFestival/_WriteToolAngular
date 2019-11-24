@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { filter, tap, map } from 'rxjs/operators';
 import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { ElementsService } from './features/home-page/element/elements.service';
 
 @Component({
     selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private ngZone: NgZone,
+        private elementsService: ElementsService,
         router: Router
     ) {
         router.events.pipe(
@@ -34,6 +36,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
             filter(() => !!this.scrollRef),
             tap((event: NavigationEnd) => this.scrollToTop())
         ).subscribe();
+
+        elementsService.getScrollToElementEmitter()
+            .subscribe((element) => {
+                this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
+            });
     }
 
     ngAfterViewInit() {
@@ -41,11 +48,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
             map((e: any) => {
 
                 // console.log('TCL: AppComponent -> ngAfterViewInit -> e.target.scrollTop', e.target.scrollTop);
-                if (e.target.scrollTop < 50) {
+                if (e.target.scrollTop < 150) {
                     return 'max';
-                } else if (e.target.scrollTop > 70 && e.target.scrollTop < 170) {
+                } else if (e.target.scrollTop > 150 && e.target.scrollTop < 333) {
                     return 'med';
-                } else if (e.target.scrollTop > 170) {
+                } else if (e.target.scrollTop > 333) {
                     return 'min';
                 }
             }),

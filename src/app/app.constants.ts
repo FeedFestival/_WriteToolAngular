@@ -49,6 +49,7 @@ export const Key = {
     Escape: 'Escape',
     //
     Enter: 'Enter',
+    Backspace: 'Backspace',
     //
     S: 's',
     A: 'a',

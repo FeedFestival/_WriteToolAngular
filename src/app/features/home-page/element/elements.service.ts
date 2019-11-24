@@ -9,13 +9,26 @@ export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, El
 @Injectable({ providedIn: 'root' })
 export class ElementsService {
 
-    // editingStateChange: EventEmitter<string> = new EventEmitter<string>();
+    scrollToElementChange: EventEmitter<any> = new EventEmitter<any>();
 
     allowedNewElements: string[];
+
+    currentElementType: string;
+
+    undos: any[];
+    undosIndex: number;
 
     constructor(
     ) {
 
+    }
+
+    emitScrollToElementEmitterEvent(element) {
+        this.scrollToElementChange.emit(element);
+    }
+
+    getScrollToElementEmitter(): EventEmitter<any> {
+        return this.scrollToElementChange;
     }
 
     setAllowedElements(elementType) {
@@ -75,6 +88,118 @@ export class ElementsService {
             {
                 type: ElementType.DIALOG
             },
+            //
+            {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },{
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },
         ];
 
         let id = 1;
@@ -83,6 +208,7 @@ export class ElementsService {
             e.text = this.getDefaultText(e.type, true);
             e.inputClass = ElementType.getInputClass(e.type);
             e.typeClass = ElementType.getTypeClass(e.type);
+            e.backspaceCount = 0;
             id++;
         });
 

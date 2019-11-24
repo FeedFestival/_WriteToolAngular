@@ -4,7 +4,7 @@
 
         😍
 
-        <div *ngFor="let element of elements; let i = index"
+        <div *ngFor="let element of elements; let i = index" [id]="'element' + element.id"
             [ngClass]="{ 'active': element.underCarret, 'editing': element.isEditing }">
 
             <app-element [element]="element" [i]="i" [underCarret]="element.underCarret"

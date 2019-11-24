@@ -59,11 +59,15 @@ export class CursorComponent implements OnInit {
     }
 
     close() {
-        this.isOpen = false;
+        setTimeout(() => {
+            this.isOpen = false;
+        });
     }
 
     open() {
-        this.isOpen = true;
+        setTimeout(() => {
+            this.isOpen = true;
+        });
     }
 
     ngOnInit() {

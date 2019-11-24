@@ -34,8 +34,10 @@ export class HomePageComponent implements OnInit {
             this.elements = this.elementsService.getStartingText();
         }
 
-        this.currentElement = this.elements[this.elements.length - 1];
-        this.currentElement.underCarret = true;
+        this.setCurrentElement(this.elements.length - 1);
+        setTimeout(() => {
+            this.scrollToElementIfOutOfView();
+        });
 
         console.log("TCL: HomePageComponent -> ngOnInit -> this.elements", this.elements)
 
@@ -47,10 +49,16 @@ export class HomePageComponent implements OnInit {
 
         this.hotkeys.addShortcut({ keys: Key.ArrowUp })
             .subscribe(() => {
+                if (this.editState === EditState.NEW) {
+                    this.onEscape();
+                }
                 this.onArrowUp();
             });
         this.hotkeys.addShortcut({ keys: Key.ArrowDown })
             .subscribe(() => {
+                if (this.editState === EditState.NEW) {
+                    this.onEscape();
+                }
                 this.onArrowDown();
             });
         this.hotkeys.addShortcut({ keys: Key.Tab })
@@ -65,6 +73,9 @@ export class HomePageComponent implements OnInit {
         //
         this.hotkeys.addShortcut({ keys: Key.Enter })
             .subscribe(() => {
+                if (this.editState === EditState.NEW) {
+                    return;
+                }
                 this.onEnter();
             });
         this.hotkeys.addShortcut({ keys: Key.S })
@@ -83,26 +94,30 @@ export class HomePageComponent implements OnInit {
             .subscribe(() => {
                 this.onDKey();
             });
+        //
+        this.hotkeys.addShortcut({ keys: Key.Backspace })
+            .subscribe(() => {
+                this.onBackspace();
+            });
     }
 
     onEdit(index) {
 
-        // console.log('focus: ' + index);
-
         if (this.currentElement) {
-            this.currentElement.underCarret = false;
+            this.unCarretElement();
         }
 
-        this.currentElement = this.elements[index];
-        this.currentElement.underCarret = true;
+        this.setCurrentElement(index);
         this.currentElement.isEditing = true;
 
         this.navigationService.emitEditStateEvent(EditState.TEXT);
+
+        setTimeout(() => {
+            this.scrollToElementIfOutOfView();
+        });
     }
 
     onBlur(index) {
-
-        // console.log('blur: ' + index);
 
         const element = this.elements[index];
         if (!element.text || element.text.length === 0) {
@@ -135,10 +150,6 @@ export class HomePageComponent implements OnInit {
 
     onArrowUp(event?) {
 
-        if (this.editState === EditState.NEW) {
-            this.onEscape();
-        }
-
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const newIndex = index - 1;
 
@@ -149,10 +160,6 @@ export class HomePageComponent implements OnInit {
 
     onArrowDown(event?) {
 
-        if (this.editState === EditState.NEW) {
-            this.onEscape();
-        }
-
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const newIndex = index + 1;
 
@@ -162,9 +169,25 @@ export class HomePageComponent implements OnInit {
     }
 
     private setUnderCarret(index, newIndex) {
-        this.elements[index].underCarret = false;
-        this.currentElement = this.elements[newIndex];
-        this.currentElement.underCarret = true;
+        if (index < this.elements.length) {
+            this.unCarretElement();
+        }
+        this.setCurrentElement(newIndex);
+
+        setTimeout(() => {
+            this.scrollToElementIfOutOfView();
+        });
+    }
+
+    private scrollToElementIfOutOfView(force?) {
+
+        if (force) {
+            this.elementsService.emitScrollToElementEmitterEvent('#element' + this.currentElement.id);
+        }
+        const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
+        if (el.isOutOfView()) {
+            this.elementsService.emitScrollToElementEmitterEvent('#element' + this.currentElement.id);
+        }
     }
 
     private editElementAtIndex(index, newIndex) {
@@ -172,16 +195,50 @@ export class HomePageComponent implements OnInit {
         setTimeout(__ => this.onTab());
     }
 
+    private setCurrentElement(index) {
+        this.currentElement = this.elements[index];
+        this.currentElement.underCarret = true;
+        this.elementsService.currentElementType = this.currentElement.type;
+    }
+
+    private unCarretElement() {
+        this.currentElement.underCarret = false;
+        this.currentElement.backspaceCount = 0;
+    }
+
     onEnter() {
-        if (this.editState === EditState.NEW) {
-            return;
+
+        if (this.editState === EditState.TEXT) {
+            if (this.currentElement.type === ElementType.CHARACTER) {
+
+                const index = this.elements.findIndex(e => e.id === this.currentElement.id);
+                const newIndex = index + 1;
+                const isLastElement = (index === this.elements.length - 1);
+                let isNextElementDialog = false;
+
+                if (isLastElement === false) {
+                    isNextElementDialog = this.elements[newIndex].type === ElementType.DIALOG;
+                }
+
+                this.onEscape();
+
+                if (isLastElement || isNextElementDialog === false) {
+                    this.createNew(ElementType.DIALOG, true);
+                } else {
+                    setTimeout(() => {
+                        this.editElementAtIndex(index, newIndex);
+                    }, 100);
+                }
+            } else if (this.currentElement.type === ElementType.SCENE_HEADING) {
+                this.onEscape();
+            }
+        } else {
+            this.navigationService.emitEditStateEvent(EditState.NEW);
+            this.elementsService.setAllowedElements(this.currentElement.type);
         }
-        this.navigationService.emitEditStateEvent(EditState.NEW);
-        this.elementsService.setAllowedElements(this.currentElement.type);
     }
 
     onSKey() {
-        // console.log('S -> ' + this.editState);
         if (false === this.elementsService.isValidNewElement(ElementType.SCENE_HEADING)) {
             this.onEscape();
             return;
@@ -213,7 +270,25 @@ export class HomePageComponent implements OnInit {
         this.createNew(ElementType.DIALOG);
     }
 
-    createNew(elementType) {
+    onBackspace() {
+
+        if (this.editState === EditState.TEXT) {
+            if (!this.currentElement.text || this.currentElement.text === '') {
+                if (this.currentElement.backspaceCount > 1) {
+                    this.onEscape();
+                    setTimeout(() => { this.remove(); });
+                } else {
+                    this.currentElement.backspaceCount++;
+                }
+            } else {
+                this.currentElement.backspaceCount = 0;
+            }
+        } else {
+            this.remove();
+        }
+    }
+
+    createNew(elementType, dontCheckNextElement?) {
 
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const newId = _.maxBy(this.elements, 'id').id + 1;
@@ -221,7 +296,7 @@ export class HomePageComponent implements OnInit {
 
         const isLastElement = (index === this.elements.length - 1);
 
-        if (isLastElement === false) {
+        if (isLastElement === false && !dontCheckNextElement) {
             const nextElementType = this.elements[newIndex].type;
             if (false === this.elementsService.canInsert(elementType, nextElementType)) {
                 this.editElementAtIndex(index, newIndex);
@@ -242,8 +317,29 @@ export class HomePageComponent implements OnInit {
         } else {
             this.elements.splice(index + 1, 0, newElement);
         }
-        
+
         newIndex = this.elements.findIndex(e => e.id === newId);
         this.editElementAtIndex(index, newIndex);
+    }
+
+    private remove(recursive?) {
+        const index = this.elements.findIndex(e => e.id === this.currentElement.id);
+        const isLastElement = (index === this.elements.length - 1);
+        const newIndex = isLastElement ? index - 1 : index;
+
+        if (!recursive) {
+            if (this.currentElement.type === ElementType.DIALOG) {
+                this.elements.splice(index - 1, 1);
+                this.remove(true);
+                return;
+            } else if (this.currentElement.type === ElementType.CHARACTER) {
+                this.elements.splice(index + 1, 1);
+                this.remove(true);
+                return;
+            }
+        }
+
+        this.elements.splice(index, 1);
+        this.setUnderCarret(index, newIndex);
     }
 }

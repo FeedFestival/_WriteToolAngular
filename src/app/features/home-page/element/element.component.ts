@@ -56,4 +56,19 @@ export class ElementComponent implements OnInit, OnChanges {
     blur() {
         this.onBlur.emit(this.i);
     }
+
+    isOutOfView() {
+        var bounding = this.inputRef.nativeElement.getBoundingClientRect();
+        // console.log("TCL: ElementComponent -> isOutOfView -> bounding", bounding)
+        // console.log("TCL: ElementComponent -> isOutOfView -> document.documentElement.clientHeight", document.documentElement.clientHeight)
+
+        return (bounding.y < 200 || bounding.y > (document.documentElement.clientHeight - 200))
+
+        // return (
+        //     bounding.top >= 0 &&
+        //     bounding.left >= 0 &&
+        //     bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        //     bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+        // );
+    }
 }

@@ -3,7 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
-import { EditState, Key } from 'src/app/app.constants';
+import { EditState, Key, ElementType } from 'src/app/app.constants';
+import { ElementsService } from 'src/app/features/home-page/element/elements.service';
 
 type Options = {
     element: any;
@@ -20,6 +21,7 @@ export class Hotkeys {
     editState: string;
 
     constructor(
+        private elementsService: ElementsService,
         private navigationService: NavigationService,
         private eventManager: EventManager,
         @Inject(DOCUMENT) private document: Document
@@ -41,6 +43,11 @@ export class Hotkeys {
                 // console.log('Hotkeys -> ' + e.key + '(' + this.editState + ')');
 
                 if (this.hasAccessToKey(e.key, this.editState) === false) {
+                    return;
+                }
+
+                if (this.editState === EditState.TEXT && e.key === Key.Backspace) {
+                    observer.next(e);
                     return;
                 }
 
@@ -66,7 +73,8 @@ export class Hotkeys {
                 if (keyCode === Key.ArrowUp ||
                     keyCode === Key.ArrowDown ||
                     keyCode === Key.Tab ||
-                    keyCode === Key.Enter) {
+                    keyCode === Key.Enter ||
+                    keyCode === Key.Backspace) {
                     return true;
                 }
                 return false;
@@ -84,7 +92,12 @@ export class Hotkeys {
                 }
                 return false;
             case EditState.TEXT:
-                if (keyCode === Key.Escape) {
+                if (keyCode === Key.Backspace ||
+                    keyCode === Key.Escape ||
+                    (keyCode === Key.Enter &&
+                        (this.elementsService.currentElementType === ElementType.SCENE_HEADING ||
+                            this.elementsService.currentElementType === ElementType.CHARACTER))
+                ) {
                     return true;
                 }
                 return false;
