@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatMenuModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatMenuModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,6 +14,7 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import { FormsModule } from '@angular/forms';
 import { ElementComponent } from './features/home-page/element/element.component';
 import { CursorComponent } from './features/home-page/cursor/cursor.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 const config = new AuthServiceConfig([
     {
@@ -39,6 +40,7 @@ export function provideConfig() {
     imports: [
         BrowserModule,
         SocialLoginModule,
+        CKEditorModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         MatMenuModule,
@@ -46,6 +48,7 @@ export function provideConfig() {
         MatCardModule,
         MatDividerModule,
         MatInputModule,
+        MatCheckboxModule,
         FormsModule,
         FontAwesomeModule,
         NgScrollbarModule
@@ -56,6 +59,7 @@ export function provideConfig() {
         MatCardModule,
         MatDividerModule,
         MatInputModule,
+        MatCheckboxModule,
         FormsModule
     ],
     providers: [

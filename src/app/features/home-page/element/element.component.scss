@@ -1,0 +1,19 @@
+.rich-text-checkbox {
+    display: inline;
+    height: 0;
+    position: relative;
+    left: -60px;
+    top: 0;
+
+    .mat-checkbox {
+        width: 0;
+        display: flex;
+
+        .mat-checkbox-label {
+            font-size: 15px;
+            font-weight: 900;
+            font-family: Roboto, "Helvetica Neue", sans-serif;
+            letter-spacing: 1px;
+        }
+    }
+}
