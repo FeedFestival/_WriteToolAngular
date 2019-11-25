@@ -5,6 +5,7 @@ import { Hotkeys } from 'src/app/shared/components/hotkeys.service';
 import { NavigationService } from 'src/app/shared/navigation/navigation.service';
 import { ElementComponent } from './element/element.component';
 import { ElementsService } from './element/elements.service';
+import { UndoService } from 'src/app/shared/components/undo.service';
 
 @Component({
     selector: 'app-home-page',
@@ -24,9 +25,15 @@ export class HomePageComponent implements OnInit {
 
     constructor(
         private hotkeys: Hotkeys,
+        private undoService: UndoService,
         private elementsService: ElementsService,
         private navigationService: NavigationService
-    ) { }
+    ) {
+        undoService.getUndoStateEmitter()
+            .subscribe((oldState) => {
+                this.setPreviousState(oldState);
+            });
+    }
 
     ngOnInit() {
 
@@ -39,7 +46,9 @@ export class HomePageComponent implements OnInit {
             this.scrollToElementIfOutOfView();
         });
 
-        console.log("TCL: HomePageComponent -> ngOnInit -> this.elements", this.elements)
+        this.saveUndoState();
+
+        // console.log("TCL: HomePageComponent -> ngOnInit -> this.elements", this.elements)
 
         this.navigationService.getEditStateEmitter()
             .subscribe((editState) => {
@@ -99,6 +108,15 @@ export class HomePageComponent implements OnInit {
             .subscribe(() => {
                 this.onBackspace();
             });
+
+        this.hotkeys.addShortcut({ keys: Key.Z })
+            .subscribe(() => {
+                this.onUndo();
+            });
+        this.hotkeys.addShortcut({ keys: Key.Y })
+            .subscribe(() => {
+                this.onRedo();
+            });
     }
 
     onEdit(index) {
@@ -131,6 +149,10 @@ export class HomePageComponent implements OnInit {
         }
 
         this.navigationService.emitEditStateEvent(EditState.MAIN);
+
+        // setTimeout(() => {
+        //     this.undoService.setState(this.elements);
+        // });
     }
 
     onEscape() {
@@ -291,7 +313,7 @@ export class HomePageComponent implements OnInit {
     createNew(elementType, dontCheckNextElement?) {
 
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
-        const newId = _.maxBy(this.elements, 'id').id + 1;
+        const newId = this.elementsService.guid();
         let newIndex = index + 1;
 
         const isLastElement = (index === this.elements.length - 1);
@@ -318,14 +340,17 @@ export class HomePageComponent implements OnInit {
             this.elements.splice(index + 1, 0, newElement);
         }
 
+        this.saveUndoState();
+
         newIndex = this.elements.findIndex(e => e.id === newId);
         this.editElementAtIndex(index, newIndex);
     }
 
     private remove(recursive?) {
+
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const isLastElement = (index === this.elements.length - 1);
-        const newIndex = isLastElement ? index - 1 : index;
+        const newIndex = isLastElement ? index - 1 : index - 1;
 
         if (!recursive) {
             if (this.currentElement.type === ElementType.DIALOG) {
@@ -341,5 +366,66 @@ export class HomePageComponent implements OnInit {
 
         this.elements.splice(index, 1);
         this.setUnderCarret(index, newIndex);
+
+        this.saveUndoState();
+    }
+
+    onUndo() {
+
+        if (this.undoService.canUndo === false) {
+            return;
+        }
+        this.undoService.undo();
+    }
+
+    onRedo() {
+
+        if (this.undoService.canRedo === false) {
+            return;
+        }
+
+        this.undoService.redo();
+    }
+
+    setPreviousState(oldState) {
+
+        // console.log("TCL: HomePageComponent -> setPreviousState -> oldState.elements", oldState)
+
+        const index = this.getIndexUnderCarret(oldState.elements);
+        
+        this.elements = JSON.parse(JSON.stringify(oldState.elements));
+        this.elements.forEach(e => e.underCarret = false);
+
+        this.setCurrentElement(index);
+        setTimeout(() => {
+            this.scrollToElementIfOutOfView();
+        });
+    }
+
+    private saveUndoState() {
+        const elementsCopy = JSON.parse(JSON.stringify(this.elements));
+        const index = this.getIndexUnderCarret(elementsCopy);
+        setTimeout(() => {
+            const guid = this.elementsService.guid();
+            this.undoService.setState(guid);
+
+            setTimeout(() => {
+                this.undoService.addState({
+                    elements: elementsCopy,
+                    guid: guid
+                });
+            });
+        });
+    }
+
+    private getIndexUnderCarret(elements) {
+        let index = elements.findIndex(e => e.underCarret === true);
+        console.log('ndx:' + index);
+        if (index < 0) {
+            const diff = _.difference(elements.map(e => e.id), this.elements.map(e => e.id))[0];
+            index = elements.findIndex(e => e.id === diff);
+            console.log('diff:' + index);
+        }
+        return index;
     }
 }

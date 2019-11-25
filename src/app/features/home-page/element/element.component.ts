@@ -40,7 +40,7 @@ export class ElementComponent implements OnInit, OnChanges {
 
                 // console.log(this.element.id + ' - ' + this.underCarret);
                 if (!this.cursorRef) {
-                    console.warn(`Can't get cursor.`);
+                    // console.warn(`Can't get cursor.`);
                     return;
                 }
 

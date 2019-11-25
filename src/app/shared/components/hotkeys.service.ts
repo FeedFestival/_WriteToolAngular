@@ -74,7 +74,11 @@ export class Hotkeys {
                     keyCode === Key.ArrowDown ||
                     keyCode === Key.Tab ||
                     keyCode === Key.Enter ||
-                    keyCode === Key.Backspace) {
+                    keyCode === Key.Backspace ||
+                    //
+                    keyCode === Key.Z ||
+                    keyCode === Key.Y
+                ) {
                     return true;
                 }
                 return false;

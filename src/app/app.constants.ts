@@ -54,7 +54,10 @@ export const Key = {
     S: 's',
     A: 'a',
     C: 'c',
-    D: 'd'
+    D: 'd',
+    //
+    Z: 'z',
+    Y: 'y'
 }
 
 export const MainAvailableKeys = [

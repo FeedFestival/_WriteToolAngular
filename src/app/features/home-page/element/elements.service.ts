@@ -15,9 +15,6 @@ export class ElementsService {
 
     currentElementType: string;
 
-    undos: any[];
-    undosIndex: number;
-
     constructor(
     ) {
 
@@ -74,6 +71,13 @@ export class ElementsService {
         }
     }
 
+    guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
     getStartingText() {
         const elements: any = [
             {
@@ -100,7 +104,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -111,7 +115,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -122,7 +126,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -133,7 +137,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -144,7 +148,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -155,7 +159,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -166,7 +170,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -177,7 +181,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -188,7 +192,7 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            },{
+            }, {
                 type: ElementType.SCENE_HEADING
             },
             {
@@ -202,14 +206,12 @@ export class ElementsService {
             },
         ];
 
-        let id = 1;
         elements.forEach(e => {
-            e.id = id;
+            e.id = this.guid();
             e.text = this.getDefaultText(e.type, true);
             e.inputClass = ElementType.getInputClass(e.type);
             e.typeClass = ElementType.getTypeClass(e.type);
             e.backspaceCount = 0;
-            id++;
         });
 
         return elements;
