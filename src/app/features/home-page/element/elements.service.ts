@@ -1,5 +1,8 @@
 import { EventEmitter, Injectable, ElementRef } from '@angular/core';
-import { ElementType } from 'src/app/app.constants';
+import { ElementType, HttpDefaultOptions } from 'src/app/app.constants';
+import { TestHttpClient } from 'src/app/TestHttpClient/TestHttpClient.service';
+import { map, mergeAll } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER];
 export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER];
@@ -15,9 +18,12 @@ export class ElementsService {
 
     currentElementType: string;
 
-    constructor(
-    ) {
+    http: TestHttpClient;
 
+    constructor(
+        private testHttpClient: TestHttpClient
+    ) {
+        this.http = testHttpClient;
     }
 
     emitScrollToElementEmitterEvent(element) {
@@ -26,6 +32,16 @@ export class ElementsService {
 
     getScrollToElementEmitter(): EventEmitter<any> {
         return this.scrollToElementChange;
+    }
+
+    getElements() {
+
+        return this.http.get<any[]>('elements', HttpDefaultOptions).pipe(
+            map(categories => {
+                return of(categories);
+            }),
+            mergeAll()
+        );
     }
 
     setAllowedElements(elementType) {
@@ -103,6 +119,15 @@ export class ElementsService {
         });
 
         return elements;
+    }
+
+    stripHtml(htmlString) {
+        // const tmp = document.createElement("DIV");
+        // tmp.innerHTML = htmlString;
+        // return tmp.textContent || tmp.innerText || "";
+
+        var doc = new DOMParser().parseFromString(htmlString, 'text/html');
+        return doc.body.textContent || "";
     }
 
 }

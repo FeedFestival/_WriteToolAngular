@@ -2,6 +2,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, Output, EventEmitte
 import { ElementType } from 'src/app/app.constants';
 import { CursorComponent } from '../cursor/cursor.component';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ElementsService } from './elements.service';
+import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 @Component({
     selector: 'app-element',
@@ -19,37 +21,21 @@ export class ElementComponent implements OnInit, OnChanges {
 
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;
+    @ViewChild('ckEditorRef', { static: false }) ckEditorRef: CKEditorComponent;
 
     ElementTypeRef = ElementType;
     loaded = false;
 
-    withRichText: false;
     Editor = ClassicEditor;
     editorModel = {
         editorData: '<p>Hello, world!</p>',
         config: {
-            toolbar: [ 'bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList', ]
-            // toolbarGroups: [
-            //     { name: 'document', groups: ['mode', 'document', 'doctools'] },
-            //     { name: 'clipboard', groups: ['clipboard', 'undo'] },
-            //     { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
-            //     { name: 'forms', groups: ['forms'] },
-            //     '/',
-            //     { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-            //     { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
-            //     { name: 'links', groups: ['links'] },
-            //     { name: 'insert', groups: ['insert'] },
-            //     '/',
-            //     { name: 'styles', groups: ['styles'] },
-            //     { name: 'colors', groups: ['colors'] },
-            //     { name: 'tools', groups: ['tools'] },
-            //     { name: 'others', groups: ['others'] },
-            //     { name: 'about', groups: ['about'] }
-            // ]
+            toolbar: ['bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList',]
         }
     };
 
     constructor(
+        private elementsService: ElementsService
     ) {
 
     }
@@ -85,11 +71,32 @@ export class ElementComponent implements OnInit, OnChanges {
     }
 
     isOutOfView() {
-        const bounding = this.inputRef.nativeElement.getBoundingClientRect();
+        let bounding
+        if (this.inputRef) {
+            bounding = this.inputRef.nativeElement.getBoundingClientRect();
+        } else {
+            bounding = (this.ckEditorRef as any).elementRef.nativeElement.getBoundingClientRect();
+        }
+             
         return (bounding.y < 200 || bounding.y > (document.documentElement.clientHeight - 200));
     }
 
-    onActionRichText() {
-        console.log("TCL: ElementComponent -> onActionRichText -> this.withRichText", this.withRichText);
+    onActionRichText(e) {
+        if (this.element.hasRichText) {
+            this.editorModel.editorData = this.element.text;
+        } else {
+            this.element.text = this.elementsService.stripHtml(this.editorModel.editorData);
+        }
+
+        setTimeout(() => {
+            this.ckEditorRef.focus
+                .subscribe(() => {
+                    this.edit();
+                });
+            this.ckEditorRef.blur
+                .subscribe(() => {
+                    this.blur();
+                });
+        });
     }
 }

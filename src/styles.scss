@@ -318,7 +318,7 @@ fa-icon {
 
     .ck-content {
         border: none;
-        border-bottom: 2px solid #3f51b5 !important;
+        border-bottom: none !important;
         background: transparent !important;
         font-family: graphikRegular;
         font-size: 15px;
@@ -331,6 +331,38 @@ fa-icon {
     .ck-content.ck-focused {
         border: none !important;
         border-bottom: 2px solid #3f51b5 !important;
+        box-shadow: none !important;
+    }
+
+    // .ck-button {
+    //     color: transparent;
+    // }
+}
+
+.element {
+    .ck-button {
+        color: transparent !important;
+    }
+    .ck-toolbar__separator {
+        background: transparent !important;
+    }
+}
+
+.active {
+    .ck-button {
+        color: lightgray !important;
+    }
+    .ck-toolbar__separator {
+        background: lightgray !important;
+    }
+}
+
+.active.editing {
+    .ck-button {
+        color: #3f51b5 !important;
+    }
+    .ck-toolbar__separator {
+        background: #3f51b5 !important;
     }
 }
 
@@ -457,11 +489,38 @@ fa-icon {
     }
 }
 
+.ck.ck-button:not(.ck-disabled):hover {
+    background: lightgray !important;
+}
+
+.ck-toolbar {
+    height: 20px !important;
+    
+    .ck-toolbar__items {
+        height: 15px !important;
+    }
+
+    .ck-button {
+        font-size: 10px !important;
+        margin: 0 !important;
+    }
+}
+
+.ck-content {
+    padding: 0 !important;
+    margin-top: -10px;
+    min-height: 53px !important;
+}
+
 .rich-text-checkbox .mat-checkbox {
     .mat-checkbox-label {
-        font-size: 15px;
-        font-weight: 900;
+        font-size: 12px;
+        font-weight: 500;
         font-family: Roboto, "Helvetica Neue", sans-serif;
         letter-spacing: 1px;
     }
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #3f51b5 !important;
 }

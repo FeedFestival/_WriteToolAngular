@@ -2,18 +2,15 @@
     display: inline;
     height: 0;
     position: relative;
-    left: -60px;
-    top: 0;
+    left: 0;
+    top: -20px;
 
     .mat-checkbox {
         width: 0;
         display: flex;
-
-        .mat-checkbox-label {
-            font-size: 15px;
-            font-weight: 900;
-            font-family: Roboto, "Helvetica Neue", sans-serif;
-            letter-spacing: 1px;
-        }
     }
+}
+
+ckeditor {
+    margin-top: -20px;
 }

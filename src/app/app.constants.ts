@@ -1,3 +1,26 @@
+import { HttpHeaders } from '@angular/common/http';
+
+export const HttpDefaultHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    // 'Origin': 'http://localhost:4200'
+    // 'UserId': '1445866905885',
+    // 'SessionID': '9F5A5548743EA42C69D2685E41FCB50E',
+    // 'JSESSIONID': 'C57B67E0039E7AF4BDA8E2002B54EE4A'
+    //  Cookie: JSESSIONID=C57B67E0039E7AF4BDA8E2002B54EE4A; UserID=1531381765430; SessionID=9F5A5548743EA42C69D2685E41FCB50E
+});
+export const HttpDefaultOptions = {
+    headers: HttpDefaultHeaders,
+    withCredentials: true,
+    // useXDomain: true,
+    'cache': false,
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'If-Modified-Since': '0',
+    // 'responseType': 'json'
+};
+
 export const ElementType = {
     SCENE_HEADING: 'SCENE HEADING',
     ACTION: 'ACTION',
