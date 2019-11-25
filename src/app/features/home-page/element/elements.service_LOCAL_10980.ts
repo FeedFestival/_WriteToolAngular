@@ -91,7 +91,119 @@ export class ElementsService {
             },
             {
                 type: ElementType.DIALOG
-            }
+            },
+            //
+            {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            }, {
+                type: ElementType.SCENE_HEADING
+            },
+            {
+                type: ElementType.ACTION
+            },
+            {
+                type: ElementType.CHARACTER
+            },
+            {
+                type: ElementType.DIALOG
+            },
         ];
 
         elements.forEach(e => {
