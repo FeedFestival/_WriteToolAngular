@@ -7,16 +7,9 @@
         <div *ngFor="let element of elements; let i = index" [id]="'element' + element.id"
             [ngClass]="{ 'active': element.underCarret, 'editing': element.isEditing }">
 
-            <app-element [element]="element" [i]="i" [underCarret]="element.underCarret"
-                (onBlur)="onBlur($event)" (onEdit)="onEdit($event)">
+            <app-element [element]="element" [i]="i" [underCarret]="element.underCarret" (onBlur)="onBlur($event)"
+                (onEdit)="onEdit($event)">
             </app-element>
         </div>
     </div>
-
-    <!-- <style>
-        document.addEventListener("keydown", function(event) {
-             console.log(event.which);
-        });
-    </style> -->
-
 </div>

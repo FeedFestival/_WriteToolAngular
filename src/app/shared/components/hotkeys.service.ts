@@ -27,6 +27,14 @@ export class Hotkeys {
         @Inject(DOCUMENT) private document: Document
     ) {
 
+        document.addEventListener('keydown', (e) => {
+            // if we pressed the tab
+            if (e.keyCode == 9 || e.which == 9) {
+                console.log(e);
+                e.preventDefault();
+            }
+        });
+
         navigationService.getEditStateEmitter()
             .subscribe((editState) => {
                 this.editState = editState;
@@ -50,6 +58,8 @@ export class Hotkeys {
                     observer.next(e);
                     return;
                 }
+
+                // console.log("TCL: Hotkeys -> handler -> e.key", e.key);
 
                 e.preventDefault();
                 e.stopPropagation();

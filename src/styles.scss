@@ -341,9 +341,11 @@ fa-icon {
 
 .element {
     .ck-button {
+        pointer-events: none !important;
         color: transparent !important;
     }
     .ck-toolbar__separator {
+        pointer-events: none !important;
         background: transparent !important;
     }
 }
@@ -351,18 +353,22 @@ fa-icon {
 .active {
     .ck-button {
         color: lightgray !important;
+        pointer-events: none !important;
     }
     .ck-toolbar__separator {
         background: lightgray !important;
+        pointer-events: none !important;
     }
 }
 
 .active.editing {
     .ck-button {
         color: #3f51b5 !important;
+        pointer-events: all !important;
     }
     .ck-toolbar__separator {
         background: #3f51b5 !important;
+        pointer-events: all !important;
     }
 }
 

@@ -71,32 +71,39 @@ export class ElementComponent implements OnInit, OnChanges {
     }
 
     isOutOfView() {
-        let bounding
+        let bounding;
         if (this.inputRef) {
             bounding = this.inputRef.nativeElement.getBoundingClientRect();
         } else {
             bounding = (this.ckEditorRef as any).elementRef.nativeElement.getBoundingClientRect();
         }
-             
+
         return (bounding.y < 200 || bounding.y > (document.documentElement.clientHeight - 200));
     }
 
     onActionRichText(e) {
         if (this.element.hasRichText) {
-            this.editorModel.editorData = this.element.text;
+            this.editorModel.editorData = this.elementsService.convertToHtml(this.element.text);
+
+            setTimeout(() => {
+                this.ckEditorRef.focus
+                    .subscribe(() => {
+                        this.edit();
+                    });
+                this.ckEditorRef.blur
+                    .subscribe(() => {
+                        this.blur();
+                    });
+                const el = (this.ckEditorRef as any).elementRef.nativeElement;
+                el.lastElementChild.lastElementChild.lastElementChild.click();
+                el.lastElementChild.lastElementChild.lastElementChild.focus();
+            });
         } else {
             this.element.text = this.elementsService.stripHtml(this.editorModel.editorData);
+            setTimeout(() => {
+                this.inputRef.nativeElement.click();
+                this.inputRef.nativeElement.focus();
+            });
         }
-
-        setTimeout(() => {
-            this.ckEditorRef.focus
-                .subscribe(() => {
-                    this.edit();
-                });
-            this.ckEditorRef.blur
-                .subscribe(() => {
-                    this.blur();
-                });
-        });
     }
 }

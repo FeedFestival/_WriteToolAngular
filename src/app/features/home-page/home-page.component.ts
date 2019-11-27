@@ -392,7 +392,7 @@ export class HomePageComponent implements OnInit {
         // console.log("TCL: HomePageComponent -> setPreviousState -> oldState.elements", oldState)
 
         const index = this.getIndexUnderCarret(oldState.elements);
-        
+
         this.elements = JSON.parse(JSON.stringify(oldState.elements));
         this.elements.forEach(e => e.underCarret = false);
 
@@ -412,7 +412,7 @@ export class HomePageComponent implements OnInit {
             setTimeout(() => {
                 this.undoService.addState({
                     elements: elementsCopy,
-                    guid: guid
+                    guid
                 });
             });
         });

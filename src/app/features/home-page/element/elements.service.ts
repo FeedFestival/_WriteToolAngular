@@ -121,13 +121,23 @@ export class ElementsService {
         return elements;
     }
 
-    stripHtml(htmlString) {
+    stripHtml(htmlString: string) {
         // const tmp = document.createElement("DIV");
         // tmp.innerHTML = htmlString;
         // return tmp.textContent || tmp.innerText || "";
 
-        var doc = new DOMParser().parseFromString(htmlString, 'text/html');
-        return doc.body.textContent || "";
+        htmlString = htmlString.replace(/<\/p><p>/g, '\n');
+        htmlString = htmlString.replace(/<p>/g, '');
+        htmlString = htmlString.replace(/<\/p>/g, '');
+        const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+        return doc.body.textContent || '';
+    }
+
+    convertToHtml(text) {
+        let formatedString = text.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
+        formatedString = formatedString.replace(/<p><\/p>/g, '');
+        formatedString = '<p>' + formatedString + '</p>';
+        return formatedString;
     }
 
 }
