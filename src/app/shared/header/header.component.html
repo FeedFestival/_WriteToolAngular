@@ -1,6 +1,6 @@
 <div [ngClass]="scrollClass" class="row no-gutters header p-1 pt-2">
     <div class="col-3 pl-3" (click)="goHome()">
-        <img class="logo" src="assets/images/logo.png">
+        <img class="logo" src="assets/images/Logo_2.png">
     </div>
     <div class="col-6">
 
@@ -8,16 +8,15 @@
     <div class="col-3 d-flex justify-content-center">
         <div class="account-buttons" [ngClass]="scrollClass">
             <button mat-button class="ac-but">
-                <fa-icon class="float-right" [icon]="faEnvelope"></fa-icon>
-                <span class="notification-number">2</span>
+                <img class="ac-img" src="assets/images/AboutUs.png"/>
+            </button>
+            <button mat-button class="ac-but" (click)="openPolicy()">
+                <img class="ac-img" src="assets/images/Policy.png"/>
             </button>
             <button mat-button class="ac-but">
-                <fa-icon class="float-right" [icon]="faShoppingCart"></fa-icon>
-                <span class="notification-number">2</span>
-            </button>
-            <button mat-button class="ac-but">
-                <fa-icon class="float-right" [icon]="faHeart"></fa-icon>
-                <span class="notification-number">99</span>
+                    <img class="ac-img ac-but-save" src="assets/images/Save_2.png"/>
+                <!-- <fa-icon class="float-right" [icon]="faHeart"></fa-icon>
+                <span class="notification-number">99</span> -->
             </button>
         </div>
 
@@ -54,7 +53,7 @@
 </div>
 
 <div class="row no-gutters">
-    <div class="col-12 main-menu" *ngIf="!hideMenu">
+    <div class="col-12 main-menu">
         <app-navigation></app-navigation>
     </div>
 </div>

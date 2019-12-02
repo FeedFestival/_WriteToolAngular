@@ -47,7 +47,8 @@
 
 .account-buttons {
     .ac-but {
-        margin-top: 27px;
+        margin-top: 15px;
+        margin-right: 40px;
         display: inline-flex;
         float: right;
         width: 60px;
@@ -67,6 +68,15 @@
             font-size: 14px;
             line-height: 19px;
         }
+
+        .ac-img {
+            transition: all 0.5s;
+            width: 60px;
+        }
+
+        .ac-img.ac-but-save {
+            width: 50px;
+        }
     }
 
     &.min {
@@ -76,12 +86,20 @@
     }
     &.med {
         .ac-but {
-            margin-top: 15px;
+            margin-top: 2px;
+            
+            .ac-img {
+                width: 52px;
+            }
+
+            .ac-img.ac-but-save {
+                width: 45px;
+            }
         }
     }
     &.max {
         .ac-but {
-            margin-top: 27px;
+            margin-top: 15px;
         }
     }
 }

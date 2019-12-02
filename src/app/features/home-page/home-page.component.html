@@ -2,8 +2,6 @@
 
     <div class="page">
 
-        😍
-
         <div *ngFor="let element of elements; let i = index" [id]="'element' + element.id"
             [ngClass]="{ 'active': element.underCarret, 'editing': element.isEditing }">
 

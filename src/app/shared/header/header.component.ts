@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
 import { faCoffee, faEnvelope, faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material';
+import { PolicyComponent } from 'src/app/features/policy/policy.component';
 
 @Component({
     selector: 'app-header',
@@ -23,7 +25,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private matDialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -47,5 +50,9 @@ export class HeaderComponent implements OnInit {
 
     goHome() {
         this.router.navigateByUrl('/acasa');
+    }
+
+    openPolicy() {
+        const dialogRef = this.matDialog.open(PolicyComponent);
     }
 }

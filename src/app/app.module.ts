@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatMenuModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from 'angularx-social-login';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CursorComponent } from './features/home-page/cursor/cursor.component';
+import { ElementComponent } from './features/home-page/element/element.component';
 import { HomePageComponent } from './features/home-page/home-page.component';
+import { PolicyComponent } from './features/policy/policy.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import { FormsModule } from '@angular/forms';
-import { ElementComponent } from './features/home-page/element/element.component';
-import { CursorComponent } from './features/home-page/cursor/cursor.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 const config = new AuthServiceConfig([
     {
@@ -35,7 +36,8 @@ export function provideConfig() {
         FooterComponent,
         NavigationComponent,
         ElementComponent,
-        CursorComponent
+        CursorComponent,
+        PolicyComponent
     ],
     imports: [
         BrowserModule,
@@ -49,6 +51,7 @@ export function provideConfig() {
         MatDividerModule,
         MatInputModule,
         MatCheckboxModule,
+        MatDialogModule,
         FormsModule,
         FontAwesomeModule,
         NgScrollbarModule
@@ -61,6 +64,9 @@ export function provideConfig() {
         MatInputModule,
         MatCheckboxModule,
         FormsModule
+    ],
+    entryComponents: [
+        PolicyComponent
     ],
     providers: [
         {

@@ -79,11 +79,11 @@ export class ElementsService {
             case ElementType.SCENE_HEADING:
                 return onBlur ? 'EXT. UNKNOWN LOCATION' : 'INT. ';
             case ElementType.ACTION:
-                return onBlur ? 'Silence...' : '';
+                return onBlur ? '😍 Silence...' : '';
             case ElementType.CHARACTER:
                 return onBlur ? 'UNKNOWN' : '';
             default:
-                return onBlur ? '...' : '';
+                return onBlur ? '... 😈' : '';
         }
     }
 

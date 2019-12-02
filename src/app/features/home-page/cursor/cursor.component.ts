@@ -81,13 +81,13 @@ export class CursorComponent implements OnInit {
         }, 1000);
     }
 
-    onAnimationEnd(event: AnimationEvent) {
+    onAnimationEnd(event?: AnimationEvent) {
         if (this.isOpen === false)  {
             this.open();
         }
     }
 
-    onAnimationEvent(event: AnimationEvent) {
+    onAnimationEvent(event?: AnimationEvent) {
         if (!this.logging) {
             return;
         }

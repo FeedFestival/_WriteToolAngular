@@ -190,7 +190,7 @@ export class HomePageComponent implements OnInit {
         }
     }
 
-    private setUnderCarret(index, newIndex) {
+    setUnderCarret(index, newIndex) {
         if (index === null) {
             this.unCarretElement();
         } else {

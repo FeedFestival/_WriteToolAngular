@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { filter, tap, map } from 'rxjs/operators';
 import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ElementsService } from './features/home-page/element/elements.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     title = 'asl-pls';
 
     faArrowCircleUp = faArrowCircleUp;
+    faBars = faBars;
 
     // Stream that will update title font size on scroll down
     scrollClass = '';
@@ -68,6 +70,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         this.scrollRef.scrollTo({
             top: 0
         });
+    }
+
+    showMenu() {
+        this.scrollClass = 'med';
     }
 
     ngOnDestroy() {
