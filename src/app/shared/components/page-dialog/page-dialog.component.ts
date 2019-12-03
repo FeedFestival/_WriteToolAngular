@@ -4,18 +4,29 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
     selector: 'app-policy',
-    templateUrl: './policy.component.html',
-    styleUrls: ['./policy.component.scss']
+    templateUrl: './page-dialog.component.html',
+    styleUrls: ['./page-dialog.component.scss']
 })
-export class PolicyComponent implements OnInit, AfterViewInit {
+export class PageDialogComponent implements OnInit, AfterViewInit {
 
     @ViewChild('NgScrollbar', { static: true }) scrollRef: NgScrollbar;
     show = false;
 
+    page = {
+        showPrivacy: false,
+        showContact: false,
+        showAbout: false
+    };
+
     constructor(
-        public dialogRef: MatDialogRef<PolicyComponent>,
+        public dialogRef: MatDialogRef<PageDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) { }
+    ) {
+        this.page = {
+            ...this.page,
+            ...data.args
+        };
+    }
 
     ngOnInit() {
         this.scrollToTop();

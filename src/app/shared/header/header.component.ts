@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
 import { faCoffee, faEnvelope, faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog } from '@angular/material';
-import { PolicyComponent } from 'src/app/features/policy/policy.component';
+import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 
 @Component({
     selector: 'app-header',
@@ -52,7 +52,15 @@ export class HeaderComponent implements OnInit {
         this.router.navigateByUrl('/acasa');
     }
 
-    openPolicy() {
-        const dialogRef = this.matDialog.open(PolicyComponent);
+    openPage(pageOption) {
+
+        const newArgs = {};
+        newArgs[pageOption] = true;
+
+        const dialogRef = this.matDialog.open(PageDialogComponent, {
+            data: {
+                args: newArgs
+            }
+        });
     }
 }

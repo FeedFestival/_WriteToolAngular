@@ -12,11 +12,13 @@ import { AppComponent } from './app.component';
 import { CursorComponent } from './features/home-page/cursor/cursor.component';
 import { ElementComponent } from './features/home-page/element/element.component';
 import { HomePageComponent } from './features/home-page/home-page.component';
-import { PolicyComponent } from './features/policy/policy.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { PolicyStaticComponent } from './features/policy/policy-static.component';
+import { PageDialogComponent } from './shared/components/page-dialog/page-dialog.component';
+import { ContactComponent } from './features/contact/contact.component';
+import { AboutComponent } from './features/about/about.component';
 
 const config = new AuthServiceConfig([
     {
@@ -38,8 +40,10 @@ export function provideConfig() {
         NavigationComponent,
         ElementComponent,
         CursorComponent,
-        PolicyComponent,
-        PolicyStaticComponent
+        PageDialogComponent,
+        PolicyStaticComponent,
+        ContactComponent,
+        AboutComponent
     ],
     imports: [
         BrowserModule,
@@ -68,7 +72,7 @@ export function provideConfig() {
         FormsModule
     ],
     entryComponents: [
-        PolicyComponent
+        PageDialogComponent
     ],
     providers: [
         {

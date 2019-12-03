@@ -1,0 +1,13 @@
+<div class="basic-dialog-dimensions">
+
+    <div class="col-3" (click)="leave()" style="cursor: pointer;">
+        <img style="height: 80px;" src="assets/images/Logo_1.png">
+    </div>
+
+    <ng-scrollbar #NgScrollbar class="basic-dimensions fade-in-text" [ngClass]="{'show': show}">
+
+        <app-policy-static *ngIf="page.showPrivacy"></app-policy-static>
+        <app-contact *ngIf="page.showContact"></app-contact>
+
+    </ng-scrollbar>
+</div>
