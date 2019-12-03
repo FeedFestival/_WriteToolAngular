@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule } from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,10 +19,7 @@ import { PolicyStaticComponent } from './features/policy/policy-static.component
 import { PageDialogComponent } from './shared/components/page-dialog/page-dialog.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { AboutComponent } from './features/about/about.component';
-import { CommonModule } from '@angular/common';
-import { TransferHttpCacheModule } from '@nguniversal/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgtUniversalModule } from '@ng-toolkit/universal';
+import { AppModule } from './app.module';
 
 const config = new AuthServiceConfig([
     {
@@ -36,21 +33,8 @@ export function provideConfig() {
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomePageComponent,
-        HeaderComponent,
-        FooterComponent,
-        NavigationComponent,
-        ElementComponent,
-        CursorComponent,
-        PageDialogComponent,
-        PolicyStaticComponent,
-        ContactComponent,
-        AboutComponent
-    ],
     imports: [
-        BrowserModule.withServerTransition({ appId: 'serverApp' }),
+        
         SocialLoginModule,
         CKEditorModule,
         AppRoutingModule,
@@ -65,10 +49,8 @@ export function provideConfig() {
         FormsModule,
         FontAwesomeModule,
         NgScrollbarModule,
-        CommonModule,
-        TransferHttpCacheModule,
-        HttpClientModule,
-        NgtUniversalModule
+        AppModule,
+        BrowserTransferStateModule
     ],
     exports: [
         MatButtonModule,
@@ -90,4 +72,4 @@ export function provideConfig() {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppBrowserModule { }
