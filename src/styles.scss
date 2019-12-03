@@ -67,6 +67,11 @@ body {
     }
 }
 
+.simple-scroll-area {
+    height: 80vh !important;
+    max-height: 80vh!important;
+}
+
 .scroll-area {
     height: calc(100vh - 100px);
     max-height: calc(100vh - 100px) !important;
@@ -83,6 +88,23 @@ body {
 
 .scroll-area.max {
     max-height: calc(100vh - 100px) !important;
+}
+
+.fade-in-text {
+    color: transparent;
+    transition: color 1.5s !important;
+
+    a {
+        color: transparent;
+    }
+}
+
+.fade-in-text.show {
+    color: #444444;
+    
+    a {
+        color: #3f51b5;
+    }
 }
 
 .facebook-button {

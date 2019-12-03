@@ -16,6 +16,7 @@ import { PolicyComponent } from './features/policy/policy.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { PolicyStaticComponent } from './features/policy/policy-static.component';
 
 const config = new AuthServiceConfig([
     {
@@ -37,7 +38,8 @@ export function provideConfig() {
         NavigationComponent,
         ElementComponent,
         CursorComponent,
-        PolicyComponent
+        PolicyComponent,
+        PolicyStaticComponent
     ],
     imports: [
         BrowserModule,
