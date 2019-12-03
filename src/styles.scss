@@ -17,7 +17,7 @@ body {
 }
 
 .page-min-width {
-    min-height: calc(100vh - 300px);
+    min-height: calc(100vh - ((#{$header-height} + #{$submenu-height}) + #{$footer-height}));
 }
 
 .main-menu {
@@ -471,7 +471,7 @@ fa-icon {
         padding: 0;
         height: 100%;
         width: 100%;
-        font-size: 64px;
+        font-size: 44px;
 
         fa-icon {
             color: rgba(0, 0, 0, 0.5);
@@ -555,4 +555,8 @@ fa-icon {
 
 .mat-checkbox-checked .mat-checkbox-background {
     background-color: #3f51b5 !important;
+}
+
+a.red {
+    color: red;
 }
