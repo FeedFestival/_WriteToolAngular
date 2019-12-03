@@ -15,7 +15,7 @@ import { HomePageComponent } from './features/home-page/home-page.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import { PolicyStaticComponent } from './features/policy/policy-static.component';
+import { LegalDocsComponent } from './features/policy/legal-documents.component';
 import { PageDialogComponent } from './shared/components/page-dialog/page-dialog.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { AboutComponent } from './features/about/about.component';
