@@ -16,9 +16,11 @@
                 </textarea>
         </mat-form-field>
 
-        <ckeditor #ckEditorRef *ngIf="element.hasRichText && element.type === ElementTypeRef.ACTION"
-            class="w-100" [config]="editorModel.config" style="margin-top: -20px;"
-            [(ngModel)]="editorModel.editorData" [editor]="Editor"></ckeditor>
+        <ng-container *ngIf="isBrowser">
+            <ckeditor #ckEditorRef *ngIf="element.hasRichText && element.type === ElementTypeRef.ACTION"
+                class="w-100" [config]="editorModel.config" style="margin-top: -20px;"
+                [(ngModel)]="editorModel.editorData" [editor]="asyncObject.Editor"></ckeditor>
+        </ng-container>
 
         <div class="rich-text-checkbox" *ngIf="element.type === ElementTypeRef.ACTION">
             <mat-checkbox [hidden]="!element.underCarret"

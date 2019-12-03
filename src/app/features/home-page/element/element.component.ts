@@ -1,9 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
 import { ElementType } from 'src/app/app.constants';
 import { CursorComponent } from '../cursor/cursor.component';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ElementsService } from './elements.service';
-import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 @Component({
     selector: 'app-element',
@@ -21,23 +19,27 @@ export class ElementComponent implements OnInit, OnChanges {
 
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;
-    @ViewChild('ckEditorRef', { static: false }) ckEditorRef: CKEditorComponent;
+    @ViewChild('ckEditorRef', { static: false }) ckEditorRef: ElementRef;
+
+    isBrowser = false;
 
     ElementTypeRef = ElementType;
     loaded = false;
 
-    Editor = ClassicEditor;
+    asyncObject: any = {
+    };
     editorModel = {
         editorData: '<p>Hello, world!</p>',
         config: {
-            toolbar: ['bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList',]
+            toolbar: ['bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList']
         }
     };
 
     constructor(
+        @Inject(PLATFORM_ID) private platformId,
         private elementsService: ElementsService
     ) {
-
+        this.isBrowser = (platformId === 'browser');
     }
 
     ngOnInit() {
@@ -48,6 +50,15 @@ export class ElementComponent implements OnInit, OnChanges {
         if (changes) {
             if (changes.element && changes.element.currentValue) {
                 this.loaded = true;
+
+                if (this.isBrowser) {
+                    if (this.element.type === ElementType.ACTION) {
+                        const clasicEditor = import('@ckeditor/ckeditor5-build-classic');
+                        clasicEditor.then(classicEditor => {
+                            this.asyncObject.Editor = classicEditor.default;
+                        });
+                    }
+                }
             }
             if (changes.underCarret) {
 
@@ -86,11 +97,11 @@ export class ElementComponent implements OnInit, OnChanges {
             this.editorModel.editorData = this.elementsService.convertToHtml(this.element.text);
 
             setTimeout(() => {
-                this.ckEditorRef.focus
+                (this.ckEditorRef as any).focus
                     .subscribe(() => {
                         this.edit();
                     });
-                this.ckEditorRef.blur
+                (this.ckEditorRef as any).blur
                     .subscribe(() => {
                         this.blur();
                     });
