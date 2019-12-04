@@ -39,37 +39,37 @@ const config = new AuthServiceConfig([
 
 const cookieConfig: NgcCookieConsentConfig = {
 
-    "cookie": {
-        "domain": "tinesoft.github.io"
+    cookie: {
+        domain: 'tinesoft.github.io'
     },
-    "position": "bottom",
-    "theme": "classic",
-    "palette": {
-        "popup": {
-            "background": "#000000",
-            "text": "#ffffff",
-            "link": "#ffffff"
+    position: 'bottom',
+    theme: 'classic',
+    palette: {
+        popup: {
+            background: '#000000',
+            text: '#ffffff',
+            link: '#ffffff'
         },
-        "button": {
-            "background": "#f1d600",
-            "text": "#000000",
-            "border": "transparent"
+        button: {
+            background: '#f1d600',
+            text: '#000000',
+            border: 'transparent'
         }
     },
-    "type": "info",
-    "content": {
-        "message": "This website uses cookies to ensure you get the best experience on our website."
+    type: 'info',
+    content: {
+        message: 'This website uses cookies to ensure you get the best experience on our website.'
     },
 
-    
+
     layout: 'my-custom-layout',
     layouts: {
-        "my-custom-layout": '{{messagelink}}{{compliance}}'
+        'my-custom-layout': '{{messagelink}}{{compliance}}'
     },
     elements: {
         messagelink: `
-        <span id="cookieconsent:desc" class="cc-message">{{message}} 
-          <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/gdpr">Learn More</a>
+        <span id="cookieconsent:desc" class="cc-message">{{message}}
+          <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/gdpr">Learn more about GDPR</a>
         </span>
         `,
     }

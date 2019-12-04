@@ -14,6 +14,20 @@ html, body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: $dark-black;
+}
+
+p {
+    font-family: graphikRegular;
+    font-size: 0.9em;
+}
+
+li {
+    color: #254f79;
+}
+
+b {
+    color: $black;
 }
 
 .page-min-width {
