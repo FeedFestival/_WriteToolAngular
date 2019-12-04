@@ -8,6 +8,7 @@ import { TermsComponent } from './features/policy/terms/terms.component';
 import { PrivacyComponent } from './features/policy/privacy/privacy.component';
 import { CookiesComponent } from './features/policy/cookies/cookies.component';
 import { SnsComponent } from './features/policy/sns/sns.component';
+import { GdprComponent } from './features/policy/gdpr/gdpr.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
     { path: 'privacy', component: PrivacyComponent },
     { path: 'cookies', component: CookiesComponent },
     { path: 'sns', component: SnsComponent },
+    { path: 'gdpr', component: GdprComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'about', component: AboutComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }

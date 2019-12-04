@@ -30,6 +30,10 @@
     }
 }
 
+.footer-v-hr {
+    border-right: 1px solid dimgrey;
+}
+
 .footer-link {
     line-height: 15px;
 
@@ -38,3 +42,13 @@
     }
 }
 
+.footer-social {
+    display: inline-block;
+    a {
+        padding-left: 15px;
+        height: 30px;
+        svg {
+            font-size: 30px;
+        }
+    }
+}

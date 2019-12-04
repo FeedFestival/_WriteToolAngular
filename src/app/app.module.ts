@@ -27,6 +27,7 @@ import { TermsComponent } from './features/policy/terms/terms.component';
 import { PrivacyComponent } from './features/policy/privacy/privacy.component';
 import { CookiesComponent } from './features/policy/cookies/cookies.component';
 import { SnsComponent } from './features/policy/sns/sns.component';
+import { GdprComponent } from './features/policy/gdpr/gdpr.component';
 
 const config = new AuthServiceConfig([
     {
@@ -55,7 +56,8 @@ export function provideConfig() {
         TermsComponent,
         PrivacyComponent,
         CookiesComponent,
-        SnsComponent
+        SnsComponent,
+        GdprComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
