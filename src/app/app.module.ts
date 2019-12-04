@@ -28,6 +28,7 @@ import { PrivacyComponent } from './features/policy/privacy/privacy.component';
 import { CookiesComponent } from './features/policy/cookies/cookies.component';
 import { SnsComponent } from './features/policy/sns/sns.component';
 import { GdprComponent } from './features/policy/gdpr/gdpr.component';
+import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 
 const config = new AuthServiceConfig([
     {
@@ -35,6 +36,44 @@ const config = new AuthServiceConfig([
         provider: new FacebookLoginProvider('2520604091369887')
     }
 ]);
+
+const cookieConfig: NgcCookieConsentConfig = {
+
+    "cookie": {
+        "domain": "tinesoft.github.io"
+    },
+    "position": "bottom",
+    "theme": "classic",
+    "palette": {
+        "popup": {
+            "background": "#000000",
+            "text": "#ffffff",
+            "link": "#ffffff"
+        },
+        "button": {
+            "background": "#f1d600",
+            "text": "#000000",
+            "border": "transparent"
+        }
+    },
+    "type": "info",
+    "content": {
+        "message": "This website uses cookies to ensure you get the best experience on our website."
+    },
+
+    
+    layout: 'my-custom-layout',
+    layouts: {
+        "my-custom-layout": '{{messagelink}}{{compliance}}'
+    },
+    elements: {
+        messagelink: `
+        <span id="cookieconsent:desc" class="cc-message">{{message}} 
+          <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/gdpr">Learn More</a>
+        </span>
+        `,
+    }
+};
 
 export function provideConfig() {
     return config;
@@ -60,6 +99,7 @@ export function provideConfig() {
         GdprComponent
     ],
     imports: [
+        NgcCookieConsentModule.forRoot(cookieConfig),
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
         SocialLoginModule,
         CKEditorModule,

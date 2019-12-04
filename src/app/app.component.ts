@@ -1,4 +1,4 @@
-import { Component, ViewChild, NgZone, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, NgZone, OnDestroy, AfterViewInit, OnInit } from '@angular/core';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
@@ -6,13 +6,14 @@ import { filter, tap, map } from 'rxjs/operators';
 import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ElementsService } from './features/home-page/element/elements.service';
+import { NgcCookieConsentService, NgcInitializeEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     title = 'asl-pls';
 
@@ -22,6 +23,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     // Stream that will update title font size on scroll down
     scrollClass = '';
 
+    //keep refs to subscriptions to be able to unsubscribe later
+    private popupOpenSubscription: Subscription;
+    private popupCloseSubscription: Subscription;
+    private initializeSubscription: Subscription;
+    private statusChangeSubscription: Subscription;
+    private revokeChoiceSubscription: Subscription;
+    private noCookieLawSubscription: Subscription;
+
     // Unsubscriber for elementScrolled stream.
     private scrollSubscription = Subscription.EMPTY;
 
@@ -30,6 +39,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private ngZone: NgZone,
+        private ccService: NgcCookieConsentService,
         private elementsService: ElementsService,
         router: Router
     ) {
@@ -42,6 +52,39 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         elementsService.getScrollToElementEmitter()
             .subscribe((element) => {
                 this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
+            });
+    }
+
+    ngOnInit() {
+        // subscribe to cookieconsent observables to react to main events
+        this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
+            () => {
+                // you can use this.ccService.getConfig() to do stuff...
+            });
+
+        this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
+            () => {
+                // you can use this.ccService.getConfig() to do stuff...
+            });
+
+        this.initializeSubscription = this.ccService.initialize$.subscribe(
+            (event: NgcInitializeEvent) => {
+                // you can use this.ccService.getConfig() to do stuff...
+            });
+
+        this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
+            (event: NgcStatusChangeEvent) => {
+                // you can use this.ccService.getConfig() to do stuff...
+            });
+
+        this.revokeChoiceSubscription = this.ccService.revokeChoice$.subscribe(
+            () => {
+                // you can use this.ccService.getConfig() to do stuff...
+            });
+
+        this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
+            (event: NgcNoCookieLawEvent) => {
+                // you can use this.ccService.getConfig() to do stuff...
             });
     }
 
@@ -78,5 +121,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         this.scrollSubscription.unsubscribe();
+        // unsubscribe to cookieconsent observables to prevent memory leaks
+        this.popupOpenSubscription.unsubscribe();
+        this.popupCloseSubscription.unsubscribe();
+        this.initializeSubscription.unsubscribe();
+        this.statusChangeSubscription.unsubscribe();
+        this.revokeChoiceSubscription.unsubscribe();
+        this.noCookieLawSubscription.unsubscribe();
     }
 }
