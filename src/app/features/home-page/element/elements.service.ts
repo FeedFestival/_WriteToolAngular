@@ -2,7 +2,8 @@ import { EventEmitter, Injectable, ElementRef } from '@angular/core';
 import { ElementType, HttpDefaultOptions } from 'src/app/app.constants';
 import { TestHttpClient } from 'src/app/TestHttpClient/TestHttpClient.service';
 import { map, mergeAll } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER];
 export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER];
@@ -21,7 +22,8 @@ export class ElementsService {
     http: TestHttpClient;
 
     constructor(
-        private testHttpClient: TestHttpClient
+        private testHttpClient: TestHttpClient,
+        private cookieService: CookieService
     ) {
         this.http = testHttpClient;
     }
@@ -34,14 +36,30 @@ export class ElementsService {
         return this.scrollToElementChange;
     }
 
-    getElements() {
+    getElements(isDefault?): Observable<any> {
 
-        return this.http.get<any[]>('elements', HttpDefaultOptions).pipe(
-            map(categories => {
-                return of(categories);
-            }),
-            mergeAll()
-        );
+        if (isDefault) {
+            return of(this.getStartingText());
+            // return this.http.get<any[]>('elements', HttpDefaultOptions).pipe(
+            //     map(elements => {
+            //         return of(elements);
+            //     }),
+            //     mergeAll()
+            // );
+        }
+
+        let elements: any[] = [];
+        const s = this.cookieService.get('elements');
+        if (s && s.length !== 0) {
+            elements = JSON.parse(s);
+        }
+        return of(elements);
+    }
+
+    save(elements) {
+
+        const s = JSON.stringify(elements);
+        this.cookieService.set('elements', s);
     }
 
     setAllowedElements(elementType) {

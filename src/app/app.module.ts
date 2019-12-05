@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule } from '@angular/material';
@@ -5,30 +7,29 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgtUniversalModule } from '@ng-toolkit/universal';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from 'angularx-social-login';
+import { CookieService } from 'ngx-cookie-service';
+import { NgcCookieConsentConfig, NgcCookieConsentModule } from 'ngx-cookieconsent';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AboutComponent } from './features/about/about.component';
+import { ContactComponent } from './features/contact/contact.component';
 import { CursorComponent } from './features/home-page/cursor/cursor.component';
 import { ElementComponent } from './features/home-page/element/element.component';
 import { HomePageComponent } from './features/home-page/home-page.component';
+import { CookiesComponent } from './features/policy/cookies/cookies.component';
+import { GdprComponent } from './features/policy/gdpr/gdpr.component';
+import { LegalDocsComponent } from './features/policy/legal-documents.component';
+import { PrivacyComponent } from './features/policy/privacy/privacy.component';
+import { SnsComponent } from './features/policy/sns/sns.component';
+import { TermsComponent } from './features/policy/terms/terms.component';
+import { PageDialogComponent } from './shared/components/page-dialog/page-dialog.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import { LegalDocsComponent } from './features/policy/legal-documents.component';
-import { PageDialogComponent } from './shared/components/page-dialog/page-dialog.component';
-import { ContactComponent } from './features/contact/contact.component';
-import { AboutComponent } from './features/about/about.component';
-import { CommonModule } from '@angular/common';
-import { TransferHttpCacheModule } from '@nguniversal/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgtUniversalModule } from '@ng-toolkit/universal';
-import { TermsComponent } from './features/policy/terms/terms.component';
-import { PrivacyComponent } from './features/policy/privacy/privacy.component';
-import { CookiesComponent } from './features/policy/cookies/cookies.component';
-import { SnsComponent } from './features/policy/sns/sns.component';
-import { GdprComponent } from './features/policy/gdpr/gdpr.component';
-import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 
 const config = new AuthServiceConfig([
     {
@@ -133,6 +134,7 @@ export function provideConfig() {
         PageDialogComponent
     ],
     providers: [
+        CookieService,
         {
             provide: AuthServiceConfig,
             useFactory: provideConfig

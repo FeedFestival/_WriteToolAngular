@@ -26,6 +26,7 @@ export const ElementType = {
     ACTION: 'ACTION',
     CHARACTER: 'CHARACTER',
     DIALOG: 'DIALOG',
+    EMPTY: 'EMPTY',
 
     getInputClass: (elementType) => {
         switch (elementType) {
@@ -80,7 +81,8 @@ export const Key = {
     D: 'd',
     //
     Z: 'z',
-    Y: 'y'
+    Y: 'y',
+    //
 }
 
 export const MainAvailableKeys = [

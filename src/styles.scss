@@ -379,6 +379,11 @@ fa-icon {
     // }
 }
 
+.element.empty {
+    height: 2px;
+    background: lightgray;
+}
+
 .element {
     .ck-button {
         pointer-events: none !important;

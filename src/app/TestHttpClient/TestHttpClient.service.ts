@@ -2,7 +2,7 @@ import { HttpHeaders, HttpParams, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 
-import CategoriesJson from './categories.json';
+import ElementsJson from './categories.json';
 
 @Injectable({
     providedIn: 'root'
@@ -53,7 +53,7 @@ export class TestHttpClient {
 
         switch (requestUrl) {
             case 'elements':
-                return CategoriesJson;
+                return ElementsJson;
             default:
                 break;
         }

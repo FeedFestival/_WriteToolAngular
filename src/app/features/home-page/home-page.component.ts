@@ -6,6 +6,7 @@ import { NavigationService } from 'src/app/shared/navigation/navigation.service'
 import { ElementComponent } from './element/element.component';
 import { ElementsService } from './element/elements.service';
 import { UndoService } from 'src/app/shared/components/undo.service';
+import { IElement } from 'src/app/shared/models/element';
 
 @Component({
     selector: 'app-home-page',
@@ -38,17 +39,22 @@ export class HomePageComponent implements OnInit {
     ngOnInit() {
 
         if (!this.elements) {
-            this.elements = this.elementsService.getStartingText();
+            this.elementsService.getElements()
+                .subscribe((elements) => {
+                    this.elements = elements;
+
+                    if (this.elements.length === 0) {
+                        this.createEmptyElement();
+                    }
+
+                    this.setCurrentElement(this.elements.length - 1);
+                    setTimeout(() => {
+                        this.scrollToElementIfOutOfView();
+                    });
+
+                    this.saveUndoState();
+                });
         }
-
-        this.setCurrentElement(this.elements.length - 1);
-        setTimeout(() => {
-            this.scrollToElementIfOutOfView();
-        });
-
-        this.saveUndoState();
-
-        // console.log("TCL: HomePageComponent -> ngOnInit -> this.elements", this.elements)
 
         this.navigationService.getEditStateEmitter()
             .subscribe((editState) => {
@@ -117,6 +123,16 @@ export class HomePageComponent implements OnInit {
             .subscribe(() => {
                 this.onRedo();
             });
+        //
+        this.hotkeys.onControlSHotkey()
+            .subscribe(() => {
+                // if (this.editState === EditState.MAIN) {
+
+                this.elementsService.save(this.elements);
+
+                // }
+            });
+
     }
 
     onEdit(index) {
@@ -218,7 +234,9 @@ export class HomePageComponent implements OnInit {
 
     private editElementAtIndex(index, newIndex) {
         this.setUnderCarret(index, newIndex);
-        setTimeout(__ => this.onTab());
+        setTimeout(__ => {
+            this.onTab();
+        });
     }
 
     private setCurrentElement(index) {
@@ -330,7 +348,7 @@ export class HomePageComponent implements OnInit {
             }
         }
 
-        const newElement = {
+        const newElement: IElement = {
             id: newId,
             type: elementType,
             text: this.elementsService.getDefaultText(elementType),
@@ -344,34 +362,62 @@ export class HomePageComponent implements OnInit {
             this.elements.splice(index + 1, 0, newElement);
         }
 
+        const emptyIndex = this.elements.findIndex(e => e.type === ElementType.EMPTY);
+        if (emptyIndex >= 0) {
+            this.elements.splice(emptyIndex, 1);
+        }
+
         this.saveUndoState();
 
         newIndex = this.elements.findIndex(e => e.id === newId);
         this.editElementAtIndex(index, newIndex);
     }
 
+    private createEmptyElement(index?) {
+        if (index) {
+
+        } else {
+            const emptyElement: IElement = {
+                id: this.elementsService.guid(),
+                type: ElementType.EMPTY,
+                text: '',
+                inputClass: '',
+                typeClass: 'empty'
+            };
+            this.elements.push(emptyElement);
+        }
+    }
+
     private remove(recursive?) {
 
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
         const isLastElement = (index === this.elements.length - 1);
-        const newIndex = isLastElement ? index - 1 : index - 1;
+        let newIndex = isLastElement ? index - 1 : index - 1;
 
         if (!recursive) {
-            if (this.currentElement.type === ElementType.DIALOG) {
-                this.elements.splice(index - 1, 1);
-                this.remove(true);
-                return;
-            } else if (this.currentElement.type === ElementType.CHARACTER) {
-                this.elements.splice(index + 1, 1);
-                this.remove(true);
-                return;
-            }
+            this.removeConectingChild(index);
         }
-
         this.elements.splice(index, 1);
+        if (this.elements.length === 0) {
+            this.createEmptyElement();
+            newIndex = 0;
+        }
         this.setUnderCarret(index, newIndex);
 
         this.saveUndoState();
+    }
+
+    private removeConectingChild(index) {
+
+        if (this.currentElement.type === ElementType.DIALOG) {
+            this.elements.splice(index - 1, 1);
+            this.remove(true);
+            return;
+        } else if (this.currentElement.type === ElementType.CHARACTER) {
+            this.elements.splice(index + 1, 1);
+            this.remove(true);
+            return;
+        }
     }
 
     onUndo() {

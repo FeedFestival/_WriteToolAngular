@@ -86,10 +86,16 @@ export class ElementComponent implements OnInit, OnChanges {
         if (this.inputRef) {
             bounding = this.inputRef.nativeElement.getBoundingClientRect();
         } else {
-            bounding = (this.ckEditorRef as any).elementRef.nativeElement.getBoundingClientRect();
+            const ckEditor = (this.ckEditorRef as any);
+            if (ckEditor) {
+                bounding = ckEditor.elementRef.nativeElement.getBoundingClientRect();
+            }
         }
 
-        return (bounding.y < 200 || bounding.y > (document.documentElement.clientHeight - 200));
+        if (bounding) {
+            return (bounding.y < 200 || bounding.y > (document.documentElement.clientHeight - 200));
+        }
+        return false;
     }
 
     onActionRichText(e) {

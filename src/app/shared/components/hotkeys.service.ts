@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, EventEmitter } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { NavigationService } from '../navigation/navigation.service';
@@ -13,6 +13,8 @@ type Options = {
 
 @Injectable({ providedIn: 'root' })
 export class Hotkeys {
+
+    private controlSHotkey: EventEmitter<void> = new EventEmitter<void>();
 
     defaults: Partial<Options> = {
         element: this.document
@@ -28,17 +30,27 @@ export class Hotkeys {
     ) {
 
         document.addEventListener('keydown', (e) => {
-            // if we pressed the tab
-            if (e.keyCode == 9 || e.which == 9) {
+            // console.log("TCL: Hotkeys -> e", e)
+            if (this.isTabKey(e)) {
                 console.log(e);
                 e.preventDefault();
             }
+
+            if (this.isControlSHotkey(e)) {
+                e.preventDefault();
+                this.controlSHotkey.emit();
+            }
+
         });
 
         navigationService.getEditStateEmitter()
             .subscribe((editState) => {
                 this.editState = editState;
             });
+    }
+
+    onControlSHotkey() {
+        return this.controlSHotkey;
     }
 
     addShortcut(options: Partial<Options>) {
@@ -48,6 +60,7 @@ export class Hotkeys {
         return new Observable(observer => {
             const handler = (e) => {
 
+                // console.log("TCL: Hotkeys -> handler -> e.key", e.key);
                 // console.log('Hotkeys -> ' + e.key + '(' + this.editState + ')');
 
                 if (this.hasAccessToKey(e.key, this.editState) === false) {
@@ -59,7 +72,7 @@ export class Hotkeys {
                     return;
                 }
 
-                // console.log("TCL: Hotkeys -> handler -> e.key", e.key);
+                console.log("TCL: Hotkeys -> handler -> e.key", e.key);
 
                 e.preventDefault();
                 e.stopPropagation();
@@ -118,6 +131,14 @@ export class Hotkeys {
             default:
                 break;
         }
+    }
+
+    private isControlSHotkey(e): boolean {
+        return e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey);
+    }
+
+    private isTabKey(e) {
+        return e.keyCode == 9 || e.which == 9;
     }
 
 }
