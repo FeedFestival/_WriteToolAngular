@@ -581,5 +581,17 @@ a.red {
 }
 
 .cc-window {
-    background-color: rgba(0,0,0,0.8) !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    padding: 0 30px !important;
+
+    .cc-btn {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        color: white !important;
+    }
+}
+
+.copy-right {
+    position: absolute;
+    bottom: 0;
+    font-size: 10px;
 }

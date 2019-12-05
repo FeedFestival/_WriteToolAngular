@@ -7,6 +7,8 @@ import { ElementComponent } from './element/element.component';
 import { ElementsService } from './element/elements.service';
 import { UndoService } from 'src/app/shared/components/undo.service';
 import { IElement } from 'src/app/shared/models/element';
+import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from './seo.service';
 
 @Component({
     selector: 'app-home-page',
@@ -25,8 +27,11 @@ export class HomePageComponent implements OnInit {
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
 
     constructor(
+        private seoService: SeoService,
         private hotkeys: Hotkeys,
         private undoService: UndoService,
+        private titleService: Title,
+        private metaService: Meta,
         private elementsService: ElementsService,
         private navigationService: NavigationService
     ) {
@@ -37,6 +42,10 @@ export class HomePageComponent implements OnInit {
     }
 
     ngOnInit() {
+        
+        const page = 'home';
+        this.titleService.setTitle(this.seoService.getTitle(page));
+        this.metaService.addTags(this.seoService.getMetaTags(page));
 
         if (!this.elements) {
             this.elementsService.getElements()
