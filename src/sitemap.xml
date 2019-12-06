@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+legal
+terms
+privacy
+cookies
+sns
+gdpr
+contact
+about
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>
+			http://gamescrypt.com/
+		</loc>
+		<priority>
+			1.0
+		</priority>
+	</url>
+	<!-- START: 0.7 -->
+	<url>
+		<loc>
+			http://gamescrypt.com/about
+		</loc>
+		<priority>
+			0.7
+		</priority>
+	</url>
+	<!-- END: 0.7 -->
+	<!--  -->
+    <!-- START: 0.4 -->
+	<url>
+		<loc>
+			http://gamescrypt.com/contact
+		</loc>
+		<priority>
+			0.4
+		</priority>
+	</url>
+    <!-- END: 0.4 -->
+	<!--  -->
+	<!-- START: 0.1 -->
+	<url>
+		<loc>
+			http://gamescrypt.com/legal
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<url>
+		<loc>
+			http://gamescrypt.com/terms
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<url>
+		<loc>
+			http://gamescrypt.com/privacy
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<url>
+		<loc>
+			http://gamescrypt.com/cookies
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<url>
+		<loc>
+			http://gamescrypt.com/sns
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<url>
+		<loc>
+			http://gamescrypt.com/gdpr
+		</loc>
+		<priority>
+			0.1
+		</priority>
+	</url>
+	<!-- END: 0.1 -->
+</urlset>

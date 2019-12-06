@@ -4,7 +4,7 @@
     </div>
     <div class="col-5 d-flex justify-content-center">
         <div class="account-buttons" [ngClass]="scrollClass">
-            <button mat-button class="ac-but float-right">
+            <button mat-button class="ac-but float-right" [ngClass]="saveClass" (click)="save()">
                 <img class="ac-img ac-but-save" src="assets/images/Save_2.png"/>
             </button>
         </div>

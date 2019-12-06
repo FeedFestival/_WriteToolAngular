@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { EditState, ElementType, Key } from 'src/app/app.constants';
 import { Hotkeys } from 'src/app/shared/components/hotkeys.service';
@@ -9,6 +9,7 @@ import { UndoService } from 'src/app/shared/components/undo.service';
 import { IElement } from 'src/app/shared/models/element';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from './seo.service';
+import { HeaderService } from 'src/app/shared/header/header.service';
 
 @Component({
     selector: 'app-home-page',
@@ -27,6 +28,7 @@ export class HomePageComponent implements OnInit {
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
 
     constructor(
+        private headerService: HeaderService,
         private seoService: SeoService,
         private hotkeys: Hotkeys,
         private undoService: UndoService,
@@ -42,9 +44,12 @@ export class HomePageComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
         const page = 'home';
         this.titleService.setTitle(this.seoService.getTitle(page));
+        this.seoService.getAllTags().forEach(tag => {
+            this.metaService.removeTag(tag);
+        });
         this.metaService.addTags(this.seoService.getMetaTags(page));
 
         if (!this.elements) {
@@ -135,13 +140,14 @@ export class HomePageComponent implements OnInit {
         //
         this.hotkeys.onControlSHotkey()
             .subscribe(() => {
-                // if (this.editState === EditState.MAIN) {
-
                 this.elementsService.save(this.elements);
-
-                // }
+                this.headerService.emitCanSaveEvent(false);
             });
-
+        this.headerService.getSaveEvent()
+            .subscribe(() => {
+                this.elementsService.save(this.elements);
+                this.headerService.emitCanSaveEvent(false);
+            });
     }
 
     onEdit(index) {
@@ -175,9 +181,7 @@ export class HomePageComponent implements OnInit {
 
         this.navigationService.emitEditStateEvent(EditState.MAIN);
 
-        // setTimeout(() => {
-        //     this.undoService.setState(this.elements);
-        // });
+        this.headerService.emitCanSaveEvent();
     }
 
     onEscape() {
@@ -380,6 +384,8 @@ export class HomePageComponent implements OnInit {
 
         newIndex = this.elements.findIndex(e => e.id === newId);
         this.editElementAtIndex(index, newIndex);
+
+        this.headerService.emitCanSaveEvent();
     }
 
     private createEmptyElement(index?) {
@@ -414,6 +420,7 @@ export class HomePageComponent implements OnInit {
         this.setUnderCarret(index, newIndex);
 
         this.saveUndoState();
+        this.headerService.emitCanSaveEvent();
     }
 
     private removeConectingChild(index) {
@@ -435,6 +442,7 @@ export class HomePageComponent implements OnInit {
             return;
         }
         this.undoService.undo();
+        this.headerService.emitCanSaveEvent();
     }
 
     onRedo() {
@@ -444,6 +452,7 @@ export class HomePageComponent implements OnInit {
         }
 
         this.undoService.redo();
+        this.headerService.emitCanSaveEvent();
     }
 
     setPreviousState(oldState) {

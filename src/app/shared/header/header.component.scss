@@ -75,6 +75,15 @@
         }
 
         .ac-img.ac-but-save {
+            opacity: 0.2;
+            width: 28px;
+            margin-top: 14px;
+        }
+    }
+
+    .ac-but.can-save {
+        .ac-img.ac-but-save {
+            opacity: 1;
             width: 30px;
             margin-top: 15px;
         }
