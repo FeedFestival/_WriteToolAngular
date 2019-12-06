@@ -8,6 +8,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ElementsService } from './features/home-page/element/elements.service';
 import { NgcCookieConsentService, NgcInitializeEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
 
+declare let gtag: Function;
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -46,13 +48,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             filter(() => !!this.scrollRef),
-            tap((event: NavigationEnd) => this.scrollToTop())
+            tap((event: NavigationEnd) => {
+                // console.log(event.urlAfterRedirects);
+                this.scrollToTop();
+                gtag('config', 'UA-154145362-1',
+                    {
+                        'page_path': event.urlAfterRedirects
+                    }
+                );
+            })
         ).subscribe();
 
+        // router.events.subscribe(event => {
+        //     if (event instanceof NavigationEnd) {
+        //         console.log(event.urlAfterRedirects);
+        //         gtag('config', 'UA-154145362-1',
+        //             {
+        //                 'page_path': event.urlAfterRedirects
+        //             }
+        //         );
+        //     }
+        // });
+
         elementsService.getScrollToElementEmitter()
-            .subscribe((element) => {
-                this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
-            });
+                .subscribe((element) => {
+                    this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
+                });
     }
 
     ngOnInit() {

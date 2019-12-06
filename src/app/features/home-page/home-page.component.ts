@@ -375,10 +375,10 @@ export class HomePageComponent implements OnInit {
             this.elements.splice(index + 1, 0, newElement);
         }
 
-        const emptyIndex = this.elements.findIndex(e => e.type === ElementType.EMPTY);
-        if (emptyIndex >= 0) {
-            this.elements.splice(emptyIndex, 1);
-        }
+        // const emptyIndex = this.elements.findIndex(e => e.type === ElementType.EMPTY);
+        // if (emptyIndex >= 0) {
+        //     this.elements.splice(emptyIndex, 1);
+        // }
 
         this.saveUndoState();
 
@@ -410,7 +410,10 @@ export class HomePageComponent implements OnInit {
         let newIndex = isLastElement ? index - 1 : index - 1;
 
         if (!recursive) {
-            this.removeConectingChild(index);
+            const willRemove = this.removeConectingChild(index);
+            if (willRemove) {
+                return;
+            }
         }
         this.elements.splice(index, 1);
         if (this.elements.length === 0) {
@@ -423,17 +426,18 @@ export class HomePageComponent implements OnInit {
         this.headerService.emitCanSaveEvent();
     }
 
-    private removeConectingChild(index) {
+    private removeConectingChild(index): boolean {
 
         if (this.currentElement.type === ElementType.DIALOG) {
             this.elements.splice(index - 1, 1);
             this.remove(true);
-            return;
+            return true;
         } else if (this.currentElement.type === ElementType.CHARACTER) {
             this.elements.splice(index + 1, 1);
             this.remove(true);
-            return;
+            return true;
         }
+        return false;
     }
 
     onUndo() {
