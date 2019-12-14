@@ -2,6 +2,9 @@ import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, 
 import { ElementType } from 'src/app/app.constants';
 import { CursorComponent } from '../cursor/cursor.component';
 import { ElementsService } from './elements.service';
+import { FileSystemDirectoryEntry, FileSystemFileEntry } from 'ngx-file-drop';
+import { LocalStorageService } from 'ngx-webstorage';
+import { utils } from 'protractor';
 
 @Component({
     selector: 'app-element',
@@ -35,9 +38,13 @@ export class ElementComponent implements OnInit, OnChanges {
         }
     };
 
+    myReader: FileReader;
+    image;
+
     constructor(
         @Inject(PLATFORM_ID) private platformId,
-        private elementsService: ElementsService
+        private elementsService: ElementsService,
+        private localStorage: LocalStorageService
     ) {
         this.isBrowser = (platformId === 'browser');
     }
@@ -50,6 +57,11 @@ export class ElementComponent implements OnInit, OnChanges {
         if (changes) {
             if (changes.element && changes.element.currentValue) {
                 this.loaded = true;
+
+                if (changes.element.currentValue.type === ElementType.PICTURE) {
+                    this.myReader = new FileReader();
+                    this.myReader.onloadend = this.onImageLoaded;
+                }
 
                 if (this.isBrowser) {
                     if (this.element.type === ElementType.ACTION) {
@@ -122,5 +134,26 @@ export class ElementComponent implements OnInit, OnChanges {
                 this.inputRef.nativeElement.focus();
             });
         }
+    }
+
+    dropped(files) {
+        for (const droppedFile of files) {
+            if (droppedFile.fileEntry.isFile) {
+                const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+                fileEntry.file((file: File) => {
+                    this.myReader.readAsDataURL(file);
+                });
+            } else {
+                // It was a directory (empty directories are added, otherwise only files)
+                const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+            }
+        }
+    }
+
+    onImageLoaded = () => {
+        this.element.image = this.myReader.result;
+        this.localStorage.store(this.element.id, this.element.image);
+
+        this.blur();
     }
 }

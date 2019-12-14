@@ -27,6 +27,8 @@ export const ElementType = {
     CHARACTER: 'CHARACTER',
     DIALOG: 'DIALOG',
     EMPTY: 'EMPTY',
+    COMMENT: 'COMMENT',
+    PICTURE: 'PICTURE',
 
     getInputClass: (elementType) => {
         switch (elementType) {
@@ -37,6 +39,10 @@ export const ElementType = {
             case ElementType.CHARACTER:
                 return 'w-auto';
             case ElementType.DIALOG:
+                return 'w-auto';
+            case ElementType.COMMENT:
+                return 'w-100';
+            case ElementType.PICTURE:
                 return 'w-auto';
             default:
                 break;
@@ -53,6 +59,10 @@ export const ElementType = {
                 return 'character';
             case ElementType.DIALOG:
                 return 'dialog';
+            case ElementType.COMMENT:
+                return 'comment';
+            case ElementType.PICTURE:
+                return 'picture';
             default:
                 break;
         }
@@ -79,6 +89,8 @@ export const Key = {
     A: 'a',
     C: 'c',
     D: 'd',
+    P: 'p',
+    Slash: '/',
     //
     Z: 'z',
     Y: 'y',
@@ -101,5 +113,7 @@ export const NewAvailableKeys = [
     { key: 'S' , text: 'cene Heading', id: ElementType.SCENE_HEADING },
     { key: 'A' , text: 'ction', id: ElementType.ACTION },
     { key: 'C' , text: 'haracter', id: ElementType.CHARACTER },
-    { key: 'D' , text: 'ialog', id: ElementType.DIALOG }
+    { key: 'D' , text: 'ialog', id: ElementType.DIALOG },
+    { key: 'P' , text: 'icture', id: ElementType.PICTURE },
+    { key: '/' , text: 'Comment', id: ElementType.COMMENT },
 ];

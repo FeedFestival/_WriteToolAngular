@@ -275,15 +275,24 @@ fa-icon {
 
 .element.picture {
     padding: 5mm 20mm;
-    min-height: 70mm;
+    min-height: 75mm;
     width: 170mm;
     text-align: center;
 }
 
-.element.picture img {
-    max-height: 250px;
-
-    /* background: url(http://mehararts.com/category_image/demo.png); */
+.element.picture { 
+    
+    .pic {
+        height: 70mm;
+        display: flex;
+        img {
+            height: 75mm;
+            width: 100%;
+            background: url('assets/images/No-Image.png');
+            background-repeat: round;
+            background-size: auto;
+        }
+    }
 }
 
 .picture.many {
@@ -325,7 +334,8 @@ fa-icon {
 .element.scene-heading,
 .element.action,
 .element.character,
-.element.dialog {
+.element.dialog,
+.element.comment {
     .mat-form-field {
         margin-bottom: -17px;
     }
@@ -446,6 +456,31 @@ fa-icon {
         text-align: center;
     }
 }
+
+.element.comment {
+    background: #dbf7db;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    .coment-dashes {
+        color: #a3c5a3;
+        font-size: 35px;
+        position: absolute;
+    }
+
+    textarea {
+        padding: 5px;
+        padding-left: 35px;
+        font-family: monospace;
+        font-weight: 100;
+        font-size: 15px;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+}
+
+/*
+*/
 
 .mat-form-field.mat-focused .mat-form-field-label {
     color: transparent;
@@ -596,4 +631,23 @@ a.red {
     font-size: 10px;
 }
 
+.red {
+    color: red;
+}
 
+.ngx-file-drop__drop-zone {
+    height: 100% !important;
+    color: $black !important;
+
+    .ngx-file-drop__content {
+
+        height: 100% !important;
+        width: 130mm;
+    }
+
+    a {
+        -webkit-appearance: initial;
+        padding-left: 10px;
+        color: $red !important;
+    }
+}

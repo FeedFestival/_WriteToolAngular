@@ -5,10 +5,10 @@ import { map, mergeAll } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
-export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER];
-export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER];
+export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
+export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
 export const CHARACTER_NEW_ELS = [ElementType.DIALOG];
-export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, ElementType.CHARACTER];
+export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
 
 @Injectable({ providedIn: 'root' })
 export class ElementsService {
@@ -58,7 +58,9 @@ export class ElementsService {
 
     save(elements) {
 
-        const s = JSON.stringify(elements);
+        const elementsWithNoImages = [...elements];
+        elementsWithNoImages.forEach(e => e.image = null);
+        const s = JSON.stringify(elementsWithNoImages);
         this.cookieService.set('elements', s);
     }
 
@@ -87,9 +89,18 @@ export class ElementsService {
     }
 
     canInsert(elementType, nextElementType) {
-        return (elementType !== ElementType.DIALOG && nextElementType !== ElementType.DIALOG) &&
-            (elementType !== ElementType.SCENE_HEADING && nextElementType !== ElementType.SCENE_HEADING) &&
-            (elementType !== ElementType.ACTION && nextElementType !== ElementType.ACTION);
+        switch (elementType) {
+            case ElementType.SCENE_HEADING:
+                return SCENE_HEADING_NEW_ELS.some(eT => eT === nextElementType);
+            case ElementType.ACTION:
+                return ACTION_NEW_ELS.some(eT => eT === nextElementType);
+            case ElementType.CHARACTER:
+                return CHARACTER_NEW_ELS.some(eT => eT === nextElementType);
+            case ElementType.DIALOG:
+                return DIALOG_NEW_ELS.some(eT => eT === nextElementType);
+            default:
+                return false;
+        }
     }
 
     getDefaultText(elementType, onBlur?) {

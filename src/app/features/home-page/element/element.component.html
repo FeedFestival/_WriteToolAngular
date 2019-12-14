@@ -1,14 +1,23 @@
 <div *ngIf="loaded === true">
     <div class="element" [ngClass]="element?.typeClass">
 
+        <svg *ngIf="element.type === ElementTypeRef.COMMENT" aria-hidden="true" focusable="false" data-prefix="fab"
+            data-icon="slack-hash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+            class="svg-inline--fa fa-slack-hash fa-w-14 coment-dashes">
+            <path fill="currentColor"
+                d="M446.2 270.4c-6.2-19-26.9-29.1-46-22.9l-45.4 15.1-30.3-90 45.4-15.1c19.1-6.2 29.1-26.8 23-45.9-6.2-19-26.9-29.1-46-22.9l-45.4 15.1-15.7-47c-6.2-19-26.9-29.1-46-22.9-19.1 6.2-29.1 26.8-23 45.9l15.7 47-93.4 31.2-15.7-47c-6.2-19-26.9-29.1-46-22.9-19.1 6.2-29.1 26.8-23 45.9l15.7 47-45.3 15c-19.1 6.2-29.1 26.8-23 45.9 5 14.5 19.1 24 33.6 24.6 6.8 1 12-1.6 57.7-16.8l30.3 90L78 354.8c-19 6.2-29.1 26.9-23 45.9 5 14.5 19.1 24 33.6 24.6 6.8 1 12-1.6 57.7-16.8l15.7 47c5.9 16.9 24.7 29 46 22.9 19.1-6.2 29.1-26.8 23-45.9l-15.7-47 93.6-31.3 15.7 47c5.9 16.9 24.7 29 46 22.9 19.1-6.2 29.1-26.8 23-45.9l-15.7-47 45.4-15.1c19-6 29.1-26.7 22.9-45.7zm-254.1 47.2l-30.3-90.2 93.5-31.3 30.3 90.2-93.5 31.3z"
+                class=""></path>
+        </svg>
+
         <mat-form-field
             *ngIf="element.type === ElementTypeRef.SCENE_HEADING || element.type === ElementTypeRef.CHARACTER"
             [ngClass]="element.inputClass">
-            <input matInput #inputRef [name]='element.id' [placeholder]="element.type" [(ngModel)]="element.text" (focus)="edit()"
-                (blur)="blur()">
+            <input matInput #inputRef [name]='element.id' [placeholder]="element.type" [(ngModel)]="element.text"
+                (focus)="edit()" (blur)="blur()">
         </mat-form-field>
 
-        <mat-form-field *ngIf="(!element.hasRichText && element.type === ElementTypeRef.ACTION) || element.type === ElementTypeRef.DIALOG"
+        <mat-form-field
+            *ngIf="(!element.hasRichText && element.type === ElementTypeRef.ACTION) || element.type === ElementTypeRef.DIALOG || element.type === ElementTypeRef.COMMENT"
             [ngClass]="element.inputClass">
 
             <textarea matInput #inputRef cdkTextareaAutosize cdkAutosizeMinRows="2" [name]="element.id"
@@ -17,14 +26,27 @@
         </mat-form-field>
 
         <ng-container *ngIf="isBrowser">
-            <ckeditor #ckEditorRef *ngIf="element.hasRichText && element.type === ElementTypeRef.ACTION"
-                class="w-100" [config]="editorModel.config" style="margin-top: -20px;"
-                [(ngModel)]="editorModel.editorData" [editor]="asyncObject.Editor"></ckeditor>
+            <ckeditor #ckEditorRef *ngIf="element.hasRichText && element.type === ElementTypeRef.ACTION" class="w-100"
+                [config]="editorModel.config" style="margin-top: -20px;" [(ngModel)]="editorModel.editorData"
+                [editor]="asyncObject.Editor"></ckeditor>
         </ng-container>
 
         <div class="rich-text-checkbox" *ngIf="element.type === ElementTypeRef.ACTION">
-            <mat-checkbox [hidden]="!element.underCarret"
-                [(ngModel)]="element.hasRichText" (change)="onActionRichText($event)">Rich</mat-checkbox>
+            <mat-checkbox [hidden]="!element.underCarret" [(ngModel)]="element.hasRichText"
+                (change)="onActionRichText($event)">Rich</mat-checkbox>
+        </div>
+
+        <div *ngIf="element.type === ElementTypeRef.PICTURE" class="pic">
+
+            <!--     [accept]="png" [multiple]="false"   -->
+            <ngx-file-drop *ngIf="element.isEditing" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    Drop files directly here or
+                    <a type="button" (click)="openFileSelector()">browse them</a>.
+                </ng-template>
+            </ngx-file-drop>
+
+            <img *ngIf="!element.isEditing" [src]="element.image"/>
         </div>
 
     </div>

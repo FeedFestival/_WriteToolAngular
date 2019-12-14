@@ -12,7 +12,9 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from 'angularx-social-login';
 import { CookieService } from 'ngx-cookie-service';
 import { NgcCookieConsentConfig, NgcCookieConsentModule } from 'ngx-cookieconsent';
+import { NgxFileDropModule } from 'ngx-file-drop';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './features/about/about.component';
@@ -102,6 +104,7 @@ export function provideConfig() {
     imports: [
         NgcCookieConsentModule.forRoot(cookieConfig),
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
+        NgxWebstorageModule.forRoot(),
         SocialLoginModule,
         CKEditorModule,
         AppRoutingModule,
@@ -119,7 +122,8 @@ export function provideConfig() {
         CommonModule,
         TransferHttpCacheModule,
         HttpClientModule,
-        NgtUniversalModule
+        NgtUniversalModule,
+        NgxFileDropModule
     ],
     exports: [
         MatButtonModule,

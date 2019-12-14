@@ -110,6 +110,8 @@ export class Hotkeys {
                     keyCode === Key.A ||
                     keyCode === Key.C ||
                     keyCode === Key.D ||
+                    keyCode === Key.P ||
+                    keyCode === Key.Slash ||
                     keyCode === Key.Escape ||
                     // allow arrows to cancel this state
                     keyCode === Key.ArrowUp ||

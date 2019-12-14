@@ -10,6 +10,7 @@ import { IElement } from 'src/app/shared/models/element';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from './seo.service';
 import { HeaderService } from 'src/app/shared/header/header.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-home-page',
@@ -34,6 +35,7 @@ export class HomePageComponent implements OnInit {
         private undoService: UndoService,
         private titleService: Title,
         private metaService: Meta,
+        private localStorage: LocalStorageService,
         private elementsService: ElementsService,
         private navigationService: NavigationService
     ) {
@@ -60,6 +62,13 @@ export class HomePageComponent implements OnInit {
                     if (this.elements.length === 0) {
                         this.createEmptyElement();
                     }
+
+                    this.elements.forEach(e => {
+                        e.underCarret = false;
+                        if (e.type === ElementType.PICTURE) {
+                            e.image = this.localStorage.retrieve(e.id);
+                        }
+                    });
 
                     this.setCurrentElement(this.elements.length - 1);
                     setTimeout(() => {
@@ -122,6 +131,14 @@ export class HomePageComponent implements OnInit {
         this.hotkeys.addShortcut({ keys: Key.D })
             .subscribe(() => {
                 this.onDKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.P })
+            .subscribe(() => {
+                this.onPKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.Slash })
+            .subscribe(() => {
+                this.onSlashKey();
             });
         //
         this.hotkeys.addShortcut({ keys: Key.Backspace })
@@ -189,13 +206,25 @@ export class HomePageComponent implements OnInit {
             this.navigationService.emitEditStateEvent(EditState.MAIN);
             return;
         }
+
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
-        el.inputRef.nativeElement.blur();
+        if (el.element.type === ElementType.PICTURE) {
+            el.element.isEditing = false;
+            this.onBlur(el.i);
+        } else {
+            el.inputRef.nativeElement.blur();
+        }
     }
 
     onTab() {
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
-        el.inputRef.nativeElement.click();
+        if (el.element.type === ElementType.PICTURE) {
+            el.element.isEditing = true;
+
+        } else {
+            el.inputRef.nativeElement.click();
+            // this.navigationService.emitEditStateEvent(EditState.TEXT);
+        }
         this.navigationService.emitEditStateEvent(EditState.TEXT);
     }
 
@@ -325,6 +354,22 @@ export class HomePageComponent implements OnInit {
             return;
         }
         this.createNew(ElementType.DIALOG);
+    }
+
+    onPKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.PICTURE)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.PICTURE);
+    }
+
+    onSlashKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.COMMENT)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.COMMENT);
     }
 
     onBackspace() {
