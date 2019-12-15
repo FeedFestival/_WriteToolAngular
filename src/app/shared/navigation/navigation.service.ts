@@ -4,6 +4,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 export class NavigationService {
 
     editingStateChange: EventEmitter<string> = new EventEmitter<string>();
+    clickNavEvent: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(
 
@@ -19,4 +20,11 @@ export class NavigationService {
         return this.editingStateChange;
     }
 
+    emitClickNavEvent(code) {
+        this.clickNavEvent.emit(code);
+    }
+
+    getClickNavEvent(): EventEmitter<string> {
+        return this.clickNavEvent;
+    }
 }

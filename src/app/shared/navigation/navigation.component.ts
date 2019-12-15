@@ -4,6 +4,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { NavigationService } from './navigation.service';
 import { ElementsService } from 'src/app/features/home-page/element/elements.service';
 import { MainAvailableKeys, EditState, TextAvailableKeys, NewAvailableKeys } from 'src/app/app.constants';
+import { OnResizeService } from '../on-resize/on-resize.service';
+import { INITIAL_CONFIG } from '@angular/platform-server';
 
 @Component({
     selector: 'app-navigation',
@@ -17,13 +19,22 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
     availableKeys: any[];
 
+    currentState: string;
+    bp: string;
+
     constructor(
         private router: Router,
         private navigationService: NavigationService,
-        private elementsService: ElementsService
+        private elementsService: ElementsService,
+        private onResizeService: OnResizeService
         // private stateStorageService: StateStorageService,
         // private accountService: AccountService
     ) {
+        onResizeService.getResizeEvent()
+            .subscribe((bp) => {
+                this.bp = bp;
+                this.init();
+            });
     }
 
     ngOnInit() {
@@ -35,26 +46,38 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
         this.navigationService.getEditStateEmitter()
             .subscribe((editState) => {
-                switch (editState) {
-                    case EditState.NEW:
-                        setTimeout(() => {
-                            const newAvailableKeys = JSON.parse(JSON.stringify(NewAvailableKeys));
-                            const allowedElements = this.elementsService.getAllowedElements();
-                            this.availableKeys = newAvailableKeys.filter((nAK) => {
-                                if (allowedElements.includes(nAK.id)) {
-                                    return nAK;
-                                }
-                            });
-                        });
-                        break;
-                    case EditState.TEXT:
-                        this.availableKeys = TextAvailableKeys;
-                        break;
-                    default:
-                        this.availableKeys = MainAvailableKeys;
-                        break;
-                }
+                this.currentState = editState;
+                this.init();
             });
+    }
+
+    init() {
+        if (!this.currentState) {
+            return;
+        }
+
+        switch (this.currentState) {
+            case EditState.NEW:
+                setTimeout(() => {
+                    const newAvailableKeys = JSON.parse(JSON.stringify(NewAvailableKeys));
+                    const allowedElements = this.elementsService.getAllowedElements();
+                    this.availableKeys = newAvailableKeys.filter((nAK) => {
+                        if (allowedElements.includes(nAK.id)) {
+                            return nAK;
+                        }
+                    });
+                });
+                break;
+            case EditState.TEXT:
+                this.availableKeys = TextAvailableKeys;
+                break;
+            default:
+                this.availableKeys = MainAvailableKeys;
+                break;
+        }
+        this.availableKeys = this.availableKeys.filter(ak => {
+            return this.bp === 'xs' && ak.code;
+        });
     }
 
     ngOnDestroy() {
@@ -66,11 +89,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
         }
     }
 
-    onNavigate(route: string) {
-        this.router.navigateByUrl(route);
-    }
+    doAction(code) {
+        if (!code) {
+            return;
+        }
 
-    logout() {
-        this.onNavigate('/logout');
+        this.navigationService.emitClickNavEvent(code);
     }
 }

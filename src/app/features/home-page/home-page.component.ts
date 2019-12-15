@@ -52,6 +52,58 @@ export class HomePageComponent implements OnInit {
             .subscribe((bp) => {
                 this.bp = bp;
             });
+
+        elementsService.getGoToBookmark()
+            .subscribe(bookmarkId => {
+                const index = this.elements.findIndex(e => e.id === bookmarkId);
+                this.setUnderCarret(null, index);
+            });
+
+        navigationService.getEditStateEmitter()
+            .subscribe((editState) => {
+                this.editState = editState;
+            });
+
+        navigationService.getClickNavEvent()
+            .subscribe((code) => {
+                switch (code) {
+                    case Key.Enter:
+                        this.onEnter();
+                        break;
+                    case Key.Tab:
+                        this.onTab();
+                        break;
+                    case Key.Escape:
+                        this.onEscape();
+                        break;
+                    case Key.H:
+                        this.onHKey();
+                        break;
+                    case Key.A:
+                        this.onAKey();
+                        break;
+                    case Key.C:
+                        this.onCKey();
+                        break;
+                    case Key.D:
+                        this.onDKey();
+                        break;
+                    case Key.P:
+                        this.onPKey();
+                        break;
+                    case Key.V:
+                        this.onVKey();
+                        break;
+                    case Key.S:
+                        this.onSKey();
+                        break;
+                    case Key.Slash:
+                        this.onSlashKey();
+                        break;
+                    default:
+                        break;
+                }
+            });
     }
 
     ngOnInit() {
@@ -93,16 +145,6 @@ export class HomePageComponent implements OnInit {
                 });
         }
 
-        this.elementsService.getGoToBookmark()
-            .subscribe(bookmarkId => {
-                const index = this.elements.findIndex(e => e.id === bookmarkId);
-                this.setUnderCarret(null, index);
-            });
-
-        this.navigationService.getEditStateEmitter()
-            .subscribe((editState) => {
-                this.editState = editState;
-            });
         this.navigationService.emitEditStateEvent(EditState.MAIN);
 
         this.hotkeys.addShortcut({ keys: Key.ArrowUp })
@@ -131,9 +173,6 @@ export class HomePageComponent implements OnInit {
         //
         this.hotkeys.addShortcut({ keys: Key.Enter })
             .subscribe(() => {
-                if (this.editState === EditState.NEW) {
-                    return;
-                }
                 this.onEnter();
             });
         this.hotkeys.addShortcut({ keys: Key.H })
@@ -328,6 +367,10 @@ export class HomePageComponent implements OnInit {
     }
 
     onEnter() {
+
+        if (this.editState === EditState.NEW) {
+            return;
+        }
 
         if (this.editState === EditState.TEXT) {
             if (this.currentElement.type === ElementType.CHARACTER) {
