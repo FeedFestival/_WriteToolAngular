@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Stream that will update title font size on scroll down
     scrollClass = 'max';
-    resizeType: string;
+    bp: string;
     scrollBreakpoint: any = ScrollBreakpoints.sm;
 
 
@@ -82,9 +82,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
         onResizeService.getResizeEvent()
-            .subscribe((resizeType) => {
-                this.resizeType = resizeType;
-                if (this.resizeType === 'xs') {
+            .subscribe((bp) => {
+                this.bp = bp;
+                if (this.bp === 'xs') {
                     this.scrollBreakpoint = ScrollBreakpoints.xs;
                 } else {
                     this.scrollBreakpoint = ScrollBreakpoints.sm;

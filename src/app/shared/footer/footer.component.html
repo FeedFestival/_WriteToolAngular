@@ -1,7 +1,7 @@
 <div class="footer pt-2">
 
-    <div class="row no-gutters col-11 m-auto p-3">
-        <div class="d-flex w-100 justify-content-center">
+    <div class="p-3" [ngClass]="{ 'row no-gutters col-11 m-auto': bp !== 'xs' }">
+        <div class="d-flex w-100 justify-content-center" [ngClass]="{ 'row no-gutters': bp === 'xs' }">
 
             <div class="copy-right">
                 <small>
@@ -19,7 +19,7 @@
                 </small>
             </div>
 
-            <div class="col-4 footer-v-hr">
+            <div class="col-12 col-sm-4" [ngClass]="{ 'footer-v-hr': bp !== 'xs' }">
                 <div class="col-12 pl-3 pb-2">
                     <a class="red" href="#" routerLink="/about">
                         About WriteTool
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <div class="col-2 footer-v-hr">
+            <div class="col-12 col-sm-2" [ngClass]="{ 'footer-v-hr': bp !== 'xs' }">
                 <div class="col-12 text-right">
                     <div class="col-12 pl-3 pb-2">
                         <a class="red" href="#" routerLink="/contact">
@@ -46,9 +46,36 @@
                         </a>
                     </div>
                 </div>
+                <div class="col-12 text-right">
+                    <div class="col-12 p-0 footer-link">
+                        <a href="#" routerLink="/sns">
+                            PLACEHOLDER 1
+                        </a>
+                    </div>
+                    <div class="col-12 p-0 footer-link">
+                        <a href="#" routerLink="/terms">
+                            PLACEHOLDER 2
+                        </a>
+                    </div>
+                    <div class="col-12 p-0 footer-link">
+                        <a href="#" routerLink="/privacy">
+                            PLACEHOLDER 3
+                        </a>
+                    </div>
+                    <div class="col-12 p-0 footer-link">
+                        <a href="#" routerLink="/cookies">
+                            PLACEHOLDER 4
+                        </a>
+                    </div>
+                    <div class="col-12 p-0 footer-link">
+                        <a href="#" routerLink="/gdpr">
+                            PLACEHOLDER 5
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-2 footer-v-hr">
+            <div class="col-12 col-sm-2 " [ngClass]="{ 'footer-v-hr': bp !== 'xs' }">
 
                 <div class="col-12 text-right pb-2">
 
@@ -118,7 +145,7 @@
                 </div>
             </div>
 
-            <div class="col-2">
+            <div class="col-12 col-sm-2">
                 <div class="col-12 text-right">
                     <div class="col-12 pl-3 pb-2">
                         <a class="red" href="#" routerLink="/contact">

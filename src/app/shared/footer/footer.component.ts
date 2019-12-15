@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { OnResizeService } from '../on-resize/on-resize.service';
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+    selector: 'app-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+    bp: string;
 
-  ngOnInit() {
-  }
+    constructor(
+        private onResizeService: OnResizeService
+    ) {
+        onResizeService.getResizeEvent()
+            .subscribe((bp) => {
+                this.bp = bp;
+            });
+    }
+
+    ngOnInit() {
+    }
 
 }

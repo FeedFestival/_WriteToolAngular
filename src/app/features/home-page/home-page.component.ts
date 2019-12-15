@@ -27,7 +27,7 @@ export class HomePageComponent implements OnInit {
 
     editState: string;
 
-    resizeType: string;
+    bp: string;
 
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
 
@@ -49,8 +49,8 @@ export class HomePageComponent implements OnInit {
             });
 
         onResizeService.getResizeEvent()
-            .subscribe((resizeType) => {
-                this.resizeType = resizeType;
+            .subscribe((bp) => {
+                this.bp = bp;
             });
     }
 

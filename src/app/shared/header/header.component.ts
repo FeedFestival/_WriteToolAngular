@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     user: SocialUser;
     loggedIn: boolean;
 
-    resizeType: string;
+    bp: string;
 
     /*
     the tool file options
@@ -40,8 +40,8 @@ export class HeaderComponent implements OnInit {
         private onResizeService: OnResizeService
     ) {
         onResizeService.getResizeEvent()
-            .subscribe((resizeType) => {
-                this.resizeType = resizeType;
+            .subscribe((bp) => {
+                this.bp = bp;
             });
     }
 

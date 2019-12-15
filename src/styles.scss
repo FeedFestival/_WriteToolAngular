@@ -189,18 +189,6 @@ fa-icon {
   font-family: robotoSlabRegular;
 }
 
-.element.action,
-.element.dialog {
-  font-family: graphikRegular;
-  font-size: 15px;
-}
-
-.element.scene-heading,
-.element.character {
-  font-family: robotoSlabRegular;
-  font-size: 14px;
-}
-
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -246,19 +234,6 @@ fa-icon {
     background: initial;
     page-break-after: always;
   }
-}
-
-.element {
-  display: block;
-}
-
-.element.scene-heading {
-  background-color: lightgray;
-  padding: 0 1mm;
-}
-
-.element.action {
-  padding: 5mm 20mm;
 }
 
 .element.character {
@@ -318,17 +293,47 @@ fa-icon {
 //-----------------------------------------------------------------------------
 
 .element {
+  display: block;
   transition: background 1s, filter 1s;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=0 );
+
+  .ck-button {
+    pointer-events: none !important;
+    color: transparent !important;
+  }
+  .ck-toolbar__separator {
+    pointer-events: none !important;
+    background: transparent !important;
+  }
+}
+
+.element.action,
+.element.dialog {
+  font-family: graphikRegular;
+  @media (min-width: 1px) {
+    font-size: 0.5rem;
+  }
+  @media (min-width: 576px) {
+    font-size: 15px;
+  }
+}
+
+.element.scene-heading,
+.element.character {
+  font-family: robotoSlabRegular;
+  @media (min-width: 1px) {
+    font-size: 0.5rem;
+  }
+  @media (min-width: 576px) {
+    font-size: 14px;
+  }
 }
 
 .element.scene-heading {
+  background-color: lightgray;
+  padding: 0 1mm;
   .mat-input-element {
     text-transform: uppercase;
-
-    //
-    font-family: robotoSlabRegular;
-    font-size: 14px;
   }
 }
 
@@ -355,11 +360,22 @@ fa-icon {
 
 .element.action {
   display: inline-flex;
+  @media (min-width: 1px) {
+    padding: 3mm 10mm;
+  }
+  @media (min-width: 576px) {
+    padding: 5mm 20mm;
+  }
   width: 100%;
 
   .mat-input-element {
     font-family: graphikRegular;
-    font-size: 15px;
+    @media (min-width: 1px) {
+      font-size: 0.5rem;
+    }
+    @media (min-width: 576px) {
+      font-size: 15px;
+    }
   }
 
   .ck-toolbar {
@@ -372,7 +388,12 @@ fa-icon {
     border-bottom: none !important;
     background: transparent !important;
     font-family: graphikRegular;
-    font-size: 15px;
+    @media (min-width: 1px) {
+      font-size: 0.5rem;
+    }
+    @media (min-width: 576px) {
+      font-size: 15px;
+    }
   }
 
   .ck-content.ck-blurred {
@@ -393,17 +414,6 @@ fa-icon {
 .element.empty {
   height: 2px;
   background: rgba(0, 0, 0, 0.01);
-}
-
-.element {
-  .ck-button {
-    pointer-events: none !important;
-    color: transparent !important;
-  }
-  .ck-toolbar__separator {
-    pointer-events: none !important;
-    background: transparent !important;
-  }
 }
 
 .active {

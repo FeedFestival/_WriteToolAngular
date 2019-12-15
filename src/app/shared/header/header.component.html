@@ -35,7 +35,7 @@
                     <div>
                         <img [src]="user.facebook.picture.data.url"/>
                     </div>
-                    <div *ngIf="resizeType !== 'xs'">
+                    <div *ngIf="bp !== 'xs'">
                         {{user.email}}
                     </div>
                 </div>

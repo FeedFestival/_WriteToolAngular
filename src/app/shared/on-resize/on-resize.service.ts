@@ -9,10 +9,10 @@ export class OnResizeService {
         return this.resizeEvent;
     }
 
-    emitResizeEvent(resizeType) {
-        console.log(resizeType);
+    emitResizeEvent(bp) {
+        console.log(bp);
         setTimeout(() => {
-            this.resizeEvent.emit(resizeType);
+            this.resizeEvent.emit(bp);
         });
     }
 }
