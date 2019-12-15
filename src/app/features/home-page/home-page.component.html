@@ -6,7 +6,7 @@
             [ngClass]="{ 'active': element.underCarret, 'editing': element.isEditing }">
 
             <app-element [element]="element" [i]="i" [underCarret]="element.underCarret" (onBlur)="onBlur($event)"
-                (onEdit)="onEdit($event)" (click)="setUnderCarret(null, i)">
+                (onEdit)="onEdit($event)" (click)="setUnderCarret(null, i)" (onBookmark)="onBookmark($event)">
             </app-element>
         </div>
     </div>

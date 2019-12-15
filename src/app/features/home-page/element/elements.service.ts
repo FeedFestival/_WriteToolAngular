@@ -169,4 +169,8 @@ export class ElementsService {
         return formatedString;
     }
 
+    recalculateBookmarks(elements) {
+        const bookmarkedElements = elements.filter(e => e.isBookmarked);
+        console.log("TCL: ElementsService -> recalculateBookmarks -> bookmarkedElements", bookmarkedElements)
+    }
 }

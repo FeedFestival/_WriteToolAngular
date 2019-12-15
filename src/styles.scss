@@ -651,3 +651,22 @@ a.red {
         color: $red !important;
     }
 }
+
+.bookmark {
+    div {
+        height: 0px;
+        text-align: right;
+
+        svg {
+            color: #80808075;
+            top: -23px;
+            right: 5px;
+            position: relative;
+            cursor: pointer;
+
+            &:hover {
+                color: #808080;
+            }
+        }
+    }
+}

@@ -68,6 +68,9 @@ export class HomePageComponent implements OnInit {
                         if (e.type === ElementType.PICTURE) {
                             e.image = this.localStorage.retrieve(e.id);
                         }
+                        if (e.type === ElementType.SCENE_HEADING || e.type === ElementType.COMMENT) {
+                            e.isBookmarked = true;
+                        }
                     });
 
                     this.setCurrentElement(this.elements.length - 1);
@@ -272,6 +275,10 @@ export class HomePageComponent implements OnInit {
         setTimeout(() => {
             this.scrollToElementIfOutOfView();
         });
+    }
+
+    onBookmark() {
+        this.elementsService.recalculateBookmarks(this.elements);
     }
 
     private scrollToElementIfOutOfView(force?) {

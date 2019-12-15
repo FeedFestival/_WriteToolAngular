@@ -18,6 +18,7 @@ export class ElementComponent implements OnInit, OnChanges {
 
     @Output() onEdit: EventEmitter<void> = new EventEmitter<void>();
     @Output() onBlur: EventEmitter<void> = new EventEmitter<void>();
+    @Output() onBookmark: EventEmitter<any> = new EventEmitter<any>();
 
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;
@@ -150,5 +151,10 @@ export class ElementComponent implements OnInit, OnChanges {
         this.element.image = this.myReader.result;
         this.localStorage.store(this.element.id, this.element.image);
         this.blur();
+    }
+
+    bookmark(isBookmarked) {
+        this.element.isBookmarked = isBookmarked;
+        this.onBookmark.emit();
     }
 }

@@ -32,6 +32,7 @@ import { PageDialogComponent } from './shared/components/page-dialog/page-dialog
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { BookmarkComponent } from './features/home-page/element/bookmark/bookmark.component';
 
 const config = new AuthServiceConfig([
     {
@@ -99,7 +100,8 @@ export function provideConfig() {
         PrivacyComponent,
         CookiesComponent,
         SnsComponent,
-        GdprComponent
+        GdprComponent,
+        BookmarkComponent
     ],
     imports: [
         NgcCookieConsentModule.forRoot(cookieConfig),
