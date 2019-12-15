@@ -18,7 +18,7 @@ export class ElementComponent implements OnInit, OnChanges {
 
     @Output() onEdit: EventEmitter<void> = new EventEmitter<void>();
     @Output() onBlur: EventEmitter<void> = new EventEmitter<void>();
-    @Output() onBookmark: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onBookmark: EventEmitter<void> = new EventEmitter<void>();
 
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;

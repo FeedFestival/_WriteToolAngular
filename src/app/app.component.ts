@@ -7,6 +7,8 @@ import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ElementsService } from './features/home-page/element/elements.service';
 import { NgcCookieConsentService, NgcInitializeEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
+import { OnResizeService } from './shared/on-resize/on-resize.service';
+import { ScrollBreakpoints } from './app.constants';
 
 declare let gtag: Function;
 
@@ -23,7 +25,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     faBars = faBars;
 
     // Stream that will update title font size on scroll down
-    scrollClass = '';
+    scrollClass = 'max';
+    resizeType: string;
+    scrollBreakpoint: any = ScrollBreakpoints.sm;
+
 
     //keep refs to subscriptions to be able to unsubscribe later
     private popupOpenSubscription: Subscription;
@@ -43,6 +48,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private ngZone: NgZone,
         private ccService: NgcCookieConsentService,
         private elementsService: ElementsService,
+        private onResizeService: OnResizeService,
         router: Router
     ) {
         router.events.pipe(
@@ -57,7 +63,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 );
             })
-        ).subscribe();
+        ).subscribe(_ => { });
 
         // router.events.subscribe(event => {
         //     if (event instanceof NavigationEnd) {
@@ -71,9 +77,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // });
 
         elementsService.getScrollToElementEmitter()
-                .subscribe((element) => {
-                    this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
-                });
+            .subscribe((element) => {
+                this.scrollRef.scrollToElement(element, { duration: 500, top: -((document.documentElement.clientHeight / 2) - 100) });
+            });
+
+        onResizeService.getResizeEvent()
+            .subscribe((resizeType) => {
+                this.resizeType = resizeType;
+                if (this.resizeType === 'xs') {
+                    this.scrollBreakpoint = ScrollBreakpoints.xs;
+                } else {
+                    this.scrollBreakpoint = ScrollBreakpoints.sm;
+                }
+            });
     }
 
     ngOnInit() {
@@ -114,11 +130,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             map((e: any) => {
 
                 // console.log('TCL: AppComponent -> ngAfterViewInit -> e.target.scrollTop', e.target.scrollTop);
-                if (e.target.scrollTop < 150) {
+                if (e.target.scrollTop < this.scrollBreakpoint.max) {
                     return 'max';
-                } else if (e.target.scrollTop > 150 && e.target.scrollTop < 333) {
+                } else if (e.target.scrollTop > this.scrollBreakpoint.max && e.target.scrollTop < this.scrollBreakpoint.min) {
                     return 'med';
-                } else if (e.target.scrollTop > 333) {
+                } else if (e.target.scrollTop > this.scrollBreakpoint.min) {
                     return 'min';
                 }
             }),

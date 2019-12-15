@@ -1,116 +1,183 @@
 @import "../../theme/overrides/scss/_variables";
 
 .logo {
-    height: 88px;
-    cursor: pointer;
+  height: 88px;
+  cursor: pointer;
 }
 
 .header {
-    background-color: $dark;
-    transition: all 0.5s;
+  background-color: $dark;
+  transition: all 0.5s;
 
-    .logo {
-        height: 88px;
-        transition: all 0.5s;
-    }
+  .logo {
+    height: 88px;
+    transition: all 0.5s;
+  }
 }
 
 .header.min {
-    height: 0px;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  height: 0px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 
-    .logo {
-        height: 0px;
-    }
+  .logo {
+    height: 0px;
+  }
 }
 
 .header.med {
-    height: 50px;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  height: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
 
-    .logo {
-        height: 52px;
-    }
+  .logo {
+    height: 52px;
+  }
 }
 
 .header.max {
+  @media (min-width: 1px) {
+    height: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  @media (min-width: 576px) {
     height: 100px;
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.25rem !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
 
-    .logo {
-        height: 88px;
+  .logo {
+    @media (min-width: 1px) {
+      height: 52px;
     }
+    @media (min-width: 576px) {
+      height: 88px;
+    }
+  }
 }
 
 .account-buttons {
-    .ac-but {
-        margin-top: 15px;
-        margin-right: 40px;
-        display: inline-flex;
-        float: right;
+  @media (min-width: 1px) {
+    padding-right: 15px;
+  }
+  @media (min-width: 576px) {
+    padding-right: 0;
+  }
+
+  .ac-but {
+    @media (min-width: 1px) {
+      width: 30px;
+      margin-right: 10px;
+    }
+    @media (min-width: 576px) {
+      width: 60px;
+      margin-right: 40px;
+    }
+
+    margin-top: 15px;
+    display: inline-flex;
+    float: right;
+    font-size: 25px;
+    padding: 0;
+    min-width: 0;
+    transition: all 0.5s;
+
+    .notification-number {
+      position: absolute;
+      background-color: red;
+      border-radius: 50%;
+      width: 17px;
+      height: 17px;
+      top: -4px;
+      right: 40%;
+      font-size: 14px;
+      line-height: 19px;
+    }
+
+    .ac-img {
+      @media (min-width: 1px) {
+        width: 30px;
+      }
+      @media (min-width: 576px) {
         width: 60px;
-        font-size: 25px;
-        padding: 0;
-        min-width: 0;
-        transition: all 0.5s;
+      }
 
-        .notification-number {
-            position: absolute;
-            background-color: red;
-            border-radius: 50%;
-            width: 17px;
-            height: 17px;
-            top: -4px;
-            right: 40%;
-            font-size: 14px;
-            line-height: 19px;
-        }
-
-        .ac-img {
-            transition: all 0.5s;
-            width: 60px;
-        }
-
-        .ac-img.ac-but-save {
-            opacity: 0.2;
-            width: 28px;
-            margin-top: 14px;
-        }
+      transition: all 0.5s;
     }
 
-    .ac-but.can-save {
-        .ac-img.ac-but-save {
-            opacity: 1;
-            width: 30px;
-            margin-top: 15px;
-        }
+    .ac-img.ac-but-save {
+      opacity: 0.2;
+      width: 28px;
+      @media (min-width: 1px) {
+        margin-top: 0px;
+      }
+      @media (min-width: 576px) {
+        margin-top: 14px;
+      }
     }
+  }
 
-    &.min {
-        .ac-but {
-            margin-top: 0px;
-        }
+  .ac-but.can-save {
+    .ac-img.ac-but-save {
+      opacity: 1;
+      width: 30px;
+      @media (min-width: 1px) {
+        margin-top: 0px;
+      }
+      @media (min-width: 576px) {
+        margin-top: 15px;
+      }
     }
-    &.med {
-        .ac-but {
-            margin-top: 2px;
-            
-            .ac-img {
-                width: 52px;
-            }
+  }
 
-            .ac-img.ac-but-save {
-                width: 30px;
-                margin-top: 7px;
-            }
-        }
+  &.min {
+    .ac-but {
+      //   @media (min-width: 1px) {
+      //   }
+      @media (min-width: 576px) {
+        margin-top: 0px;
+      }
     }
-    &.max {
-        .ac-but {
-            margin-top: 15px;
+  }
+  &.med {
+    .ac-but {
+      @media (min-width: 1px) {
+        margin-top: 5px;
+      }
+      @media (min-width: 576px) {
+        margin-top: 2px;
+      }
+
+      .ac-img {
+        @media (min-width: 1px) {
+          width: 30px;
         }
+        @media (min-width: 576px) {
+          width: 52px;
+        }
+      }
+
+      .ac-img.ac-but-save {
+        @media (min-width: 1px) {
+          width: 28px;
+          margin-top: 0px;
+        }
+        @media (min-width: 576px) {
+          width: 28px;
+          margin-top: 7px;
+        }
+      }
     }
+  }
+  &.max {
+    .ac-but {
+      @media (min-width: 1px) {
+        margin-top: 5px;
+      }
+      @media (min-width: 576px) {
+        margin-top: 15px;
+      }
+    }
+  }
 }

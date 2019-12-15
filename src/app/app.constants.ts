@@ -110,25 +110,36 @@ export const Key = {
 }
 
 export const MainAvailableKeys = [
-    { key: '&#8629;' , text: 'Enter', class: 'symbol' },
-    { key: '&#8633;' , text: 'Tab', class: 'symbol' },
-    { key: '&uarr;', text: 'Arrow Up', class: 'symbol'},
-    { key: '&darr;', text: 'Arrow Down', class: 'symbol'}
+    { key: '&#8629;', text: 'Enter', class: 'symbol' },
+    { key: '&#8633;', text: 'Tab', class: 'symbol' },
+    { key: '&uarr;', text: 'Arrow Up', class: 'symbol' },
+    { key: '&darr;', text: 'Arrow Down', class: 'symbol' }
 ];
 
 export const TextAvailableKeys = [
-    { key: 'Esc' , text: 'ape' },
-    { key: '&#8633;' , text: 'Tab', class: 'symbol' },
+    { key: 'Esc', text: 'ape' },
+    { key: '&#8633;', text: 'Tab', class: 'symbol' },
     { key: 'Windows Key + .', text: 'Emoticons', class: 'symbol' }
 ];
 
 export const NewAvailableKeys = [
-    { pretext: 'Scene ', key: 'H' , text: 'eading', id: ElementType.SCENE_HEADING },
-    { pretext: '', key: 'A' , text: 'ction', id: ElementType.ACTION },
-    { pretext: '', key: 'C' , text: 'haracter', id: ElementType.CHARACTER },
-    { pretext: '', key: 'D' , text: 'ialog', id: ElementType.DIALOG },
-    { pretext: '', key: 'P' , text: 'icture', id: ElementType.PICTURE },
-    { pretext: 'Youtube ', key: 'V' , text: 'ideo', id: ElementType.VIDEO },
-    { pretext: '', key: 'S' , text: 'ound', id: ElementType.SOUND },
-    { pretext: '', key: '/' , text: 'Comment', id: ElementType.COMMENT },
+    { pretext: 'Scene ', key: 'H', text: 'eading', id: ElementType.SCENE_HEADING },
+    { pretext: '', key: 'A', text: 'ction', id: ElementType.ACTION },
+    { pretext: '', key: 'C', text: 'haracter', id: ElementType.CHARACTER },
+    { pretext: '', key: 'D', text: 'ialog', id: ElementType.DIALOG },
+    { pretext: '', key: 'P', text: 'icture', id: ElementType.PICTURE },
+    { pretext: 'Youtube ', key: 'V', text: 'ideo', id: ElementType.VIDEO },
+    { pretext: '', key: 'S', text: 'ound', id: ElementType.SOUND },
+    { pretext: '', key: '/', text: 'Comment', id: ElementType.COMMENT },
 ];
+
+export const ScrollBreakpoints = {
+    xs: {
+        max: 50,
+        min: 150
+    },
+    sm: {
+        max: 150,
+        min: 333
+    }
+}

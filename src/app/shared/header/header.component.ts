@@ -6,6 +6,7 @@ import { faCoffee, faEnvelope, faShoppingCart, faHeart } from '@fortawesome/free
 import { MatDialog } from '@angular/material';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { HeaderService } from './header.service';
+import { OnResizeService } from '../on-resize/on-resize.service';
 
 @Component({
     selector: 'app-header',
@@ -24,6 +25,8 @@ export class HeaderComponent implements OnInit {
     user: SocialUser;
     loggedIn: boolean;
 
+    resizeType: string;
+
     /*
     the tool file options
     */
@@ -34,13 +37,19 @@ export class HeaderComponent implements OnInit {
         private authService: AuthService,
         private matDialog: MatDialog,
         private headerService: HeaderService,
-    ) { }
+        private onResizeService: OnResizeService
+    ) {
+        onResizeService.getResizeEvent()
+            .subscribe((resizeType) => {
+                this.resizeType = resizeType;
+            });
+    }
 
     ngOnInit() {
         this.authService.authState.subscribe((user) => {
             this.user = user;
             this.loggedIn = (user != null);
-            console.log(this.user);
+            // console.log(this.user);
         });
 
         this.headerService.getCanSaveEvent()

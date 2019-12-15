@@ -11,6 +11,9 @@
         <app-footer></app-footer>
     </div>
 </ng-scrollbar>
+
+<app-on-resize class="width-teller"></app-on-resize>
+
 <div [hidden]="scrollClass !== 'min'" class="back-to-top-button">
     <button mat-button (click)="showMenu()">
         <fa-icon [icon]="faBars"></fa-icon>

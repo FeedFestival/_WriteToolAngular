@@ -63,7 +63,7 @@ export class SeoService {
             ]);
         }
 
-        console.log("TCL: SeoService -> returnList", returnList)
+        // console.log("TCL: SeoService -> returnList", returnList)
         return returnList;
     }
 

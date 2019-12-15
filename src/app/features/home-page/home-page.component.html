@@ -1,4 +1,8 @@
-<div class="row no-gutters container m-auto page-min-width p-3">
+<div class="row no-gutters page-min-width p-3" [ngClass]="{ 'm-auto container': resizeType === 'lg' || resizeType === 'xl' }">
+
+    <span style="height: 0px; position: relative;">
+        {{resizeType}}
+    </span>
 
     <div class="page">
 
@@ -6,7 +10,7 @@
             [ngClass]="{ 'active': element.underCarret, 'editing': element.isEditing }">
 
             <app-element [element]="element" [i]="i" [underCarret]="element.underCarret" (onBlur)="onBlur($event)"
-                (onEdit)="onEdit($event)" (click)="setUnderCarret(null, i)" (onBookmark)="onBookmark($event)">
+                (onEdit)="onEdit($event)" (click)="setUnderCarret(null, i)" (onBookmark)="onBookmark()">
             </app-element>
         </div>
     </div>

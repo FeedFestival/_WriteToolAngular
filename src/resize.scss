@@ -6,11 +6,42 @@
   }
 }
 
+@media (min-width: 1px) {
+  .page-map {
+    left: 2px;
+    .map {
+      width: 7vw;
+    }
+  }
+
+  .page {
+    margin: 5mm 0;
+    width: 100%;
+    padding: 5mm 7mm;
+  }
+
+  .ng-scroll-content {
+    width: 100%;
+  }
+}
+
 // Extra small devices (portrait phones, less than 576px)
 // No media query since this is the default in Bootstrap
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
+  .page-map {
+    left: 5px;
+    .map {
+      width: 5vw;
+    }
+  }
+
+  .page {
+    margin: 5mm 0;
+    width: 100%;
+    padding: 10mm 10mm;
+  }
 }
 
 // Medium devices (tablets, 768px and up)
@@ -21,6 +52,12 @@
       width: 15vw;
     }
   }
+
+  .page {
+    width: 210mm;
+    padding: 20mm;
+    margin: 10mm auto;
+  }
 }
 
 // Large devices (desktops, 992px and up)
@@ -30,6 +67,12 @@
     .map {
       width: 15vw;
     }
+  }
+
+  .page {
+    width: 210mm;
+    padding: 20mm;
+    margin: 10mm auto;
   }
 }
 

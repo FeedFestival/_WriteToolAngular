@@ -11,6 +11,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from './seo.service';
 import { HeaderService } from 'src/app/shared/header/header.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { OnResizeService } from 'src/app/shared/on-resize/on-resize.service';
 
 @Component({
     selector: 'app-home-page',
@@ -26,6 +27,8 @@ export class HomePageComponent implements OnInit {
 
     editState: string;
 
+    resizeType: string;
+
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
 
     constructor(
@@ -37,11 +40,17 @@ export class HomePageComponent implements OnInit {
         private metaService: Meta,
         private localStorage: LocalStorageService,
         private elementsService: ElementsService,
-        private navigationService: NavigationService
+        private navigationService: NavigationService,
+        private onResizeService: OnResizeService
     ) {
         undoService.getUndoStateEmitter()
             .subscribe((oldState) => {
                 this.setPreviousState(oldState);
+            });
+
+        onResizeService.getResizeEvent()
+            .subscribe((resizeType) => {
+                this.resizeType = resizeType;
             });
     }
 
@@ -579,11 +588,11 @@ export class HomePageComponent implements OnInit {
 
     private getIndexUnderCarret(elements) {
         let index = elements.findIndex(e => e.underCarret === true);
-        console.log('ndx:' + index);
+        // console.log('ndx:' + index);
         if (index < 0) {
             const diff = _.difference(elements.map(e => e.id), this.elements.map(e => e.id))[0];
             index = elements.findIndex(e => e.id === diff);
-            console.log('diff:' + index);
+            // console.log('diff:' + index);
         }
         return index;
     }
