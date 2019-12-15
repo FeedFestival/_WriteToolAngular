@@ -1,4 +1,9 @@
 <app-header [scrollClass]="scrollClass"></app-header>
+
+<div class="page-map">
+    <app-page-map></app-page-map>
+</div>
+
 <ng-scrollbar #NgScrollbar class="scroll-area" [ngClass]="scrollClass">
 
     <div class="container-fluid p-0">
@@ -6,8 +11,7 @@
         <app-footer></app-footer>
     </div>
 </ng-scrollbar>
-<div [hidden]="scrollClass !== 'min'"
-    class="back-to-top-button">
+<div [hidden]="scrollClass !== 'min'" class="back-to-top-button">
     <button mat-button (click)="showMenu()">
         <fa-icon [icon]="faBars"></fa-icon>
     </button>

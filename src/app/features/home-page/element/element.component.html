@@ -60,7 +60,7 @@
     </div>
 
     <app-bookmark *ngIf="element.type !== ElementTypeRef.SCENE_HEADING && element.type !== ElementTypeRef.COMMENT && element.type !== ElementTypeRef.EMPTY"
-        [hidden]="!element.underCarret" class="bookmark" (onBookmark)="bookmark($event)">
+        [hidden]="!element.underCarret" class="bookmark" [isBookmarked]="element.isBookmarked" (onBookmark)="bookmark($event)">
     </app-bookmark>
 
     <app-cursor #cursorRef></app-cursor>

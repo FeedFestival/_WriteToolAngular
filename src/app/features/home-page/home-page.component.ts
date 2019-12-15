@@ -73,6 +73,8 @@ export class HomePageComponent implements OnInit {
                         }
                     });
 
+                    this.onBookmark();
+
                     this.setCurrentElement(this.elements.length - 1);
                     setTimeout(() => {
                         this.scrollToElementIfOutOfView();
@@ -81,6 +83,12 @@ export class HomePageComponent implements OnInit {
                     this.saveUndoState();
                 });
         }
+
+        this.elementsService.getGoToBookmark()
+            .subscribe(bookmarkId => {
+                const index = this.elements.findIndex(e => e.id === bookmarkId);
+                this.setUnderCarret(null, index);
+            });
 
         this.navigationService.getEditStateEmitter()
             .subscribe((editState) => {

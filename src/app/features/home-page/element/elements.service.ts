@@ -4,6 +4,8 @@ import { TestHttpClient } from 'src/app/TestHttpClient/TestHttpClient.service';
 import { map, mergeAll } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { IBookmark } from '../page-map/page-map.component';
+import { element } from 'protractor';
 
 export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
 export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
@@ -14,6 +16,8 @@ export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, El
 export class ElementsService {
 
     scrollToElementChange: EventEmitter<any> = new EventEmitter<any>();
+    updateMap: EventEmitter<any> = new EventEmitter<any>();
+    goToBookmark: EventEmitter<string> = new EventEmitter<string>();
 
     allowedNewElements: string[];
 
@@ -34,6 +38,18 @@ export class ElementsService {
 
     getScrollToElementEmitter(): EventEmitter<any> {
         return this.scrollToElementChange;
+    }
+
+    emitGoToBookmark(bookmarkId) {
+        this.goToBookmark.emit(bookmarkId);
+    }
+
+    getGoToBookmark(): EventEmitter<string> {
+        return this.goToBookmark;
+    }
+
+    getUpdateMap(): EventEmitter<any> {
+        return this.updateMap;
     }
 
     getElements(isDefault?): Observable<any> {
@@ -170,7 +186,15 @@ export class ElementsService {
     }
 
     recalculateBookmarks(elements) {
-        const bookmarkedElements = elements.filter(e => e.isBookmarked);
-        console.log("TCL: ElementsService -> recalculateBookmarks -> bookmarkedElements", bookmarkedElements)
+        const bookmarkedElements: IBookmark[] = elements.filter(e => e.isBookmarked).map(e => {
+            return ({
+                id: e.id,
+                type: e.type,
+                text: e.text,
+                isSecondary: e.type !== ElementType.SCENE_HEADING && e.type !== ElementType.COMMENT
+            } as IBookmark)
+        });
+
+        this.updateMap.emit(bookmarkedElements);
     }
 }

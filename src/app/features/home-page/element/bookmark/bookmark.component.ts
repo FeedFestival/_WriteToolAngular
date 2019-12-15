@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
     selector: 'app-bookmark',
@@ -6,7 +6,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class BookmarkComponent implements OnInit {
 
-    isBookmarked: boolean;
+    @Input() isBookmarked: boolean;
 
     @Output() onBookmark: EventEmitter<boolean> = new EventEmitter<boolean>();
 

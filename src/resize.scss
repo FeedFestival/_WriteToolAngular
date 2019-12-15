@@ -1,8 +1,82 @@
 @media only screen and (max-width: 1366px) {
-
-    .footer-link {
-        a {
-            font-size: 0.5em !important;
-        }
+  .footer-link {
+    a {
+      font-size: 0.5em !important;
     }
+  }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .page-map {
+    left: 5px;
+    .map {
+      width: 15vw;
+    }
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .page-map {
+    left: 5px;
+    .map {
+      width: 15vw;
+    }
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+}
+
+// custom high
+@media (min-width: 1250px) {
+  .page-map {
+    left: 1vw;
+
+    .map {
+      width: 15vw;
+    }
+  }
+}
+
+// 1366px
+@media (min-width: 1360px) {
+  .page-map {
+    left: 2vw;
+
+    .map {
+      width: 18vw;
+    }
+  }
+
+  .footer-link {
+    a {
+      font-size: 0.5em !important;
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  .page-map {
+    left: 3vw;
+
+    .map {
+      width: 20vw;
+    }
+  }
+
+  .footer-link {
+    a {
+      font-size: 0.5em !important;
+    }
+  }
 }
