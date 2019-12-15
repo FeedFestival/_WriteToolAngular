@@ -111,6 +111,8 @@ export class Hotkeys {
                     keyCode === Key.C ||
                     keyCode === Key.D ||
                     keyCode === Key.P ||
+                    keyCode === Key.V ||
+                    keyCode === Key.H ||
                     keyCode === Key.Slash ||
                     keyCode === Key.Escape ||
                     // allow arrows to cancel this state

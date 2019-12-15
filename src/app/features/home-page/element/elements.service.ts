@@ -5,10 +5,10 @@ import { map, mergeAll } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
-export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
-export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
+export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
+export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
 export const CHARACTER_NEW_ELS = [ElementType.DIALOG];
-export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE];
+export const DIALOG_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
 
 @Injectable({ providedIn: 'root' })
 export class ElementsService {
@@ -58,7 +58,7 @@ export class ElementsService {
 
     save(elements) {
 
-        const elementsWithNoImages = [...elements];
+        const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
         elementsWithNoImages.forEach(e => e.image = null);
         const s = JSON.stringify(elementsWithNoImages);
         this.cookieService.set('elements', s);

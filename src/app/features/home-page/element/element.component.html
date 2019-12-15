@@ -49,6 +49,18 @@
             <img *ngIf="!element.isEditing" [src]="element.image"/>
         </div>
 
+        <div *ngIf="element.type === ElementTypeRef.VIDEO">
+            YOUTUBE VIDEO coming soon! 😊
+        </div>
+
+        <div *ngIf="element.type === ElementTypeRef.SOUND">
+            SOUND coming soon! 😊
+        </div>
+
+        <div class="bookmark">
+
+        </div>
+
     </div>
     <app-cursor #cursorRef></app-cursor>
 </div>

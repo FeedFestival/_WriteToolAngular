@@ -4,7 +4,6 @@ import { CursorComponent } from '../cursor/cursor.component';
 import { ElementsService } from './elements.service';
 import { FileSystemDirectoryEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { LocalStorageService } from 'ngx-webstorage';
-import { utils } from 'protractor';
 
 @Component({
     selector: 'app-element',
@@ -143,9 +142,6 @@ export class ElementComponent implements OnInit, OnChanges {
                 fileEntry.file((file: File) => {
                     this.myReader.readAsDataURL(file);
                 });
-            } else {
-                // It was a directory (empty directories are added, otherwise only files)
-                const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
             }
         }
     }
@@ -153,7 +149,6 @@ export class ElementComponent implements OnInit, OnChanges {
     onImageLoaded = () => {
         this.element.image = this.myReader.result;
         this.localStorage.store(this.element.id, this.element.image);
-
         this.blur();
     }
 }

@@ -29,6 +29,8 @@ export const ElementType = {
     EMPTY: 'EMPTY',
     COMMENT: 'COMMENT',
     PICTURE: 'PICTURE',
+    VIDEO: 'VIDEO',
+    SOUND: 'SOUND',
 
     getInputClass: (elementType) => {
         switch (elementType) {
@@ -43,6 +45,10 @@ export const ElementType = {
             case ElementType.COMMENT:
                 return 'w-100';
             case ElementType.PICTURE:
+                return 'w-auto';
+            case ElementType.VIDEO:
+                return 'w-auto';
+            case ElementType.SOUND:
                 return 'w-auto';
             default:
                 break;
@@ -63,6 +69,10 @@ export const ElementType = {
                 return 'comment';
             case ElementType.PICTURE:
                 return 'picture';
+            case ElementType.VIDEO:
+                return 'video';
+            case ElementType.SOUND:
+                return 'sound';
             default:
                 break;
         }
@@ -90,6 +100,8 @@ export const Key = {
     C: 'c',
     D: 'd',
     P: 'p',
+    V: 'v',
+    H: 'h',
     Slash: '/',
     //
     Z: 'z',
@@ -106,14 +118,17 @@ export const MainAvailableKeys = [
 
 export const TextAvailableKeys = [
     { key: 'Esc' , text: 'ape' },
-    { key: '&#8633;' , text: 'Tab', class: 'symbol' }
+    { key: '&#8633;' , text: 'Tab', class: 'symbol' },
+    { key: 'Windows Key + .', text: 'Emoticons', class: 'symbol' }
 ];
 
 export const NewAvailableKeys = [
-    { key: 'S' , text: 'cene Heading', id: ElementType.SCENE_HEADING },
-    { key: 'A' , text: 'ction', id: ElementType.ACTION },
-    { key: 'C' , text: 'haracter', id: ElementType.CHARACTER },
-    { key: 'D' , text: 'ialog', id: ElementType.DIALOG },
-    { key: 'P' , text: 'icture', id: ElementType.PICTURE },
-    { key: '/' , text: 'Comment', id: ElementType.COMMENT },
+    { pretext: 'Scene ', key: 'H' , text: 'eading', id: ElementType.SCENE_HEADING },
+    { pretext: '', key: 'A' , text: 'ction', id: ElementType.ACTION },
+    { pretext: '', key: 'C' , text: 'haracter', id: ElementType.CHARACTER },
+    { pretext: '', key: 'D' , text: 'ialog', id: ElementType.DIALOG },
+    { pretext: '', key: 'P' , text: 'icture', id: ElementType.PICTURE },
+    { pretext: 'Youtube ', key: 'V' , text: 'ideo', id: ElementType.VIDEO },
+    { pretext: '', key: 'S' , text: 'ound', id: ElementType.SOUND },
+    { pretext: '', key: '/' , text: 'Comment', id: ElementType.COMMENT },
 ];

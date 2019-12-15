@@ -116,9 +116,9 @@ export class HomePageComponent implements OnInit {
                 }
                 this.onEnter();
             });
-        this.hotkeys.addShortcut({ keys: Key.S })
+        this.hotkeys.addShortcut({ keys: Key.H })
             .subscribe(() => {
-                this.onSKey();
+                this.onHKey();
             });
         this.hotkeys.addShortcut({ keys: Key.A })
             .subscribe(() => {
@@ -135,6 +135,14 @@ export class HomePageComponent implements OnInit {
         this.hotkeys.addShortcut({ keys: Key.P })
             .subscribe(() => {
                 this.onPKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.V })
+            .subscribe(() => {
+                this.onVKey();
+            });
+        this.hotkeys.addShortcut({ keys: Key.S })
+            .subscribe(() => {
+                this.onSKey();
             });
         this.hotkeys.addShortcut({ keys: Key.Slash })
             .subscribe(() => {
@@ -208,7 +216,9 @@ export class HomePageComponent implements OnInit {
         }
 
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
-        if (el.element.type === ElementType.PICTURE) {
+        if (el.element.type === ElementType.PICTURE
+            || el.element.type === ElementType.VIDEO
+            || el.element.type === ElementType.SOUND) {
             el.element.isEditing = false;
             this.onBlur(el.i);
         } else {
@@ -218,12 +228,13 @@ export class HomePageComponent implements OnInit {
 
     onTab() {
         const el = this.elementsRef.find(c => c.element.id === this.currentElement.id);
-        if (el.element.type === ElementType.PICTURE) {
+        if (el.element.type === ElementType.PICTURE
+            || el.element.type === ElementType.VIDEO
+            || el.element.type === ElementType.SOUND) {
             el.element.isEditing = true;
 
         } else {
             el.inputRef.nativeElement.click();
-            // this.navigationService.emitEditStateEvent(EditState.TEXT);
         }
         this.navigationService.emitEditStateEvent(EditState.TEXT);
     }
@@ -324,7 +335,7 @@ export class HomePageComponent implements OnInit {
         }
     }
 
-    onSKey() {
+    onHKey() {
         if (false === this.elementsService.isValidNewElement(ElementType.SCENE_HEADING)) {
             this.onEscape();
             return;
@@ -362,6 +373,22 @@ export class HomePageComponent implements OnInit {
             return;
         }
         this.createNew(ElementType.PICTURE);
+    }
+
+    onVKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.VIDEO)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.VIDEO);
+    }
+
+    onSKey() {
+        if (false === this.elementsService.isValidNewElement(ElementType.SOUND)) {
+            this.onEscape();
+            return;
+        }
+        this.createNew(ElementType.SOUND);
     }
 
     onSlashKey() {
