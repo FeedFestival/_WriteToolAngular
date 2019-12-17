@@ -9,6 +9,7 @@ import { ElementsService } from './features/home-page/element/elements.service';
 import { NgcCookieConsentService, NgcInitializeEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
 import { OnResizeService } from './shared/on-resize/on-resize.service';
 import { ScrollBreakpoints } from './app.constants';
+import { SessionStorageService } from 'ngx-webstorage';
 
 declare let gtag: Function;
 
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private ccService: NgcCookieConsentService,
         private elementsService: ElementsService,
         private onResizeService: OnResizeService,
+        private sessionStorageService: SessionStorageService,
         router: Router
     ) {
         router.events.pipe(
@@ -93,6 +95,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+
+        const isCookieAccepted = this.sessionStorageService.retrieve('isCookieAccepted');
+
+        if (isCookieAccepted && isCookieAccepted === true) {
+            setTimeout(() => {
+                this.ccService.close(false);
+            });
+            return;
+        }
+
         // subscribe to cookieconsent observables to react to main events
         this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
             () => {
@@ -102,6 +114,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
             () => {
                 // you can use this.ccService.getConfig() to do stuff...
+                this.sessionStorageService.store('isCookieAccepted', true);
             });
 
         this.initializeSubscription = this.ccService.initialize$.subscribe(
