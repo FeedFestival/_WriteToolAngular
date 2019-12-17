@@ -36,41 +36,41 @@
 }
 
 .header.max {
-  @media (min-width: 1px) {
+  @media (min-width: $xs-breakpoint) {
     height: 50px;
     padding-top: 0;
     padding-bottom: 0;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     height: 100px;
     padding-top: 0.5rem;
     padding-bottom: 0.25rem;
   }
 
   .logo {
-    @media (min-width: 1px) {
+    @media (min-width: $xs-breakpoint) {
       height: 52px;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       height: 88px;
     }
   }
 }
 
 .account-buttons {
-  @media (min-width: 1px) {
+  @media (min-width: $xs-breakpoint) {
     padding-right: 15px;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     padding-right: 0;
   }
 
   .ac-but {
-    @media (min-width: 1px) {
+    @media (min-width: $xs-breakpoint) {
       width: 30px;
       margin-right: 10px;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       width: 60px;
       margin-right: 40px;
     }
@@ -96,10 +96,10 @@
     }
 
     .ac-img {
-      @media (min-width: 1px) {
+      @media (min-width: $xs-breakpoint) {
         width: 30px;
       }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         width: 60px;
       }
 
@@ -109,10 +109,10 @@
     .ac-img.ac-but-save {
       opacity: 0.2;
       width: 28px;
-      @media (min-width: 1px) {
+      @media (min-width: $xs-breakpoint) {
         margin-top: 0px;
       }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         margin-top: 14px;
       }
     }
@@ -122,10 +122,10 @@
     .ac-img.ac-but-save {
       opacity: 1;
       width: 30px;
-      @media (min-width: 1px) {
+      @media (min-width: $xs-breakpoint) {
         margin-top: 0px;
       }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         margin-top: 15px;
       }
     }
@@ -133,37 +133,37 @@
 
   &.min {
     .ac-but {
-      //   @media (min-width: 1px) {
+      //   @media (min-width: $xs-breakpoint) {
       //   }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         margin-top: 0px;
       }
     }
   }
   &.med {
     .ac-but {
-      @media (min-width: 1px) {
+      @media (min-width: $xs-breakpoint) {
         margin-top: 5px;
       }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         margin-top: 2px;
       }
 
       .ac-img {
-        @media (min-width: 1px) {
+        @media (min-width: $xs-breakpoint) {
           width: 30px;
         }
-        @media (min-width: 576px) {
+        @media (min-width: $sm-breakpoint) {
           width: 52px;
         }
       }
 
       .ac-img.ac-but-save {
-        @media (min-width: 1px) {
+        @media (min-width: $xs-breakpoint) {
           width: 28px;
           margin-top: 0px;
         }
-        @media (min-width: 576px) {
+        @media (min-width: $sm-breakpoint) {
           width: 28px;
           margin-top: 7px;
         }
@@ -172,10 +172,10 @@
   }
   &.max {
     .ac-but {
-      @media (min-width: 1px) {
+      @media (min-width: $xs-breakpoint) {
         margin-top: 5px;
       }
-      @media (min-width: 576px) {
+      @media (min-width: $sm-breakpoint) {
         margin-top: 15px;
       }
     }

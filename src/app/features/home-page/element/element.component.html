@@ -41,7 +41,7 @@
             <!--     [accept]="png" [multiple]="false"   -->
             <ngx-file-drop *ngIf="element.isEditing" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
                 <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-                    Drop files directly here or
+                    <span class="drop-files-info">Drop files directly here or </span>
                     <a type="button" (click)="openFileSelector()">browse them</a>.
                 </ng-template>
             </ngx-file-drop>

@@ -1,16 +1,16 @@
 @import "../../theme/overrides/scss/_variables";
 
 .footer {
-  @media (min-width: 1px) {
+  @media (min-width: $xs-breakpoint) {
     width: 100vw;
     height: 530px;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     width: 100%;
     height: $footer-height;
   }
 
-  color: #ccc;
+  color: $dark-grey;
   background-color: #333333;
   border-top: 1px solid rgba(223, 43, 43, 0.05);
   clear: both;
@@ -34,7 +34,7 @@
   }
 
   a {
-    color: #ccc;
+    color: $dark-grey;
   }
 }
 

@@ -237,32 +237,134 @@ fa-icon {
 }
 
 .element.character {
-  padding: 1mm 50mm;
+    @media (min-width: $xs-breakpoint) {
+        padding: 5px 22%;
+    }
+    @media (min-width: $sm-breakpoint) {
+        padding: 1mm 50mm;
+    }
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
+
+  mat-form-field,
+  .mat-input-element {
+    text-transform: uppercase;
+    text-align: center;
+
+    //
+    font-family: robotoSlabRegular;
+    font-weight: 700;
+    @media (min-width: $xs-breakpoint) {
+        font-size: 0.6rem;
+        max-width: 100%;
+    }
+    @media (min-width: $sm-breakpoint) {
+        font-size: 14px;
+        max-width: unset;
+    }
+  }
+
+  .mat-form-field-label {
+    text-align: center;
+  }
 }
 
 .element.dialog {
-  padding: 1mm 50mm;
+    @media (min-width: $xs-breakpoint) {
+        padding: 5px 22%;
+    }
+    @media (min-width: $sm-breakpoint) {
+        padding: 1mm 50mm;
+    }
+  
   text-align: center;
   text-transform: capitalize;
   font-size: 4mm;
+
+  mat-form-field,
+  .mat-input-element {
+    text-align: center;
+    font-family: graphikRegular;
+
+    @media (min-width: $xs-breakpoint) {
+        font-size: 0.6rem;
+        max-width: 100%;
+    }
+    @media (min-width: $sm-breakpoint) {
+        font-size: 15px;
+        max-width: unset;
+    }
+  }
+
+    mat-form-field {
+        .mat-form-field-wrapper {
+            @media (min-width: $xs-breakpoint) {
+                padding-bottom: 0.5em !important;
+            }
+            @media (min-width: $sm-breakpoint) {
+                padding-bottom: 1.25em;
+            }
+        }
+    }
+
+  .mat-form-field-label {
+    text-align: center;
+  }
 }
 
 .element.picture {
-  padding: 5mm 20mm;
-  min-height: 75mm;
-  width: 170mm;
+    @media (min-width: $xs-breakpoint) {
+        padding: 0;
+        width: 100%;
+        height: auto;
+        min-height: unset;
+    }
+    @media (min-width: $sm-breakpoint) {
+        padding: 5mm 20mm;
+        min-height: 75mm;
+        width: 170mm;
+    }
+  
   text-align: center;
-}
-
-.element.picture {
   .pic {
-    height: 70mm;
+    @media (min-width: $xs-breakpoint) {
+        height: 30vh;
+    }
+    @media (min-width: $sm-breakpoint) {
+        height: 70mm;
+    }
+
+    ngx-file-drop {
+        @media (min-width: $xs-breakpoint) {
+            width: 90%;
+            margin-left: 5%;
+        }
+        @media (min-width: $sm-breakpoint) {
+            width: unset;
+            margin-left: unset;
+        }
+
+        .ngx-file-drop__content {
+            @media (min-width: $xs-breakpoint) {
+                font-size: 10px;
+                width: 100%;
+            }
+            @media (min-width: $sm-breakpoint) {
+                font-size: unset;
+                width: unset;
+            }
+        }
+    }
+
     display: flex;
     img {
-      height: 75mm;
+        @media (min-width: $xs-breakpoint) {
+            height: 100%;
+        }
+        @media (min-width: $sm-breakpoint) {
+            height: 75mm;
+        }
       width: 100%;
       background: url("assets/images/No-Image.png");
       background-repeat: round;
@@ -270,6 +372,7 @@ fa-icon {
     }
   }
 }
+
 
 .picture.many {
   padding: 5mm 5mm !important;
@@ -309,11 +412,11 @@ fa-icon {
 
 .element.action,
 .element.dialog {
-  font-family: graphikRegular;
-  @media (min-width: 1px) {
+  font-family: graphikRegular !important;
+  @media (min-width: $xs-breakpoint) {
     font-size: 0.5rem;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     font-size: 15px;
   }
 }
@@ -321,10 +424,10 @@ fa-icon {
 .element.scene-heading,
 .element.character {
   font-family: robotoSlabRegular;
-  @media (min-width: 1px) {
-    font-size: 0.5rem;
+  @media (min-width: $xs-breakpoint) {
+    font-size: 0.6rem;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     font-size: 14px;
   }
 }
@@ -334,6 +437,13 @@ fa-icon {
   padding: 0 1mm;
   .mat-input-element {
     text-transform: uppercase;
+
+    @media (min-width: $xs-breakpoint) {
+        font-size: 0.6rem;
+        }
+    @media (min-width: $sm-breakpoint) {
+        font-size: 14px;
+    }
   }
 }
 
@@ -360,20 +470,21 @@ fa-icon {
 
 .element.action {
   display: inline-flex;
-  @media (min-width: 1px) {
-    padding: 3mm 10mm;
+  @media (min-width: $xs-breakpoint) {
+    padding: 2mm 7mm;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     padding: 5mm 20mm;
   }
   width: 100%;
 
+  text-area,
   .mat-input-element {
     font-family: graphikRegular;
-    @media (min-width: 1px) {
-      font-size: 0.5rem;
+    @media (min-width: $xs-breakpoint) {
+      font-size: 0.6rem;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       font-size: 15px;
     }
   }
@@ -388,11 +499,21 @@ fa-icon {
     border-bottom: none !important;
     background: transparent !important;
     font-family: graphikRegular;
-    @media (min-width: 1px) {
-      font-size: 0.5rem;
+    @media (min-width: $xs-breakpoint) {
+      font-size: 0.6rem;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       font-size: 15px;
+    }
+
+    p {
+        font-family: graphikRegular;
+        @media (min-width: $xs-breakpoint) {
+            font-size: 0.6rem;
+        }
+        @media (min-width: $sm-breakpoint) {
+            font-size: 15px;
+        }
     }
   }
 
@@ -438,36 +559,6 @@ fa-icon {
   }
 }
 
-.element.character {
-  .mat-input-element {
-    text-transform: uppercase;
-    text-align: center;
-
-    //
-    font-family: robotoSlabRegular;
-    font-size: 14px;
-    font-weight: 700;
-  }
-
-  .mat-form-field-label {
-    text-align: center;
-  }
-}
-
-.element.dialog {
-  .mat-input-element {
-    text-align: center;
-
-    //
-    font-family: graphikRegular;
-    font-size: 15px;
-  }
-
-  .mat-form-field-label {
-    text-align: center;
-  }
-}
-
 .element.comment {
   background: #dbf7db;
   border-top-left-radius: 10px;
@@ -475,8 +566,13 @@ fa-icon {
 
   .coment-dashes {
     color: #a3c5a3;
-    font-size: 35px;
     position: absolute;
+    @media (min-width: $xs-breakpoint) {
+        font-size: 1.7rem;
+    }
+    @media (min-width: $sm-breakpoint) {
+        font-size: 35px;
+    }
   }
 
   textarea {
@@ -484,9 +580,15 @@ fa-icon {
     padding-left: 35px;
     font-family: monospace;
     font-weight: 100;
-    font-size: 15px;
     overflow: hidden;
     vertical-align: middle;
+
+    @media (min-width: $xs-breakpoint) {
+        font-size: 0.7rem;
+    }
+    @media (min-width: $sm-breakpoint) {
+        font-size: 15px;
+    }
   }
 }
 
@@ -617,13 +719,64 @@ fa-icon {
   min-height: 53px !important;
 }
 
-.rich-text-checkbox .mat-checkbox {
-  .mat-checkbox-label {
-    font-size: 12px;
-    font-weight: 500;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    letter-spacing: 1px;
-  }
+.rich-text-checkbox {
+    display: inline;
+    height: 0;
+    position: relative;
+
+    @media (min-width: $xs-breakpoint) {
+        left: -10px;
+        top: -13px;
+    }
+    @media (min-width: $sm-breakpoint) {
+        left: 0;
+        top: -20px;
+    }
+    
+    .mat-checkbox {
+        width: 0;
+        display: flex;
+
+        .mat-checkbox-inner-container {
+            @media (min-width: $xs-breakpoint) {
+                height: 10px;
+                width: 10px;
+                margin-right: 4px;
+            }
+            @media (min-width: $sm-breakpoint) {
+                height: 16px;
+                width: 16px;
+                margin-right: 8px;
+            }
+            
+            margin: auto;
+
+            .mat-checkbox-frame {
+                @media (min-width: $xs-breakpoint) {
+                    border-width: 1px;
+                }
+                @media (min-width: $sm-breakpoint) {
+                    border-width: 2px;
+                }
+            }
+        }
+
+        .mat-checkbox-label {
+            @media (min-width: $xs-breakpoint) {
+                font-size: 0.45rem;
+            }
+            @media (min-width: $sm-breakpoint) {
+                font-size: 12px;
+            }
+          font-weight: 500;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          letter-spacing: 1px;
+        }
+      }
+}
+
+ckeditor {
+    margin-top: -20px;
 }
 
 .mat-checkbox-checked .mat-checkbox-background {
@@ -676,6 +829,15 @@ a.red {
     text-align: right;
 
     svg {
+        @media (min-width: $xs-breakpoint) {
+            width: 6px;
+            height: 12px;
+        }
+        @media (min-width: $sm-breakpoint) {
+            width: 0.75em;
+            height: 16px;
+        }
+        
       color: #80808075;
       top: -23px;
       right: 5px;

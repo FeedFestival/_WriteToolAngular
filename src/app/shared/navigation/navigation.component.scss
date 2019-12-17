@@ -1,20 +1,22 @@
+@import "../../theme/overrides/scss/_variables";
+
 .hotkeys {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   letter-spacing: 0.5px;
   font-weight: 500;
-  @media (min-width: 1px) {
+  @media (min-width: $xs-breakpoint) {
     font-size: 0.5rem;
   }
-  @media (min-width: 576px) {
+  @media (min-width: $sm-breakpoint) {
     font-size: 1rem;
   }
 
   .hotkey {
     color: red;
-    @media (min-width: 1px) {
+    @media (min-width: $xs-breakpoint) {
       font-size: 0.6rem;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       font-size: 1.1rem;
     }
   }
@@ -25,10 +27,10 @@
 
 .hotkeys.symbol {
   .hotkey {
-    @media (min-width: 1px) {
+    @media (min-width: $xs-breakpoint) {
       font-size: 0.6rem;
     }
-    @media (min-width: 576px) {
+    @media (min-width: $sm-breakpoint) {
       font-size: 1rem;
     }
     font-weight: 900;
