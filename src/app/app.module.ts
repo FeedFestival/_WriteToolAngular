@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule, MatSelectModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -35,6 +35,7 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import { BookmarkComponent } from './features/home-page/element/bookmark/bookmark.component';
 import { PageMapComponent } from './features/home-page/page-map/page-map.component';
 import { OnResizeComponent } from './shared/on-resize/on-resize.component';
+import { StoryDialogComponent } from './features/home-page/story-dialog/story-dialog.component';
 
 const config = new AuthServiceConfig([
     {
@@ -105,7 +106,8 @@ export function provideConfig() {
         GdprComponent,
         BookmarkComponent,
         PageMapComponent,
-        OnResizeComponent
+        OnResizeComponent,
+        StoryDialogComponent
     ],
     imports: [
         NgcCookieConsentModule.forRoot(cookieConfig),
@@ -129,7 +131,9 @@ export function provideConfig() {
         TransferHttpCacheModule,
         HttpClientModule,
         NgtUniversalModule,
-        NgxFileDropModule
+        NgxFileDropModule,
+        MatSelectModule,
+        ReactiveFormsModule,
     ],
     exports: [
         MatButtonModule,
@@ -141,7 +145,8 @@ export function provideConfig() {
         FormsModule
     ],
     entryComponents: [
-        PageDialogComponent
+        PageDialogComponent,
+        StoryDialogComponent
     ],
     providers: [
         CookieService,

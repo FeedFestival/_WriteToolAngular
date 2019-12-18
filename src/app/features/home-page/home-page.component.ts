@@ -22,6 +22,7 @@ export class HomePageComponent implements OnInit {
 
     ElementTypeRef = ElementType;
 
+    story: any;
     elements: any[];
     currentElement: any;
 
@@ -115,35 +116,17 @@ export class HomePageComponent implements OnInit {
         });
         this.metaService.addTags(this.seoService.getMetaTags(page));
 
-        if (!this.elements) {
+
+        const stories = JSON.parse(this.localStorage.retrieve('stories'));
+        if (!stories || stories.length === 0) {
             this.elementsService.getElements()
-                .subscribe((elements) => {
-                    this.elements = elements;
-
-                    if (this.elements.length === 0) {
-                        this.createEmptyElement();
-                    }
-
-                    this.elements.forEach(e => {
-                        e.underCarret = false;
-                        if (e.type === ElementType.PICTURE) {
-                            e.image = this.localStorage.retrieve(e.id);
-                        }
-                        if (e.type === ElementType.SCENE_HEADING || e.type === ElementType.COMMENT) {
-                            e.isBookmarked = true;
-                        }
-                    });
-
-                    this.onBookmark();
-
-                    this.setCurrentElement(this.elements.length - 1);
-                    setTimeout(() => {
-                        this.scrollToElementIfOutOfView();
-                    });
-
-                    this.saveUndoState();
-                });
+                .subscribe(this.onElementsLoaded);
+        } else {
+            this.onStoryLoaded(stories[stories.length - 1]);
         }
+
+        this.elementsService.getStoryChange()
+            .subscribe(this.onStoryLoaded);
 
         this.navigationService.emitEditStateEvent(EditState.MAIN);
 
@@ -224,14 +207,52 @@ export class HomePageComponent implements OnInit {
         //
         this.hotkeys.onControlSHotkey()
             .subscribe(() => {
-                this.elementsService.save(this.elements);
+                this.elementsService.save(this.elements, this.story.id);
                 this.headerService.emitCanSaveEvent(false);
             });
         this.headerService.getSaveEvent()
             .subscribe(() => {
-                this.elementsService.save(this.elements);
+                this.elementsService.save(this.elements, this.story.id);
                 this.headerService.emitCanSaveEvent(false);
             });
+    }
+
+    onStoryLoaded = (story) => {
+
+        if (this.story && this.story.id === story.id) {
+            return;
+        }
+        this.story = story;
+
+        this.elementsService.getElements(this.story.id)
+            .subscribe(this.onElementsLoaded);
+    }
+
+    onElementsLoaded = (elements) => {
+        this.elements = elements;
+
+        if (this.elements.length === 0) {
+            this.createEmptyElement();
+        }
+
+        this.elements.forEach(e => {
+            e.underCarret = false;
+            if (e.type === ElementType.PICTURE) {
+                e.image = this.localStorage.retrieve(e.id);
+            }
+            if (e.type === ElementType.SCENE_HEADING || e.type === ElementType.COMMENT) {
+                e.isBookmarked = true;
+            }
+        });
+
+        this.onBookmark();
+
+        this.setCurrentElement(this.elements.length - 1);
+        setTimeout(() => {
+            this.scrollToElementIfOutOfView();
+        });
+
+        this.saveUndoState();
     }
 
     onEdit(index) {

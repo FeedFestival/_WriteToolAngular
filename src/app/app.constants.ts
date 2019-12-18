@@ -80,6 +80,7 @@ export const ElementType = {
 }
 
 export const EditState = {
+    DEFAULT: 'DEFAULT',
     MAIN: 'MAIN',
     TEXT: 'TEXT',
     NEW: 'NEW'

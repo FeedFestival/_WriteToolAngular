@@ -18,6 +18,7 @@ export class ElementsService {
     scrollToElementChange: EventEmitter<any> = new EventEmitter<any>();
     updateMap: EventEmitter<any> = new EventEmitter<any>();
     goToBookmark: EventEmitter<string> = new EventEmitter<string>();
+    storyChange: EventEmitter<any> = new EventEmitter<any>();
 
     allowedNewElements: string[];
 
@@ -52,9 +53,17 @@ export class ElementsService {
         return this.updateMap;
     }
 
-    getElements(isDefault?): Observable<any> {
+    getStoryChange(): EventEmitter<any> {
+        return this.storyChange;
+    }
 
-        if (isDefault) {
+    emitStoryChange(story) {
+        this.storyChange.emit(story);
+    }
+
+    getElements(storyId?, getDefault?): Observable<any> {
+
+        if (getDefault) {
             return of(this.getStartingText());
             // return this.http.get<any[]>('elements', HttpDefaultOptions).pipe(
             //     map(elements => {
@@ -62,22 +71,25 @@ export class ElementsService {
             //     }),
             //     mergeAll()
             // );
-        }
+        } else if (storyId) {
 
-        let elements: any[] = [];
-        const s = this.cookieService.get('elements');
-        if (s && s.length !== 0) {
-            elements = JSON.parse(s);
+            let elements: any[] = [];
+            const s = this.cookieService.get(storyId);
+            if (s && s.length !== 0) {
+                elements = JSON.parse(s);
+            }
+            return of(elements);
+        } else {
+            return of([]);
         }
-        return of(elements);
     }
 
-    save(elements) {
+    save(elements, storyId) {
 
         const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
         elementsWithNoImages.forEach(e => e.image = null);
         const s = JSON.stringify(elementsWithNoImages);
-        this.cookieService.set('elements', s);
+        this.cookieService.set(storyId, s);
     }
 
     setAllowedElements(elementType) {

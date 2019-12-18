@@ -85,6 +85,10 @@ b {
 .basic-dialog-dimensions {
   min-height: 90vh;
   min-width: 60vw;
+
+  input {
+    color: $dark-black;
+  }
 }
 
 .basic-dimensions {
@@ -237,12 +241,12 @@ fa-icon {
 }
 
 .element.character {
-    @media (min-width: $xs-breakpoint) {
-        padding: 5px 22%;
-    }
-    @media (min-width: $sm-breakpoint) {
-        padding: 1mm 50mm;
-    }
+  @media (min-width: $xs-breakpoint) {
+    padding: 5px 22%;
+  }
+  @media (min-width: $sm-breakpoint) {
+    padding: 1mm 50mm;
+  }
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
@@ -256,12 +260,12 @@ fa-icon {
     font-family: robotoSlabRegular;
     font-weight: 700;
     @media (min-width: $xs-breakpoint) {
-        font-size: 0.6rem;
-        max-width: 100%;
+      font-size: 0.6rem;
+      max-width: 100%;
     }
     @media (min-width: $sm-breakpoint) {
-        font-size: 14px;
-        max-width: unset;
+      font-size: 14px;
+      max-width: unset;
     }
   }
 
@@ -271,13 +275,13 @@ fa-icon {
 }
 
 .element.dialog {
-    @media (min-width: $xs-breakpoint) {
-        padding: 5px 22%;
-    }
-    @media (min-width: $sm-breakpoint) {
-        padding: 1mm 50mm;
-    }
-  
+  @media (min-width: $xs-breakpoint) {
+    padding: 5px 22%;
+  }
+  @media (min-width: $sm-breakpoint) {
+    padding: 1mm 50mm;
+  }
+
   text-align: center;
   text-transform: capitalize;
   font-size: 4mm;
@@ -288,25 +292,25 @@ fa-icon {
     font-family: graphikRegular;
 
     @media (min-width: $xs-breakpoint) {
-        font-size: 0.6rem;
-        max-width: 100%;
+      font-size: 0.6rem;
+      max-width: 100%;
     }
     @media (min-width: $sm-breakpoint) {
-        font-size: 15px;
-        max-width: unset;
+      font-size: 15px;
+      max-width: unset;
     }
   }
 
-    mat-form-field {
-        .mat-form-field-wrapper {
-            @media (min-width: $xs-breakpoint) {
-                padding-bottom: 0.5em !important;
-            }
-            @media (min-width: $sm-breakpoint) {
-                padding-bottom: 1.25em;
-            }
-        }
+  mat-form-field {
+    .mat-form-field-wrapper {
+      @media (min-width: $xs-breakpoint) {
+        padding-bottom: 0.5em !important;
+      }
+      @media (min-width: $sm-breakpoint) {
+        padding-bottom: 1.25em;
+      }
     }
+  }
 
   .mat-form-field-label {
     text-align: center;
@@ -314,57 +318,57 @@ fa-icon {
 }
 
 .element.picture {
-    @media (min-width: $xs-breakpoint) {
-        padding: 0;
-        width: 100%;
-        height: auto;
-        min-height: unset;
-    }
-    @media (min-width: $sm-breakpoint) {
-        padding: 5mm 20mm;
-        min-height: 75mm;
-        width: 170mm;
-    }
-  
+  @media (min-width: $xs-breakpoint) {
+    padding: 0;
+    width: 100%;
+    height: auto;
+    min-height: unset;
+  }
+  @media (min-width: $sm-breakpoint) {
+    padding: 5mm 20mm;
+    min-height: 75mm;
+    width: 170mm;
+  }
+
   text-align: center;
   .pic {
     @media (min-width: $xs-breakpoint) {
-        height: 30vh;
+      height: 30vh;
     }
     @media (min-width: $sm-breakpoint) {
-        height: 70mm;
+      height: 70mm;
     }
 
     ngx-file-drop {
+      @media (min-width: $xs-breakpoint) {
+        width: 90%;
+        margin-left: 5%;
+      }
+      @media (min-width: $sm-breakpoint) {
+        width: 100%;
+        margin-left: unset;
+      }
+
+      .ngx-file-drop__content {
         @media (min-width: $xs-breakpoint) {
-            width: 90%;
-            margin-left: 5%;
+          font-size: 10px;
+          width: 100%;
         }
         @media (min-width: $sm-breakpoint) {
-            width: unset;
-            margin-left: unset;
+          font-size: unset;
+          width: 100%;
         }
-
-        .ngx-file-drop__content {
-            @media (min-width: $xs-breakpoint) {
-                font-size: 10px;
-                width: 100%;
-            }
-            @media (min-width: $sm-breakpoint) {
-                font-size: unset;
-                width: unset;
-            }
-        }
+      }
     }
 
     display: flex;
     img {
-        @media (min-width: $xs-breakpoint) {
-            height: 100%;
-        }
-        @media (min-width: $sm-breakpoint) {
-            height: 75mm;
-        }
+      @media (min-width: $xs-breakpoint) {
+        height: 100%;
+      }
+      @media (min-width: $sm-breakpoint) {
+        height: 75mm;
+      }
       width: 100%;
       background: url("assets/images/No-Image.png");
       background-repeat: round;
@@ -372,7 +376,6 @@ fa-icon {
     }
   }
 }
-
 
 .picture.many {
   padding: 5mm 5mm !important;
@@ -439,10 +442,10 @@ fa-icon {
     text-transform: uppercase;
 
     @media (min-width: $xs-breakpoint) {
-        font-size: 0.6rem;
-        }
+      font-size: 0.6rem;
+    }
     @media (min-width: $sm-breakpoint) {
-        font-size: 14px;
+      font-size: 14px;
     }
   }
 }
@@ -507,13 +510,13 @@ fa-icon {
     }
 
     p {
-        font-family: graphikRegular;
-        @media (min-width: $xs-breakpoint) {
-            font-size: 0.6rem;
-        }
-        @media (min-width: $sm-breakpoint) {
-            font-size: 15px;
-        }
+      font-family: graphikRegular;
+      @media (min-width: $xs-breakpoint) {
+        font-size: 0.6rem;
+      }
+      @media (min-width: $sm-breakpoint) {
+        font-size: 15px;
+      }
     }
   }
 
@@ -568,10 +571,10 @@ fa-icon {
     color: #a3c5a3;
     position: absolute;
     @media (min-width: $xs-breakpoint) {
-        font-size: 1.7rem;
+      font-size: 1.7rem;
     }
     @media (min-width: $sm-breakpoint) {
-        font-size: 35px;
+      font-size: 35px;
     }
   }
 
@@ -584,10 +587,10 @@ fa-icon {
     vertical-align: middle;
 
     @media (min-width: $xs-breakpoint) {
-        font-size: 0.7rem;
+      font-size: 0.7rem;
     }
     @media (min-width: $sm-breakpoint) {
-        font-size: 15px;
+      font-size: 15px;
     }
   }
 }
@@ -595,27 +598,30 @@ fa-icon {
 /*
 */
 
-.mat-form-field.mat-focused .mat-form-field-label {
-  color: transparent;
-}
+.the-tool {
 
-.mat-form-field-appearance-legacy {
-  .mat-form-field-label {
+  .mat-form-field.mat-focused .mat-form-field-label {
     color: transparent;
   }
 
-  .mat-form-field-empty {
-    color: rgba(0, 0, 0, 0.54);
+  .mat-form-field-appearance-legacy {
+    .mat-form-field-label {
+      color: transparent;
+    }
+
+    .mat-form-field-empty {
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    .mat-form-field-underline {
+      background-color: transparent;
+    }
   }
 
-  .mat-form-field-underline {
-    background-color: transparent;
-  }
-}
-
-.input-empty.mat-form-field-appearance-legacy {
-  .mat-form-field-underline {
-    background-color: rgba(0, 0, 0, 0.42);
+  .input-empty.mat-form-field-appearance-legacy {
+    .mat-form-field-underline {
+      background-color: rgba(0, 0, 0, 0.42);
+    }
   }
 }
 
@@ -720,63 +726,63 @@ fa-icon {
 }
 
 .rich-text-checkbox {
-    display: inline;
-    height: 0;
-    position: relative;
+  display: inline;
+  height: 0;
+  position: relative;
 
-    @media (min-width: $xs-breakpoint) {
-        left: -10px;
-        top: -13px;
-    }
-    @media (min-width: $sm-breakpoint) {
-        left: 0;
-        top: -20px;
-    }
-    
-    .mat-checkbox {
-        width: 0;
-        display: flex;
+  @media (min-width: $xs-breakpoint) {
+    left: -10px;
+    top: -13px;
+  }
+  @media (min-width: $sm-breakpoint) {
+    left: 0;
+    top: -20px;
+  }
 
-        .mat-checkbox-inner-container {
-            @media (min-width: $xs-breakpoint) {
-                height: 10px;
-                width: 10px;
-                margin-right: 4px;
-            }
-            @media (min-width: $sm-breakpoint) {
-                height: 16px;
-                width: 16px;
-                margin-right: 8px;
-            }
-            
-            margin: auto;
+  .mat-checkbox {
+    width: 0;
+    display: flex;
 
-            .mat-checkbox-frame {
-                @media (min-width: $xs-breakpoint) {
-                    border-width: 1px;
-                }
-                @media (min-width: $sm-breakpoint) {
-                    border-width: 2px;
-                }
-            }
+    .mat-checkbox-inner-container {
+      @media (min-width: $xs-breakpoint) {
+        height: 10px;
+        width: 10px;
+        margin-right: 4px;
+      }
+      @media (min-width: $sm-breakpoint) {
+        height: 16px;
+        width: 16px;
+        margin-right: 8px;
+      }
+
+      margin: auto;
+
+      .mat-checkbox-frame {
+        @media (min-width: $xs-breakpoint) {
+          border-width: 1px;
         }
-
-        .mat-checkbox-label {
-            @media (min-width: $xs-breakpoint) {
-                font-size: 0.45rem;
-            }
-            @media (min-width: $sm-breakpoint) {
-                font-size: 12px;
-            }
-          font-weight: 500;
-          font-family: Roboto, "Helvetica Neue", sans-serif;
-          letter-spacing: 1px;
+        @media (min-width: $sm-breakpoint) {
+          border-width: 2px;
         }
       }
+    }
+
+    .mat-checkbox-label {
+      @media (min-width: $xs-breakpoint) {
+        font-size: 0.45rem;
+      }
+      @media (min-width: $sm-breakpoint) {
+        font-size: 12px;
+      }
+      font-weight: 500;
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+      letter-spacing: 1px;
+    }
+  }
 }
 
 ckeditor {
-    margin-top: -20px;
+  margin-top: -20px;
 }
 
 .mat-checkbox-checked .mat-checkbox-background {
@@ -829,15 +835,15 @@ a.red {
     text-align: right;
 
     svg {
-        @media (min-width: $xs-breakpoint) {
-            width: 6px;
-            height: 12px;
-        }
-        @media (min-width: $sm-breakpoint) {
-            width: 0.75em;
-            height: 16px;
-        }
-        
+      @media (min-width: $xs-breakpoint) {
+        width: 6px;
+        height: 12px;
+      }
+      @media (min-width: $sm-breakpoint) {
+        width: 0.75em;
+        height: 16px;
+      }
+
       color: #80808075;
       top: -23px;
       right: 5px;
@@ -911,4 +917,14 @@ a.red {
 .width-teller {
   width: 100vw;
   height: 0px;
+}
+
+.new-story {
+  background-color: #a52a2ac2 !important;
+  color: white !important;
+
+  svg {
+    font-size: 20px;
+    margin-left: 10px;
+  }
 }

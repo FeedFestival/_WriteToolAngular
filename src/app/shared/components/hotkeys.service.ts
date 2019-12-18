@@ -30,6 +30,11 @@ export class Hotkeys {
     ) {
 
         document.addEventListener('keydown', (e) => {
+
+            if (this.editState === EditState.DEFAULT) {
+                return;
+            }
+
             // console.log("TCL: Hotkeys -> e", e)
             if (this.isTabKey(e)) {
                 console.log(e);
@@ -59,6 +64,10 @@ export class Hotkeys {
 
         return new Observable(observer => {
             const handler = (e) => {
+
+                if (this.editState === EditState.DEFAULT) {
+                    return;
+                }
 
                 // console.log("TCL: Hotkeys -> handler -> e.key", e.key);
                 // console.log('Hotkeys -> ' + e.key + '(' + this.editState + ')');

@@ -1,0 +1,66 @@
+<div class="basic-dialog-dimensions">
+
+    <div class="col-3" (click)="leave()" style="cursor: pointer;">
+        <img style="height: 80px;" src="assets/images/Logo_1.png">
+    </div>
+
+    <ng-scrollbar #NgScrollbar class="basic-dimensions">
+
+        <div class="row no-gutters container m-auto page-min-width p-3">
+            <div class="col-12 pt-5 justify-content-center">
+                <div class="row">
+
+                    <div class="col-12 d-flex justify-content-center">
+
+                        <mat-form-field class="m-auto col-8">
+                            <mat-label>Select Story</mat-label>
+                            <mat-select [formControl]="animalControl" (selectionChange)="onChange($event)">
+                                <mat-option *ngFor="let story of stories" [value]="story.id"
+                                    [ngClass]="{ 'new-story': story.id.length === 0 }">
+                                    {{story.name}}
+
+                                    <span *ngIf="story.id.length === 0">
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus"
+                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                            class="svg-inline--fa fa-plus fa-w-14">
+                                            <path fill="currentColor"
+                                                d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                                class=""></path>
+                                        </svg>
+                                    </span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <hr class="col-10 d-flex justify-content-center" *ngIf="isStorySelected"/>
+
+                    <div class="col-12 d-flex justify-content-center" *ngIf="isStorySelected">
+
+                        <mat-form-field class="col-8">
+                            <input matInput placeholder="Name" [(ngModel)]="newStory.name">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center" *ngIf="isStorySelected">
+
+                        <button mat-button [disabled]="newStory.name.length === 0" (click)="save()">
+                            Save
+                        </button>
+                    </div>
+
+                    <hr class="col-10 d-flex justify-content-center" style="margin-top: 5%;" />
+
+                    <div class="col-12 d-flex justify-content-center">
+
+                        <button mat-button color="primary" [disabled]="!isStorySelected || newStory.name.length === 0" (click)="leave()">
+                            Continue to writing
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </ng-scrollbar>
+</div>

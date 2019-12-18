@@ -7,6 +7,10 @@ import { MatDialog } from '@angular/material';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { HeaderService } from './header.service';
 import { OnResizeService } from '../on-resize/on-resize.service';
+import { StoryDialogComponent } from 'src/app/features/home-page/story-dialog/story-dialog.component';
+import { NavigationService } from '../navigation/navigation.service';
+import { EditState } from 'src/app/app.constants';
+import { ElementsService } from 'src/app/features/home-page/element/elements.service';
 
 @Component({
     selector: 'app-header',
@@ -37,6 +41,8 @@ export class HeaderComponent implements OnInit {
         private authService: AuthService,
         private matDialog: MatDialog,
         private headerService: HeaderService,
+        private elementsService: ElementsService,
+        private navigationService: NavigationService,
         private onResizeService: OnResizeService
     ) {
         onResizeService.getResizeEvent()
@@ -83,6 +89,18 @@ export class HeaderComponent implements OnInit {
                 args: newArgs
             }
         });
+    }
+
+    editStory() {
+
+        this.navigationService.emitEditStateEvent(EditState.DEFAULT);
+
+        const dialogRef = this.matDialog.open(StoryDialogComponent);
+        dialogRef.afterClosed()
+            .subscribe((story) => {
+                this.elementsService.emitStoryChange(story);
+                this.navigationService.emitEditStateEvent(EditState.MAIN);
+            });
     }
 
     save() {
