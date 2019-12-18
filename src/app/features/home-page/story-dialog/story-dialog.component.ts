@@ -13,16 +13,13 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class StoryDialogComponent implements OnInit {
 
-    stories: any[] = [
-        { id: '', name: 'New Story' }
-    ];
+    stories: any[];
 
+    selected: string;
     newStory: any = {};
     isStorySelected = false;
 
     @ViewChild('NgScrollbar', { static: true }) scrollRef: NgScrollbar;
-    
-    animalControl = new FormControl(''/*, [Validators.required]*/);
 
     constructor(
         public dialogRef: MatDialogRef<PageDialogComponent>,
@@ -37,10 +34,17 @@ export class StoryDialogComponent implements OnInit {
 
         this.stories = JSON.parse(this.localStorage.retrieve('stories'));
 
-        if (this.stories.length === 1) {
-            this.onChange({value: this.stories[0].id});
+        if (!this.stories) {
+            this.stories = [
+                { id: '', name: 'New Story' }
+            ];
+        }
+
+        if (this.stories && this.stories.length === 1) {
+            this.onChange({ value: this.stories[0].id });
         } else {
-            this.animalControl.setValue(null);
+            this.selected = '';
+            this.onChange({ value: '' });
         }
     }
 
@@ -73,8 +77,8 @@ export class StoryDialogComponent implements OnInit {
 
         this.localStorage.store('stories', JSON.stringify(this.stories));
         const lastIndex = this.stories.length - 1;
-        this.animalControl.setValue(this.stories[lastIndex]);
-        this.onChange({value: this.stories[lastIndex].id});
+        this.selected = this.stories[lastIndex].id;
+        this.onChange({ value: this.stories[lastIndex].id });
     }
 
     scrollToTop() {

@@ -12,13 +12,15 @@ import { SeoService } from './seo.service';
 import { HeaderService } from 'src/app/shared/header/header.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OnResizeService } from 'src/app/shared/on-resize/on-resize.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-home-page',
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
 
     ElementTypeRef = ElementType;
 
@@ -31,6 +33,8 @@ export class HomePageComponent implements OnInit {
     bp: string;
 
     @ViewChildren(ElementComponent) elementsRef: QueryList<any>;
+
+    private unsubscribe$ = new Subject<void>();
 
     constructor(
         private headerService: HeaderService,
@@ -45,27 +49,32 @@ export class HomePageComponent implements OnInit {
         private onResizeService: OnResizeService
     ) {
         undoService.getUndoStateEmitter()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe((oldState) => {
                 this.setPreviousState(oldState);
             });
 
         onResizeService.getResizeEvent()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe((bp) => {
                 this.bp = bp;
             });
 
         elementsService.getGoToBookmark()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(bookmarkId => {
                 const index = this.elements.findIndex(e => e.id === bookmarkId);
                 this.setUnderCarret(null, index);
             });
 
         navigationService.getEditStateEmitter()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe((editState) => {
                 this.editState = editState;
             });
 
         navigationService.getClickNavEvent()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe((code) => {
                 switch (code) {
                     case Key.Enter:
@@ -120,17 +129,20 @@ export class HomePageComponent implements OnInit {
         const stories = JSON.parse(this.localStorage.retrieve('stories'));
         if (!stories || stories.length === 0) {
             this.elementsService.getElements()
+                .pipe(takeUntil(this.unsubscribe$))
                 .subscribe(this.onElementsLoaded);
         } else {
             this.onStoryLoaded(stories[stories.length - 1]);
         }
 
         this.elementsService.getStoryChange()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(this.onStoryLoaded);
 
         this.navigationService.emitEditStateEvent(EditState.MAIN);
 
         this.hotkeys.addShortcut({ keys: Key.ArrowUp })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 if (this.editState === EditState.NEW) {
                     this.onEscape();
@@ -138,6 +150,7 @@ export class HomePageComponent implements OnInit {
                 this.onArrowUp();
             });
         this.hotkeys.addShortcut({ keys: Key.ArrowDown })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 if (this.editState === EditState.NEW) {
                     this.onEscape();
@@ -145,72 +158,88 @@ export class HomePageComponent implements OnInit {
                 this.onArrowDown();
             });
         this.hotkeys.addShortcut({ keys: Key.Tab })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onTab();
             });
         //
         this.hotkeys.addShortcut({ keys: Key.Escape })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onEscape();
             });
         //
         this.hotkeys.addShortcut({ keys: Key.Enter })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onEnter();
             });
         this.hotkeys.addShortcut({ keys: Key.H })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onHKey();
             });
         this.hotkeys.addShortcut({ keys: Key.A })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onAKey();
             });
         this.hotkeys.addShortcut({ keys: Key.C })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onCKey();
             });
         this.hotkeys.addShortcut({ keys: Key.D })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onDKey();
             });
         this.hotkeys.addShortcut({ keys: Key.P })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onPKey();
             });
         this.hotkeys.addShortcut({ keys: Key.V })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onVKey();
             });
         this.hotkeys.addShortcut({ keys: Key.S })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onSKey();
             });
         this.hotkeys.addShortcut({ keys: Key.Slash })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onSlashKey();
             });
         //
         this.hotkeys.addShortcut({ keys: Key.Backspace })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onBackspace();
             });
 
         this.hotkeys.addShortcut({ keys: Key.Z })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onUndo();
             });
         this.hotkeys.addShortcut({ keys: Key.Y })
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.onRedo();
             });
         //
         this.hotkeys.onControlSHotkey()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.elementsService.save(this.elements, this.story.id);
                 this.headerService.emitCanSaveEvent(false);
             });
         this.headerService.getSaveEvent()
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.elementsService.save(this.elements, this.story.id);
                 this.headerService.emitCanSaveEvent(false);
@@ -225,6 +254,7 @@ export class HomePageComponent implements OnInit {
         this.story = story;
 
         this.elementsService.getElements(this.story.id)
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(this.onElementsLoaded);
     }
 
@@ -659,5 +689,10 @@ export class HomePageComponent implements OnInit {
             // console.log('diff:' + index);
         }
         return index;
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }
