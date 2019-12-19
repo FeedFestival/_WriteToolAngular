@@ -373,6 +373,7 @@ fa-icon {
       background: url("assets/images/No-Image.png");
       background-repeat: round;
       background-size: auto;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
   }
 }
@@ -489,6 +490,7 @@ fa-icon {
     }
     @media (min-width: $sm-breakpoint) {
       font-size: 15px;
+      line-height: 18px;
     }
   }
 

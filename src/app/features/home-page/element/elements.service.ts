@@ -1,11 +1,9 @@
-import { EventEmitter, Injectable, ElementRef } from '@angular/core';
-import { ElementType, HttpDefaultOptions } from 'src/app/app.constants';
+import { EventEmitter, Injectable } from '@angular/core';
+import { LocalStorageService } from 'ngx-webstorage';
+import { Observable, of } from 'rxjs';
+import { ElementType } from 'src/app/app.constants';
 import { TestHttpClient } from 'src/app/TestHttpClient/TestHttpClient.service';
-import { map, mergeAll } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { IBookmark } from '../page-map/page-map.component';
-import { element } from 'protractor';
 
 export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
 export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
@@ -28,7 +26,7 @@ export class ElementsService {
 
     constructor(
         private testHttpClient: TestHttpClient,
-        private cookieService: CookieService
+        private localStorage: LocalStorageService
     ) {
         this.http = testHttpClient;
     }
@@ -74,7 +72,7 @@ export class ElementsService {
         } else if (storyId) {
 
             let elements: any[] = [];
-            const s = this.cookieService.get(storyId);
+            const s = this.localStorage.retrieve(storyId);
             if (s && s.length !== 0) {
                 elements = JSON.parse(s);
             }
@@ -85,11 +83,10 @@ export class ElementsService {
     }
 
     save(elements, storyId) {
-
         const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
         elementsWithNoImages.forEach(e => e.image = null);
         const s = JSON.stringify(elementsWithNoImages);
-        this.cookieService.set(storyId, s);
+        this.localStorage.store(storyId, s);
     }
 
     setAllowedElements(elementType) {

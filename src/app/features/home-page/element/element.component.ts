@@ -1,9 +1,9 @@
 import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { FileSystemFileEntry } from 'ngx-file-drop';
+import { LocalStorageService } from 'ngx-webstorage';
 import { ElementType } from 'src/app/app.constants';
 import { CursorComponent } from '../cursor/cursor.component';
 import { ElementsService } from './elements.service';
-import { FileSystemDirectoryEntry, FileSystemFileEntry } from 'ngx-file-drop';
-import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-element',
@@ -32,7 +32,6 @@ export class ElementComponent implements OnInit, OnChanges {
     asyncObject: any = {
     };
     editorModel = {
-        editorData: '<p>Hello, world!</p>',
         config: {
             toolbar: ['bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList']
         }
@@ -70,6 +69,16 @@ export class ElementComponent implements OnInit, OnChanges {
                             this.asyncObject.Editor = classicEditor.default;
                         });
                     }
+                }
+
+                if (this.element.type === ElementType.ACTION) {
+                    if (!this.element.hasRichText) {
+                        this.forceResizeContent();
+                    }
+                }
+                if (this.element.type === ElementType.COMMENT ||
+                    this.element.type === ElementType.DIALOG) {
+                    this.forceResizeContent();
                 }
             }
             if (changes.underCarret) {
@@ -110,9 +119,11 @@ export class ElementComponent implements OnInit, OnChanges {
         return false;
     }
 
-    onActionRichText(e) {
+    onActionRichText(e?) {
         if (this.element.hasRichText) {
-            this.editorModel.editorData = this.elementsService.convertToHtml(this.element.text);
+            if (!this.element.editorData || this.element.editorData.length === 0) {
+                this.element.editorData = this.elementsService.convertToHtml(this.element.text);
+            }
 
             setTimeout(() => {
                 (this.ckEditorRef as any).focus
@@ -128,7 +139,9 @@ export class ElementComponent implements OnInit, OnChanges {
                 el.lastElementChild.lastElementChild.lastElementChild.focus();
             });
         } else {
-            this.element.text = this.elementsService.stripHtml(this.editorModel.editorData);
+            if (!this.element.text || this.element.text.length === 0) {
+                this.element.text = this.elementsService.stripHtml(this.element.editorData);
+            }
             setTimeout(() => {
                 this.inputRef.nativeElement.click();
                 this.inputRef.nativeElement.focus();
@@ -157,4 +170,37 @@ export class ElementComponent implements OnInit, OnChanges {
         this.element.isBookmarked = isBookmarked;
         this.onBookmark.emit();
     }
+
+    // we do this so that cdkAutosize refreshes based on the content : some unknown bug occured.
+    forceResizeContent = () => {
+        const text = this.element.text;
+        this.element.text = 'loading...';
+        setTimeout(() => {
+            this.element.text = text;
+        }, 500);
+    }
+
+    externalBlur() {
+        if (this.element.hasRichText) {
+            this.blur();
+            const el = (this.ckEditorRef as any).elementRef.nativeElement;
+            el.lastElementChild.lastElementChild.lastElementChild.blur();
+        } else {
+            this.inputRef.nativeElement.blur();
+        }
+    }
+
+    externalEdit() {
+        if (this.element.hasRichText) {
+            this.edit();
+            setTimeout(() => {
+                const el = (this.ckEditorRef as any).elementRef.nativeElement;
+                el.lastElementChild.lastElementChild.lastElementChild.click();
+                el.lastElementChild.lastElementChild.lastElementChild.focus();
+            }, 500);
+        } else {
+            this.inputRef.nativeElement.click();
+        }
+    }
+
 }

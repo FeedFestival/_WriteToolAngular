@@ -332,7 +332,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
             el.element.isEditing = false;
             this.onBlur(el.i);
         } else {
-            el.inputRef.nativeElement.blur();
+            el.externalBlur();
         }
     }
 
@@ -344,7 +344,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
             el.element.isEditing = true;
 
         } else {
-            el.inputRef.nativeElement.click();
+            el.externalEdit();
         }
         this.navigationService.emitEditStateEvent(EditState.TEXT);
     }
