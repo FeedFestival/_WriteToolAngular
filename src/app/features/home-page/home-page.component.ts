@@ -267,6 +267,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         this.elements.forEach(e => {
             e.underCarret = false;
+            e.isEditing = false;
             if (e.type === ElementType.PICTURE) {
                 e.image = this.localStorage.retrieve(e.id);
             }

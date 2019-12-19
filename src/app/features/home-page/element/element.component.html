@@ -20,17 +20,21 @@
             *ngIf="(!element.hasRichText && element.type === ElementTypeRef.ACTION) || element.type === ElementTypeRef.DIALOG || element.type === ElementTypeRef.COMMENT"
             [ngClass]="element.inputClass">
 
+            <!--    *ngIf="element.isEditing"   -->
             <textarea matInput #inputRef cdkTextareaAutosize cdkAutosizeMinRows="2" [name]="element.id"
                 [placeholder]="element.type" [(ngModel)]="element.text" (focus)="edit()" (blur)="blur()">
-                </textarea>
+            </textarea>
+            <!-- <div *ngIf="!element.isEditing"
+                [innerHTML]="element.text">
+            </div> -->
         </mat-form-field>
 
         <ng-container *ngIf="isBrowser">
             <ckeditor #ckEditorRef *ngIf="element.hasRichText && element.isEditing && element.type === ElementTypeRef.ACTION" class="w-100"
                 [config]="editorModel.config" style="margin-top: -20px;" [(ngModel)]="element.editorData"
                 [editor]="asyncObject.Editor"></ckeditor>
-            <div *ngIf="element.hasRichText && !element.isEditing && element.type === ElementTypeRef.ACTION" class="w-100"
-                [innerHTML]="element.editorData">
+            <div *ngIf="element.hasRichText && !element.isEditing && element.type === ElementTypeRef.ACTION"
+                class="w-100 display-text" (click)="externalEdit()" [innerHTML]="element.editorData">
             </div>
         </ng-container>
 

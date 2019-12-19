@@ -483,6 +483,10 @@ fa-icon {
   width: 100%;
 
   text-area,
+  //
+  .display-text,
+  .display-text p,
+  //
   .mat-input-element {
     font-family: graphikRegular;
     @media (min-width: $xs-breakpoint) {
@@ -492,6 +496,11 @@ fa-icon {
       font-size: 15px;
       line-height: 18px;
     }
+  }
+
+  .display-text,
+  .display-text p {
+    line-height: 22px !important;
   }
 
   .ck-toolbar {

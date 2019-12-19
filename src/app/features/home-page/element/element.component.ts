@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
 import { FileSystemFileEntry } from 'ngx-file-drop';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ElementType } from 'src/app/app.constants';
@@ -10,7 +10,7 @@ import { ElementsService } from './elements.service';
     templateUrl: './element.component.html',
     styleUrls: ['./element.component.scss']
 })
-export class ElementComponent implements OnInit, OnChanges {
+export class ElementComponent implements OnChanges {
 
     @Input() element: any;
     @Input() i: any;
@@ -48,9 +48,6 @@ export class ElementComponent implements OnInit, OnChanges {
         this.isBrowser = (platformId === 'browser');
     }
 
-    ngOnInit() {
-    }
-
     ngOnChanges(changes: SimpleChanges) {
 
         if (changes) {
@@ -69,6 +66,10 @@ export class ElementComponent implements OnInit, OnChanges {
                             this.asyncObject.Editor = classicEditor.default;
                         });
                     }
+                }
+
+                if (!changes.element.firstChange) {
+                    return;
                 }
 
                 if (this.element.type === ElementType.ACTION) {
@@ -193,6 +194,7 @@ export class ElementComponent implements OnInit, OnChanges {
     externalEdit() {
         if (this.element.hasRichText) {
             this.edit();
+            this.onActionRichText();
             setTimeout(() => {
                 const el = (this.ckEditorRef as any).elementRef.nativeElement;
                 el.lastElementChild.lastElementChild.lastElementChild.click();
