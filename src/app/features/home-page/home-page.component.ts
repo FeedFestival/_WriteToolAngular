@@ -234,16 +234,31 @@ export class HomePageComponent implements OnInit, OnDestroy {
         //
         this.hotkeys.onControlSHotkey()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(() => {
-                this.elementsService.save(this.elements, this.story.id);
-                this.headerService.emitCanSaveEvent(false);
-            });
+            .subscribe(this.saveStory);
         this.headerService.getSaveEvent()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(() => {
-                this.elementsService.save(this.elements, this.story.id);
-                this.headerService.emitCanSaveEvent(false);
-            });
+            .subscribe(this.saveStory);
+    }
+
+    saveStory = () => {
+        if (!this.story) {
+            let stories = JSON.parse(this.localStorage.retrieve('stories'));
+            let storyName = 'Story ';
+            if (stories === null || stories.length === 0) {
+                stories = [];
+                storyName += '1';
+            } else {
+                storyName += stories.length;
+            }
+            this.story = {
+                id: this.elementsService.guid(),
+                name: storyName
+            };
+            stories.push(JSON.parse(JSON.stringify(this.story)));
+            this.localStorage.store('stories', JSON.stringify(stories));
+        }
+        this.elementsService.save(this.elements, this.story.id);
+        this.headerService.emitCanSaveEvent(false);
     }
 
     onStoryLoaded = (story) => {

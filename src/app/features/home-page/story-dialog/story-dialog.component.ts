@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { MatDialogRef, MatSelect } from '@angular/material';
 import { NgScrollbar } from 'ngx-scrollbar';
@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
     templateUrl: './story-dialog.component.html',
     styleUrls: ['./story-dialog.component.scss']
 })
-export class StoryDialogComponent implements OnInit {
+export class StoryDialogComponent implements OnInit, AfterViewInit {
 
     stories: any[];
 
