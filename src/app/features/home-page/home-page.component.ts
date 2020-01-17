@@ -14,6 +14,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { OnResizeService } from 'src/app/shared/on-resize/on-resize.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { CharacterDialogComponent } from './character-dialog/character-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-home-page',
@@ -46,7 +48,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private localStorage: LocalStorageService,
         private elementsService: ElementsService,
         private navigationService: NavigationService,
-        private onResizeService: OnResizeService
+        private onResizeService: OnResizeService,
+        private matDialog: MatDialog
     ) {
         undoService.getUndoStateEmitter()
             .pipe(takeUntil(this.unsubscribe$))
@@ -705,6 +708,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
             // console.log('diff:' + index);
         }
         return index;
+    }
+
+    onEditCharacter(element) {
+        // console.log("TCL: HomePageComponent -> onEditCharacter -> event", event);
+
+        const dialogRef = this.matDialog.open(CharacterDialogComponent, {
+            data: {
+                elementId: element.id
+            }
+        });
+        dialogRef.afterClosed().subscribe(_ => {});
     }
 
     ngOnDestroy() {

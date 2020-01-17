@@ -939,3 +939,16 @@ a.red {
     margin-left: 10px;
   }
 }
+
+.character-sheet-icon {
+    height: 0;
+    width: 0;
+    display: inline-block;
+    left: -30%;
+    position: relative;
+    color: $facebook-blue;
+    > button {
+        line-height: 0;
+        font-size: 17px;
+    }
+}
