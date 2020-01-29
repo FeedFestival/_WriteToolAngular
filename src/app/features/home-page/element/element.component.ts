@@ -19,6 +19,7 @@ export class ElementComponent implements OnChanges {
     @Output() onEdit: EventEmitter<void> = new EventEmitter<void>();
     @Output() onBlur: EventEmitter<void> = new EventEmitter<void>();
     @Output() onBookmark: EventEmitter<void> = new EventEmitter<void>();
+    @Output() editCharacter: EventEmitter<void> = new EventEmitter<void>();
 
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;
@@ -205,4 +206,7 @@ export class ElementComponent implements OnChanges {
         }
     }
 
+    onEditCharacter() {
+        this.editCharacter.emit(this.element);
+    }
 }

@@ -29,7 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     scrollClass = 'max';
     bp: string;
     scrollBreakpoint: any = ScrollBreakpoints.sm;
-
+    canShowPageMap = false;
 
     //keep refs to subscriptions to be able to unsubscribe later
     private popupOpenSubscription: Subscription;
@@ -58,6 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             filter(() => !!this.scrollRef),
             tap((event: NavigationEnd) => {
                 // console.log(event.urlAfterRedirects);
+                this.canShowPageMap = event.urlAfterRedirects === '/';
                 this.scrollToTop();
                 gtag('config', 'UA-154145362-1',
                     {

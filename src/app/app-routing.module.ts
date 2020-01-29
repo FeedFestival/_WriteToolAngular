@@ -9,6 +9,7 @@ import { PrivacyComponent } from './features/policy/privacy/privacy.component';
 import { CookiesComponent } from './features/policy/cookies/cookies.component';
 import { SnsComponent } from './features/policy/sns/sns.component';
 import { GdprComponent } from './features/policy/gdpr/gdpr.component';
+import { CharacterComponent } from './features/home-page/character-dialog/character/character.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'gdpr', component: GdprComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'about', component: AboutComponent },
+    { path: 'character', component: CharacterComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

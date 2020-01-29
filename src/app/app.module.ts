@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule, MatSelectModule, MatExpansionModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -36,6 +36,8 @@ import { BookmarkComponent } from './features/home-page/element/bookmark/bookmar
 import { PageMapComponent } from './features/home-page/page-map/page-map.component';
 import { OnResizeComponent } from './shared/on-resize/on-resize.component';
 import { StoryDialogComponent } from './features/home-page/story-dialog/story-dialog.component';
+import { CharacterDialogComponent } from './features/home-page/character-dialog/character-dialog.component';
+import { CharacterComponent } from './features/home-page/character-dialog/character/character.component';
 
 const config = new AuthServiceConfig([
     {
@@ -107,7 +109,9 @@ export function provideConfig() {
         BookmarkComponent,
         PageMapComponent,
         OnResizeComponent,
-        StoryDialogComponent
+        StoryDialogComponent,
+        CharacterDialogComponent,
+        CharacterComponent
     ],
     imports: [
         NgcCookieConsentModule.forRoot(cookieConfig),
@@ -134,6 +138,7 @@ export function provideConfig() {
         NgxFileDropModule,
         MatSelectModule,
         ReactiveFormsModule,
+        MatExpansionModule
     ],
     exports: [
         MatButtonModule,
@@ -146,7 +151,8 @@ export function provideConfig() {
     ],
     entryComponents: [
         PageDialogComponent,
-        StoryDialogComponent
+        StoryDialogComponent,
+        CharacterDialogComponent
     ],
     providers: [
         CookieService,

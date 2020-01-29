@@ -14,6 +14,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { OnResizeService } from 'src/app/shared/on-resize/on-resize.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { CharacterDialogComponent } from './character-dialog/character-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-home-page',
@@ -46,7 +48,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private localStorage: LocalStorageService,
         private elementsService: ElementsService,
         private navigationService: NavigationService,
-        private onResizeService: OnResizeService
+        private onResizeService: OnResizeService,
+        private matDialog: MatDialog
     ) {
         undoService.getUndoStateEmitter()
             .pipe(takeUntil(this.unsubscribe$))
@@ -234,16 +237,31 @@ export class HomePageComponent implements OnInit, OnDestroy {
         //
         this.hotkeys.onControlSHotkey()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(() => {
-                this.elementsService.save(this.elements, this.story.id);
-                this.headerService.emitCanSaveEvent(false);
-            });
+            .subscribe(this.saveStory);
         this.headerService.getSaveEvent()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(() => {
-                this.elementsService.save(this.elements, this.story.id);
-                this.headerService.emitCanSaveEvent(false);
-            });
+            .subscribe(this.saveStory);
+    }
+
+    saveStory = () => {
+        if (!this.story) {
+            let stories = JSON.parse(this.localStorage.retrieve('stories'));
+            let storyName = 'Story ';
+            if (stories === null || stories.length === 0) {
+                stories = [];
+                storyName += '1';
+            } else {
+                storyName += stories.length;
+            }
+            this.story = {
+                id: this.elementsService.guid(),
+                name: storyName
+            };
+            stories.push(JSON.parse(JSON.stringify(this.story)));
+            this.localStorage.store('stories', JSON.stringify(stories));
+        }
+        this.elementsService.save(this.elements, this.story.id);
+        this.headerService.emitCanSaveEvent(false);
     }
 
     onStoryLoaded = (story) => {
@@ -695,6 +713,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
             // console.log('diff:' + index);
         }
         return index;
+    }
+
+    onEditCharacter(element) {
+        // console.log("TCL: HomePageComponent -> onEditCharacter -> event", event);
+
+        const dialogRef = this.matDialog.open(CharacterDialogComponent, {
+            data: {
+                elementId: element.id
+            }
+        });
+        dialogRef.afterClosed().subscribe(_ => {});
     }
 
     ngOnDestroy() {
