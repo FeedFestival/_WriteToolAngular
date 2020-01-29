@@ -391,6 +391,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     private scrollToElementIfOutOfView(force?) {
 
+        if (this.currentElement.type === ElementType.ACTION &&
+            this.currentElement.hasRichText) {
+            return;
+        }
+
         if (force) {
             this.elementsService.emitScrollToElementEmitterEvent('#element' + this.currentElement.id);
         }
