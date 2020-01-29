@@ -135,7 +135,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.unsubscribe$))
                 .subscribe(this.onElementsLoaded);
         } else {
-            this.onStoryLoaded(stories[stories.length - 1]);
+            let currentWorkingStoryId = this.localStorage.retrieve("currentWorkingStoryId");
+            if (!currentWorkingStoryId || currentWorkingStoryId.length === 0) {
+                currentWorkingStoryId = (stories.length - 1)
+            }
+            this.onStoryLoaded(stories[stories.findIndex(s => s.id === currentWorkingStoryId)]);
         }
 
         this.elementsService.getStoryChange()
@@ -257,6 +261,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 id: this.elementsService.guid(),
                 name: storyName
             };
+            this.elementsService.setStory(this.story);
             stories.push(JSON.parse(JSON.stringify(this.story)));
             this.localStorage.store('stories', JSON.stringify(stories));
         }
@@ -266,10 +271,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     onStoryLoaded = (story) => {
 
-        if (this.story && this.story.id === story.id) {
+        if (!story || (this.story && this.story.id === story.id)) {
             return;
         }
         this.story = story;
+        this.elementsService.setStory(this.story);
 
         this.elementsService.getElements(this.story.id)
             .pipe(takeUntil(this.unsubscribe$))

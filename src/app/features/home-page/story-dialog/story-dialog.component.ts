@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
-import { MatDialogRef, MatSelect } from '@angular/material';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { ElementsService } from '../element/elements.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { FormControl, Validators } from '@angular/forms';
+import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
+import { ElementsService } from '../element/elements.service';
 
 @Component({
     selector: 'app-story-dialog',
@@ -26,7 +25,6 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
         private elementsService: ElementsService,
         private localStorage: LocalStorageService,
     ) {
-
     }
 
     ngOnInit() {
@@ -40,11 +38,17 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
             ];
         }
 
-        if (this.stories && this.stories.length === 1) {
-            this.onChange({ value: this.stories[0].id });
+        const story = this.elementsService.getStory();
+
+        if (!story) {
+            if (this.stories && this.stories.length === 1) {
+                this.onChange({ value: this.stories[0].id });
+            } else {
+                this.selected = '';
+                this.onChange({ value: '' });
+            }
         } else {
-            this.selected = '';
-            this.onChange({ value: '' });
+            this.onChange({ value: story.id });
         }
     }
 
@@ -64,7 +68,7 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
         } else {
             this.newStory = this.stories.find(s => s.id === event.value);
         }
-
+        this.selected = this.stories[this.stories.findIndex(s => s.id === event.value)].id;
         this.isStorySelected = true;
     }
 

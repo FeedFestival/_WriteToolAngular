@@ -1,16 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
-import { AuthService, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
-import { faCoffee, faEnvelope, faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
-import { HeaderService } from './header.service';
-import { OnResizeService } from '../on-resize/on-resize.service';
-import { StoryDialogComponent } from 'src/app/features/home-page/story-dialog/story-dialog.component';
-import { NavigationService } from '../navigation/navigation.service';
+import { Router } from '@angular/router';
+import { faCoffee, faEnvelope, faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { AuthService, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
 import { EditState } from 'src/app/app.constants';
 import { ElementsService } from 'src/app/features/home-page/element/elements.service';
+import { StoryDialogComponent } from 'src/app/features/home-page/story-dialog/story-dialog.component';
+import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
+import { NavigationService } from '../navigation/navigation.service';
+import { OnResizeService } from '../on-resize/on-resize.service';
+import { HeaderService } from './header.service';
 
 @Component({
     selector: 'app-header',
@@ -35,6 +34,7 @@ export class HeaderComponent implements OnInit {
     the tool file options
     */
     saveClass: string;
+    storyName: string;
 
     constructor(
         private router: Router,
@@ -48,6 +48,11 @@ export class HeaderComponent implements OnInit {
         onResizeService.getResizeEvent()
             .subscribe((bp) => {
                 this.bp = bp;
+            });
+
+        this.elementsService.getStoryNameEventEvent()
+            .subscribe((storyName) => {
+                this.storyName = storyName;
             });
     }
 

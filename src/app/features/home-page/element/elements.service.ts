@@ -17,12 +17,15 @@ export class ElementsService {
     updateMap: EventEmitter<any> = new EventEmitter<any>();
     goToBookmark: EventEmitter<string> = new EventEmitter<string>();
     storyChange: EventEmitter<any> = new EventEmitter<any>();
+    storyNameEvent: EventEmitter<any> = new EventEmitter<any>();
 
     allowedNewElements: string[];
 
     currentElementType: string;
 
     http: TestHttpClient;
+
+    private story: any;
 
     constructor(
         private testHttpClient: TestHttpClient,
@@ -210,5 +213,19 @@ export class ElementsService {
         });
 
         this.updateMap.emit(bookmarkedElements);
+    }
+
+    getStoryNameEventEvent(): EventEmitter<string> {
+        return this.storyNameEvent;
+    }
+
+    getStory() {
+        return this.story;
+    }
+
+    setStory(story) {
+        this.story = story;
+        this.localStorage.store("currentWorkingStoryId", this.story.id);
+        this.storyNameEvent.emit(this.story.name);
     }
 }
