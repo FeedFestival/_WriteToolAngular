@@ -5,7 +5,8 @@
 
     <div>
 
-        <div class="map-el" *ngFor="let bookmark of bookmarks;" (click)="goToBookmark(bookmark.id)"
+        <div class="map-el" *ngFor="let bookmark of bookmarks;" (click)="goToBookmark(bookmark.id)" 
+            [matTooltip]="bookmark.text" matTooltipPosition="right"
             [ngClass]="{'secondary' : bookmark.isSecondary, 'comment': bookmark.type === ElementType.COMMENT}">
             <div class="el-icon">
                 <svg *ngIf="bookmark.type === ElementType.SCENE_HEADING" aria-hidden="true" focusable="false"

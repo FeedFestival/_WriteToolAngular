@@ -7,9 +7,11 @@ import { EditState } from 'src/app/app.constants';
 import { ElementsService } from 'src/app/features/home-page/element/elements.service';
 import { StoryDialogComponent } from 'src/app/features/home-page/story-dialog/story-dialog.component';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
+import { UploadDialogComponent } from '../components/upload-dialog/upload-dialog.component';
 import { NavigationService } from '../navigation/navigation.service';
 import { OnResizeService } from '../on-resize/on-resize.service';
 import { HeaderService } from './header.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-header',
@@ -43,7 +45,8 @@ export class HeaderComponent implements OnInit {
         private headerService: HeaderService,
         private elementsService: ElementsService,
         private navigationService: NavigationService,
-        private onResizeService: OnResizeService
+        private onResizeService: OnResizeService,
+        private localStorage: LocalStorageService
     ) {
         onResizeService.getResizeEvent()
             .subscribe((bp) => {
@@ -105,6 +108,51 @@ export class HeaderComponent implements OnInit {
             .subscribe((story) => {
                 this.elementsService.emitStoryChange(story);
                 this.navigationService.emitEditStateEvent(EditState.MAIN);
+            });
+    }
+
+    downLoadJson() {
+        const story = this.elementsService.getStory();
+        if (!story) {
+            return;
+        }
+        const elements = this.elementsService.getElements(story.id);
+        this.download(story.name, JSON.stringify(elements));
+    }
+
+    download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    upLoadJson() {
+        this.matDialog.open(UploadDialogComponent)
+            .afterClosed()
+            .subscribe((data) => {
+                let stories = JSON.parse(this.localStorage.retrieve('stories'));
+                let storyName = data.name + ' (Uploaded) ';
+                const elements = JSON.parse(data.storyString).value;
+                if (stories === null || stories.length === 0) {
+                    stories = [];
+                    storyName += '1';
+                } else {
+                    storyName += stories.length;
+                }
+                let story = {
+                    id: this.elementsService.guid(),
+                    name: storyName
+                };
+                stories.push(JSON.parse(JSON.stringify(story)));
+                this.localStorage.store('stories', JSON.stringify(stories));
+                this.elementsService.save(elements, story.id);
             });
     }
 

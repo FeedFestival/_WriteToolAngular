@@ -1,0 +1,22 @@
+<div class="basic-dialog-dimensions">
+
+    <div class="col-3" (click)="leave()" style="cursor: pointer;">
+        <img style="height: 80px;" src="assets/images/Logo_1.png">
+    </div>
+
+    <div class="basic-dimensions">
+
+        <div class="row no-gutters container m-auto page-min-width p-3">
+            <div class="col-12 pt-5 justify-content-center">
+
+                <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                        <span class="drop-files-info">Drop files directly here or </span>
+                        <a type="button" (click)="openFileSelector()">browse them</a>.
+                    </ng-template>
+                </ngx-file-drop>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -39,7 +39,7 @@ export class ElementComponent implements OnChanges {
     };
 
     myReader: FileReader;
-    image;
+    image;  // can delete this?
 
     constructor(
         @Inject(PLATFORM_ID) private platformId,

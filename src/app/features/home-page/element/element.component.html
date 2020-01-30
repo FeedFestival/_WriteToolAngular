@@ -9,8 +9,10 @@
                 class=""></path>
         </svg>
 
-        <div *ngIf="element.type === ElementTypeRef.CHARACTER" class="character-sheet-icon">
-            <button mat-button [hidden]="!element.underCarret" (click)="onEditCharacter()">
+        <!-- Disabled for now  -->
+        <div *ngIf="element.type === ElementTypeRef.CHARACTER" class="character-sheet-icon"
+            matTooltip="[Character Bio] is currently disabled until next release." matTooltipPosition="above" matTooltipClass="tooltip-red">
+            <button mat-button [hidden]="!element.underCarret" (click)="onEditCharacter()" disabled="true">
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="id-card-alt" role="img"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-id-card-alt fa-w-18">
                     <path fill="currentColor"

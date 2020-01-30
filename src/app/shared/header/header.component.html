@@ -9,11 +9,30 @@
             </button>
             <button mat-button class="ac-but float-right" (click)="editStory()">
                 <span class="story-name">{{storyName}}</span>
-                <svg style="height: 55px; color: white; margin-bottom: -15px; font-size: 27px;"
-                    aria-hidden="true" focusable="false" data-prefix="fas" data-icon="edit" role="img"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-edit fa-w-18">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="edit" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                    class="svg-but svg-inline--fa fa-edit fa-w-18">
                     <path fill="currentColor"
                         d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                        class=""></path>
+                </svg>
+            </button>
+
+            <button mat-button class="ac-but float-right" (click)="downLoadJson()">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="brackets-curly" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                    class="svg-but svg-inline--fa fa-brackets-curly fa-w-18">
+                    <path fill="currentColor"
+                        d="M208 32h-48a96 96 0 0 0-96 96v37.48a32.06 32.06 0 0 1-9.38 22.65L9.37 233.37a32 32 0 0 0 0 45.26l45.25 45.25A32 32 0 0 1 64 346.51V384a96 96 0 0 0 96 96h48a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16h-48a32 32 0 0 1-32-32v-37.48a96 96 0 0 0-28.13-67.89L77.25 256l22.63-22.63A96 96 0 0 0 128 165.48V128a32 32 0 0 1 32-32h48a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm358.63 201.37l-45.25-45.24a32.06 32.06 0 0 1-9.38-22.65V128a96 96 0 0 0-96-96h-48a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h48a32 32 0 0 1 32 32v37.47a96 96 0 0 0 28.13 67.91L498.75 256l-22.62 22.63A96 96 0 0 0 448 346.52V384a32 32 0 0 1-32 32h-48a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h48a96 96 0 0 0 96-96v-37.49a32 32 0 0 1 9.38-22.63l45.25-45.25a32 32 0 0 0 0-45.26z"
+                        class=""></path>
+                </svg>
+            </button>
+
+            <button mat-button class="ac-but float-right" (click)="upLoadJson()">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-but  svg-inline--fa fa-upload fa-w-16">
+                    <path fill="currentColor"
+                        d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
                         class=""></path>
                 </svg>
             </button>

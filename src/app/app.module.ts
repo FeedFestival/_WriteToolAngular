@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule, MatSelectModule, MatExpansionModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatDividerModule, MatInputModule, MatMenuModule, MatSelectModule, MatExpansionModule, MatTooltipModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -38,6 +38,7 @@ import { OnResizeComponent } from './shared/on-resize/on-resize.component';
 import { StoryDialogComponent } from './features/home-page/story-dialog/story-dialog.component';
 import { CharacterDialogComponent } from './features/home-page/character-dialog/character-dialog.component';
 import { CharacterComponent } from './features/home-page/character-dialog/character/character.component';
+import { UploadDialogComponent } from './shared/components/upload-dialog/upload-dialog.component';
 
 const config = new AuthServiceConfig([
     {
@@ -111,7 +112,8 @@ export function provideConfig() {
         OnResizeComponent,
         StoryDialogComponent,
         CharacterDialogComponent,
-        CharacterComponent
+        CharacterComponent,
+        UploadDialogComponent
     ],
     imports: [
         NgcCookieConsentModule.forRoot(cookieConfig),
@@ -138,7 +140,8 @@ export function provideConfig() {
         NgxFileDropModule,
         MatSelectModule,
         ReactiveFormsModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTooltipModule
     ],
     exports: [
         MatButtonModule,
@@ -152,7 +155,8 @@ export function provideConfig() {
     entryComponents: [
         PageDialogComponent,
         StoryDialogComponent,
-        CharacterDialogComponent
+        CharacterDialogComponent,
+        UploadDialogComponent
     ],
     providers: [
         CookieService,
