@@ -24,7 +24,7 @@ import { AppModule } from './app.module';
 const config = new AuthServiceConfig([
     {
         id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider('2520604091369887')
+        provider: new FacebookLoginProvider('485626875687512')
     }
 ]);
 

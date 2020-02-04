@@ -119,13 +119,13 @@ export class ElementsService {
     canInsert(elementType, nextElementType) {
         switch (elementType) {
             case ElementType.SCENE_HEADING:
-                // return SCENE_HEADING_NEW_ELS.some(eT => eT === nextElementType);
+            // return SCENE_HEADING_NEW_ELS.some(eT => eT === nextElementType);
             case ElementType.ACTION:
-                // return ACTION_NEW_ELS.some(eT => eT === nextElementType);
+            // return ACTION_NEW_ELS.some(eT => eT === nextElementType);
             case ElementType.CHARACTER:
-                // return CHARACTER_NEW_ELS.some(eT => eT === nextElementType);
+            // return CHARACTER_NEW_ELS.some(eT => eT === nextElementType);
             case ElementType.DIALOG:
-                // return DIALOG_NEW_ELS.some(eT => eT === nextElementType);
+            // return DIALOG_NEW_ELS.some(eT => eT === nextElementType);
             case ElementType.SOUND:
             case ElementType.VIDEO:
             case ElementType.PICTURE:

@@ -4,6 +4,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ElementType } from 'src/app/app.constants';
 import { CursorComponent } from '../cursor/cursor.component';
 import { ElementsService } from './elements.service';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
     selector: 'app-element',
@@ -21,6 +22,7 @@ export class ElementComponent implements OnChanges {
     @Output() onBookmark: EventEmitter<void> = new EventEmitter<void>();
     @Output() editCharacter: EventEmitter<void> = new EventEmitter<void>();
 
+    @ViewChild('autosize', { static: false }) txtAreaAutosize: CdkTextareaAutosize;
     @ViewChild('inputRef', { static: false }) inputRef: ElementRef;
     @ViewChild('cursorRef', { static: false }) cursorRef: CursorComponent;
     @ViewChild('ckEditorRef', { static: false }) ckEditorRef: ElementRef;
@@ -175,10 +177,14 @@ export class ElementComponent implements OnChanges {
 
     // we do this so that cdkAutosize refreshes based on the content : some unknown bug occured.
     forceResizeContent = () => {
-        const text = this.element.text;
-        this.element.text = 'loading...';
+        // if (this.element.text.indexOf('A man, young, probably in his 20s') < 0) {
+        //     return;
+        // }
         setTimeout(() => {
-            this.element.text = text;
+            this.txtAreaAutosize.resizeToFitContent(true);
+            setTimeout(() => {
+                this.txtAreaAutosize.resizeToFitContent(true);
+            }, 500);
         }, 500);
     }
 

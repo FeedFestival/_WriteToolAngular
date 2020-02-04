@@ -34,7 +34,7 @@
             [ngClass]="element.inputClass">
 
             <!--    *ngIf="element.isEditing"   -->
-            <textarea matInput #inputRef cdkTextareaAutosize cdkAutosizeMinRows="2" [name]="element.id"
+            <textarea matInput #inputRef cdkTextareaAutosize cdkAutosizeMinRows="2" [name]="element.id" #autosize="cdkTextareaAutosize"
                 [placeholder]="element.type" [(ngModel)]="element.text" (focus)="edit()" (blur)="blur()">
             </textarea>
             <!-- <div *ngIf="!element.isEditing"
