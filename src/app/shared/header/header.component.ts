@@ -63,7 +63,14 @@ export class HeaderComponent implements OnInit {
         this.authService.authState.subscribe((user) => {
             this.user = user;
             this.loggedIn = (user != null);
-            // console.log(this.user);
+            console.log(this.user);
+            if (!this.user) {
+                return;
+            }
+            this.headerService.saveUser(this.user)
+                .subscribe(() => {
+
+                });
         });
 
         this.headerService.getCanSaveEvent()
