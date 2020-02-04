@@ -469,7 +469,6 @@ fa-icon {
 .element.dialog {
   .cdk-textarea-autosize {
     overflow: hidden;
-    padding: 2px 5px;
   }
 }
 
@@ -591,7 +590,7 @@ fa-icon {
   }
 
   textarea {
-    padding: 5px;
+    padding: 0px;
     padding-left: 35px;
     font-family: monospace;
     font-weight: 100;
