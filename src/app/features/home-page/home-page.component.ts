@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CharacterDialogComponent } from './character-dialog/character-dialog.component';
 import { MatDialog } from '@angular/material';
+import { StoryService } from './story.service';
 
 @Component({
     selector: 'app-home-page',
@@ -49,7 +50,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private elementsService: ElementsService,
         private navigationService: NavigationService,
         private onResizeService: OnResizeService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        private storyService: StoryService
     ) {
         undoService.getUndoStateEmitter()
             .pipe(takeUntil(this.unsubscribe$))
@@ -128,19 +130,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
         });
         this.metaService.addTags(this.seoService.getMetaTags(page));
 
-
-        const stories = JSON.parse(this.localStorage.retrieve('stories'));
-        if (!stories || stories.length === 0) {
-            this.elementsService.getElements()
-                .pipe(takeUntil(this.unsubscribe$))
-                .subscribe(this.onElementsLoaded);
-        } else {
-            let currentWorkingStoryId = this.localStorage.retrieve("currentWorkingStoryId");
-            if (!currentWorkingStoryId || currentWorkingStoryId.length === 0) {
-                currentWorkingStoryId = (stories.length - 1)
-            }
-            this.onStoryLoaded(stories[stories.findIndex(s => s.id === currentWorkingStoryId)]);
-        }
+        this.storyService.getLast()
+            .subscribe(story => {
+                if (!story) {
+                    this.elementsService.getElements()
+                        .pipe(takeUntil(this.unsubscribe$))
+                        .subscribe(this.onElementsLoaded);
+                } else {
+                    this.onStoryLoaded(story);
+                }
+            });
+        
 
         this.elementsService.getStoryChange()
             .pipe(takeUntil(this.unsubscribe$))
@@ -249,33 +249,36 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     saveStory = () => {
         if (!this.story) {
-            let stories = JSON.parse(this.localStorage.retrieve('stories'));
-            let storyName = 'Story ';
-            if (stories === null || stories.length === 0) {
-                stories = [];
-                storyName += '1';
-            } else {
-                storyName += stories.length;
-            }
             this.story = {
-                id: this.elementsService.guid(),
-                name: storyName
+                name: 'Untitled',
+                isNew: true,
+                guid: this.elementsService.guid(),
+                description: ''
             };
-            this.elementsService.setStory(this.story);
-            stories.push(JSON.parse(JSON.stringify(this.story)));
-            this.localStorage.store('stories', JSON.stringify(stories));
+            this.storyService.saveStory(this.story)
+                .subscribe(this.onSaveStory);
+        } else {
+            this.onSaveStory(this.story.id);
         }
-        this.elementsService.save(this.elements, this.story.id);
+    }
+
+    onSaveStory = (storyId) => {
+        this.story.id = storyId;
+        this.story.isNew = false;
+        this.elementsService.setStory(this.story, this.storyService.userId);
+        this.storyService.saveStory(this.story, true).subscribe(_ => {});
+        this.storyService.saveStoryElements(this.elements, this.story.id);
         this.headerService.emitCanSaveEvent(false);
     }
 
     onStoryLoaded = (story) => {
 
-        if (!story || (this.story && this.story.id === story.id)) {
+        if (!story || (this.story && this.storyService.storiesEqual(this.story, story))) {
             return;
         }
         this.story = story;
-        this.elementsService.setStory(this.story);
+        this.elementsService.setStory(this.story, this.storyService.userId);
+        this.storyService.saveStory(this.story, true).subscribe(_ => {});
 
         this.elementsService.getElements(this.story.id)
             .pipe(takeUntil(this.unsubscribe$))
@@ -729,7 +732,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 elementId: element.id
             }
         });
-        dialogRef.afterClosed().subscribe(_ => {});
+        dialogRef.afterClosed().subscribe(_ => { });
     }
 
     ngOnDestroy() {

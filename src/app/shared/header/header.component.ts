@@ -3,15 +3,16 @@ import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { faCoffee, faEnvelope, faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { AuthService, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
+import { LocalStorageService } from 'ngx-webstorage';
 import { EditState } from 'src/app/app.constants';
 import { ElementsService } from 'src/app/features/home-page/element/elements.service';
 import { StoryDialogComponent } from 'src/app/features/home-page/story-dialog/story-dialog.component';
+import { StoryService } from 'src/app/features/home-page/story.service';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { UploadDialogComponent } from '../components/upload-dialog/upload-dialog.component';
 import { NavigationService } from '../navigation/navigation.service';
 import { OnResizeService } from '../on-resize/on-resize.service';
 import { HeaderService } from './header.service';
-import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-header',
@@ -46,7 +47,8 @@ export class HeaderComponent implements OnInit {
         private elementsService: ElementsService,
         private navigationService: NavigationService,
         private onResizeService: OnResizeService,
-        private localStorage: LocalStorageService
+        private localStorage: LocalStorageService,
+        private storyService: StoryService
     ) {
         onResizeService.getResizeEvent()
             .subscribe((bp) => {
@@ -60,18 +62,41 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService.authState.subscribe((user) => {
-            this.user = user;
-            this.loggedIn = (user != null);
-            console.log(this.user);
-            if (!this.user) {
-                return;
-            }
-            this.headerService.saveUser(this.user)
-                .subscribe(() => {
 
-                });
-        });
+        const user = this.localStorage.retrieve("user");
+        if (user !== null) {
+
+            this.user = user;
+            this.storyService.isLoggedIn = this.loggedIn = true;
+            this.storyService.loggedIn(this.user.id);
+
+            // config.providers.get('FACEBOOK').signIn({ auth_type: 'reauthenticate', client_id: user.facebook_id, fetch_basic_profile: true })
+            //     .then(user => {
+            //         this.user = user;
+            //     }, error => {
+            //         console.log("TCL: HeaderComponent -> ngOnInit -> error", error)
+            //     });
+        } else {
+
+            this.authService.authState.subscribe((user) => {
+                this.user = user;
+                this.loggedIn = (user != null);
+                this.storyService.loggedIn(this.user.id);
+                console.log(this.user);
+                if (!this.user) {
+                    return;
+                }
+                this.headerService.saveUser(this.user)
+                    .subscribe((userId) => {
+                        const ourUser = {
+                            ...this.user,
+                            facebook_id: this.user.id
+                        };
+                        ourUser.id = userId;
+                        this.localStorage.store("user", ourUser);
+                    });
+            });
+        }
 
         this.headerService.getCanSaveEvent()
             .subscribe((canSave) => {
@@ -144,22 +169,18 @@ export class HeaderComponent implements OnInit {
         this.matDialog.open(UploadDialogComponent)
             .afterClosed()
             .subscribe((data) => {
-                let stories = JSON.parse(this.localStorage.retrieve('stories'));
                 let storyName = data.name + ' (Uploaded) ';
                 const elements = JSON.parse(data.storyString).value;
-                if (stories === null || stories.length === 0) {
-                    stories = [];
-                    storyName += '1';
-                } else {
-                    storyName += stories.length;
-                }
                 let story = {
-                    id: this.elementsService.guid(),
-                    name: storyName
+                    name: storyName,
+                    guid: this.elementsService.guid(),
+                    description: ''
                 };
-                stories.push(JSON.parse(JSON.stringify(story)));
-                this.localStorage.store('stories', JSON.stringify(stories));
-                this.elementsService.save(elements, story.id);
+                this.storyService.saveStory(story)
+                    .subscribe(storyId => {
+                        this.storyService.saveStoryElements(elements, storyId)
+                            .subscribe(_ => { });
+                    });
             });
     }
 

@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { WriteToolUtils } from 'src/app/features/home-page/story.utils';
 
 type Options = {
     element: any;
@@ -16,7 +17,6 @@ export class HeaderService {
     constructor(
         private http: HttpClient
     ) {
-
     }
 
     emitSaveEvent() {
@@ -40,10 +40,7 @@ export class HeaderService {
             ...HttpDefaultOptions,
             responseType: 'text'
         }
-        return this.http.post<any>('http://localhost:8080/Stj/UserService/Register.php', user,
-            requestOptions
-            // {...HttpDefaultOptions, responseType: 'text' }
-        );
+        return this.http.post<any>(WriteToolUtils.baseRequestUrl() + 'UserService/Register.php', user, requestOptions);
     }
 }
 

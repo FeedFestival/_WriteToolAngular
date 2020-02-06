@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { LocalStorageService } from 'ngx-webstorage';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { ElementsService } from '../element/elements.service';
+import { StoryService } from '../story.service';
 
 @Component({
     selector: 'app-story-dialog',
@@ -23,33 +23,42 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
     constructor(
         public dialogRef: MatDialogRef<PageDialogComponent>,
         private elementsService: ElementsService,
-        private localStorage: LocalStorageService,
+        private storyService: StoryService
     ) {
     }
 
     ngOnInit() {
         this.scrollToTop();
+        this.getStories();
+    }
 
-        this.stories = JSON.parse(this.localStorage.retrieve('stories'));
+    getStories(selectLastAdded?) {
+        this.stories = [
+            { id: '', name: 'New Story' }
+        ];
 
-        if (!this.stories) {
-            this.stories = [
-                { id: '', name: 'New Story' }
-            ];
-        }
+        this.storyService.getAll()
+            .subscribe((stories) => {
+                this.stories = [...this.stories, ...stories];
 
-        const story = this.elementsService.getStory();
-
-        if (!story) {
-            if (this.stories && this.stories.length === 1) {
-                this.onChange({ value: this.stories[0].id });
-            } else {
-                this.selected = '';
-                this.onChange({ value: '' });
-            }
-        } else {
-            this.onChange({ value: story.id });
-        }
+                if (selectLastAdded) {
+                    const lastIndex = this.stories.length - 1;
+                    this.selected = this.stories[lastIndex].id;
+                    this.onChange({ value: this.stories[lastIndex].id });
+                } else {
+                    const story = this.elementsService.getStory();
+                    if (!story) {
+                        if (this.stories && this.stories.length === 1) {
+                            this.onChange({ value: this.stories[0].id });
+                        } else {
+                            this.selected = '';
+                            this.onChange({ value: '' });
+                        }
+                    } else {
+                        this.onChange({ value: story.id });
+                    }
+                }
+            });
     }
 
     ngAfterViewInit() {
@@ -60,29 +69,25 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
 
         if (event.value.length === 0) {
             this.newStory = {
-                id: this.elementsService.guid(),
                 name: '',
-                isNew: true
+                isNew: true,
+                guid: this.elementsService.guid(),
+                description: ''
             };
-
         } else {
-            this.newStory = this.stories.find(s => s.id === event.value);
+            this.newStory = this.stories.find(s => this.storyService.storiesEqual(s, event));
         }
-        this.selected = this.stories[this.stories.findIndex(s => s.id === event.value)].id;
+        this.selected = this.stories[this.stories.findIndex(s => this.storyService.storiesEqual(s, event))].id;
         this.isStorySelected = true;
     }
 
     save() {
-
-        if (this.newStory.isNew) {
-            this.newStory.isNew = false;
-            this.stories.push(JSON.parse(JSON.stringify(this.newStory)));
-        }
-
-        this.localStorage.store('stories', JSON.stringify(this.stories));
-        const lastIndex = this.stories.length - 1;
-        this.selected = this.stories[lastIndex].id;
-        this.onChange({ value: this.stories[lastIndex].id });
+        this.storyService.saveStory(this.newStory)
+            .subscribe(storyId => {
+                this.newStory.id = storyId;
+                this.newStory.isNew = false;
+                this.getStories(true);
+            });
     }
 
     scrollToTop() {

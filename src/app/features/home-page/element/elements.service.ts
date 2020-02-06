@@ -26,6 +26,8 @@ export class ElementsService {
     http: TestHttpClient;
 
     private story: any;
+    private userId: string;
+    private isLoggedIn: boolean;
 
     constructor(
         private testHttpClient: TestHttpClient,
@@ -66,30 +68,20 @@ export class ElementsService {
 
         if (getDefault) {
             return of(this.getStartingText());
-            // return this.http.get<any[]>('elements', HttpDefaultOptions).pipe(
-            //     map(elements => {
-            //         return of(elements);
-            //     }),
-            //     mergeAll()
-            // );
         } else if (storyId) {
-
-            let elements: any[] = [];
-            const s = this.localStorage.retrieve(storyId);
-            if (s && s.length !== 0) {
-                elements = JSON.parse(s);
+            if (this.isLoggedIn) {
+                return of([]);
+            } else {
+                let elements: any[] = [];
+                const s = this.localStorage.retrieve(storyId);
+                if (s && s.length !== 0) {
+                    elements = JSON.parse(s);
+                }
+                return of(elements);
             }
-            return of(elements);
         } else {
             return of([]);
         }
-    }
-
-    save(elements, storyId) {
-        const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
-        elementsWithNoImages.forEach(e => e.image = null);
-        const s = JSON.stringify(elementsWithNoImages);
-        this.localStorage.store(storyId, s);
     }
 
     setAllowedElements(elementType) {
@@ -223,9 +215,10 @@ export class ElementsService {
         return this.story;
     }
 
-    setStory(story) {
+    setStory(story, userId) {
         this.story = story;
-        this.localStorage.store("currentWorkingStoryId", this.story.id);
+        this.userId = userId;
+        this.isLoggedIn = true;
         this.storyNameEvent.emit(this.story.name);
     }
 }

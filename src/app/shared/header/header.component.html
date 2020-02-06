@@ -60,7 +60,8 @@
                 <div *ngIf="loggedIn && user" class="face-logged-in-info" [ngClass]="scrollClass">
 
                     <div>
-                        <img [src]="user.facebook.picture.data.url" />
+                        <!--    facebook.picture.data.url    -->
+                        <img [src]="user.photoUrl" />
                     </div>
                     <div *ngIf="bp !== 'xs'">
                         {{user.email}}

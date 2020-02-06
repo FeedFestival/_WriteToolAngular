@@ -1,10 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Inject } from '@angular/core';
-import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
-import { MatDialogRef, MatSelect, MAT_DIALOG_DATA } from '@angular/material';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { ElementsService } from '../element/elements.service';
-import { LocalStorageService } from 'ngx-webstorage';
-import { FormControl, Validators } from '@angular/forms';
+import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 
 @Component({
     selector: 'app-character-dialog',
@@ -17,8 +14,6 @@ export class CharacterDialogComponent implements OnInit, AfterViewInit {
 
     constructor(
         public dialogRef: MatDialogRef<PageDialogComponent>,
-        private elementsService: ElementsService,
-        private localStorage: LocalStorageService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
     }

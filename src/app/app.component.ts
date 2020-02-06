@@ -1,15 +1,14 @@
-import { Component, ViewChild, NgZone, OnDestroy, AfterViewInit, OnInit } from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { faArrowCircleUp, faBars } from '@fortawesome/free-solid-svg-icons';
+import { NgcCookieConsentService, NgcInitializeEvent, NgcNoCookieLawEvent, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { filter, tap, map } from 'rxjs/operators';
-import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { ElementsService } from './features/home-page/element/elements.service';
-import { NgcCookieConsentService, NgcInitializeEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
-import { OnResizeService } from './shared/on-resize/on-resize.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { ScrollBreakpoints } from './app.constants';
-import { SessionStorageService } from 'ngx-webstorage';
+import { ElementsService } from './features/home-page/element/elements.service';
+import { OnResizeService } from './shared/on-resize/on-resize.service';
 
 declare let gtag: Function;
 
@@ -50,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private ccService: NgcCookieConsentService,
         private elementsService: ElementsService,
         private onResizeService: OnResizeService,
-        private sessionStorageService: SessionStorageService,
+        private localStorage: LocalStorageService,
         router: Router
     ) {
         router.events.pipe(
@@ -97,7 +96,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
 
-        const isCookieAccepted = this.sessionStorageService.retrieve('isCookieAccepted');
+        const isCookieAccepted = this.localStorage.retrieve('isCookieAccepted');
 
         if (isCookieAccepted && isCookieAccepted === true) {
             setTimeout(() => {
@@ -115,7 +114,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
             () => {
                 // you can use this.ccService.getConfig() to do stuff...
-                this.sessionStorageService.store('isCookieAccepted', true);
+                this.localStorage.store('isCookieAccepted', true);
             });
 
         this.initializeSubscription = this.ccService.initialize$.subscribe(
