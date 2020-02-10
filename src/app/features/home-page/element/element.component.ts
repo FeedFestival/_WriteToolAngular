@@ -45,8 +45,7 @@ export class ElementComponent implements OnChanges {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId,
-        private elementsService: ElementsService,
-        private localStorage: LocalStorageService
+        private elementsService: ElementsService
     ) {
         this.isBrowser = (platformId === 'browser');
     }
@@ -166,8 +165,10 @@ export class ElementComponent implements OnChanges {
 
     onImageLoaded = () => {
         this.element.image = this.myReader.result;
-        this.localStorage.store(this.element.id, this.element.image);
-        this.blur();
+        this.elementsService.saveImage(this.element)
+            .subscribe(_ => {
+                this.blur();
+            });
     }
 
     bookmark(isBookmarked) {

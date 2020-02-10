@@ -28,7 +28,10 @@ export class StoryService {
 
     getAll(): Observable<any[]> {
         if (this.isLoggedIn) {
-            return this.http.get<any[]>(WriteToolUtils.baseRequestUrl() + 'StoryService/Get.php?userId=' + this.userId);
+            return this.http.get<any[]>(
+                WriteToolUtils.baseRequestUrl() + 'StoryService/Get.php?a=' + WriteToolUtils.getAnotate(true) + '&userId=' + this.userId,
+                HttpDefaultOptions
+            );
         } else {
             return of(JSON.parse(this.localStorage.retrieve('stories')));
         }
@@ -36,7 +39,9 @@ export class StoryService {
 
     getLast(): Observable<any> {
         if (this.isLoggedIn) {
-            return this.http.get<any>(WriteToolUtils.baseRequestUrl() + 'StoryService/GetLast.php?userId=' + this.userId);
+            return this.http.get<any>(
+                WriteToolUtils.baseRequestUrl() + 'StoryService/GetLast.php?a=' + WriteToolUtils.getAnotate(true) + '&userId=' + this.userId,
+                HttpDefaultOptions);
         } else {
             const stories = JSON.parse(this.localStorage.retrieve('stories'));
             if (!stories || stories.length === 0) {
@@ -55,12 +60,18 @@ export class StoryService {
 
         if (this.isLoggedIn) {
             story.userId = this.userId;
-            return this.http.post<any>(WriteToolUtils.baseRequestUrl() + 'StoryService/Save.php', story, HttpDefaultOptions);
+            story.isLocal = false;
+            return this.http.post<any>(
+                WriteToolUtils.baseRequestUrl() + 'StoryService/Save.php?a=' + WriteToolUtils.getAnotate(true),
+                story,
+                HttpDefaultOptions
+            );
         } else {
             let stories = JSON.parse(this.localStorage.retrieve('stories'));
             if (!story.guid || story.guid.length === 0) {
-                story.guid = this.guid();
+                story.guid = WriteToolUtils.guid();
             }
+            story.isLocal = true;
             stories.push(JSON.parse(JSON.stringify(story)));
             this.localStorage.store('stories', JSON.stringify(stories));
 
@@ -71,33 +82,17 @@ export class StoryService {
         }
     }
 
-    saveStoryElements(elements, storyId): Observable<any> {
-
-        const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
-        elementsWithNoImages.forEach(e => e.image = null);
-
-        const requestOptions: Object = {
-            ...HttpDefaultOptions,
-            responseType: 'text'
-        }
-        return this.http.post<any>(
-            WriteToolUtils.baseRequestUrl() + 'UserService/Register.php',
-            { elements: elements, storyId: storyId },
-            requestOptions
-        );
-    }
-
     storiesEqual(story, otherStory) {
         if (this.isLoggedIn) {
-            return story.id === otherStory.id;
+            return parseInt(story.id) === parseInt(otherStory.id);
         }
         return story.guid === otherStory.guid;
     }
 
-    guid() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
+    getStoryObject(value) {
+        if (this.isLoggedIn) {
+            return { id: value };
+        }
+        return { guid: value };
     }
 }

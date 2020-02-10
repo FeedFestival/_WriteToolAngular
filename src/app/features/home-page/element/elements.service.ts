@@ -1,9 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, of } from 'rxjs';
-import { ElementType } from 'src/app/app.constants';
-import { TestHttpClient } from 'src/app/TestHttpClient/TestHttpClient.service';
+import { ElementType, HttpDefaultOptions } from 'src/app/app.constants';
 import { IBookmark } from '../page-map/page-map.component';
+import { WriteToolUtils } from '../story.utils';
+import { tap } from 'rxjs/internal/operators/tap';
+import { mergeAll } from 'rxjs/operators';
 
 export const SCENE_HEADING_NEW_ELS = [ElementType.ACTION, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
 export const ACTION_NEW_ELS = [ElementType.SCENE_HEADING, ElementType.CHARACTER, ElementType.COMMENT, ElementType.PICTURE, ElementType.VIDEO, ElementType.SOUND];
@@ -23,17 +26,14 @@ export class ElementsService {
 
     currentElementType: string;
 
-    http: TestHttpClient;
-
     private story: any;
     private userId: string;
     private isLoggedIn: boolean;
 
     constructor(
-        private testHttpClient: TestHttpClient,
+        private http: HttpClient,
         private localStorage: LocalStorageService
     ) {
-        this.http = testHttpClient;
     }
 
     emitScrollToElementEmitterEvent(element) {
@@ -70,17 +70,67 @@ export class ElementsService {
             return of(this.getStartingText());
         } else if (storyId) {
             if (this.isLoggedIn) {
-                return of([]);
+                return this.http.get<any[]>(
+                    WriteToolUtils.baseRequestUrl() + 'ElementService/Get.php?a=' + WriteToolUtils.getAnotate(true) + '&storyId=' + storyId + '&userId=' + this.userId,
+                    HttpDefaultOptions
+                );
             } else {
-                let elements: any[] = [];
-                const s = this.localStorage.retrieve(storyId);
-                if (s && s.length !== 0) {
-                    elements = JSON.parse(s);
-                }
-                return of(elements);
+                return of({ json: this.localStorage.retrieve(storyId) });
             }
         } else {
             return of([]);
+        }
+    }
+
+    save(elements, storyId): Observable<any> {
+
+        const elementsWithNoImages = JSON.parse(JSON.stringify(elements));
+        elementsWithNoImages.forEach(e => e.image = null);
+        const elementsJson = JSON.stringify(elementsWithNoImages);
+
+        if (this.isLoggedIn) {
+            const requestOptions: Object = {
+                ...HttpDefaultOptions,
+                responseType: 'text'
+            }
+            return this.http.post<any[]>(
+                WriteToolUtils.baseRequestUrl() + 'ElementService/Save.php?a=' + WriteToolUtils.getAnotate(true) + '&storyId=' + storyId + '&userId=' + this.userId,
+                { json: elementsJson },
+                requestOptions
+            );
+        } else {
+            this.localStorage.store(storyId, elementsJson);
+            return of("Success");
+        }
+    }
+
+    // IMPORTANT
+    // we need to get all elements with pictures and test based on it's id what pictures does it have.
+    // so we don't overload the DB
+    // -> also we need to indentify them by storyId
+    removeUnusedImages() {
+
+    }
+
+    saveImage(element): Observable<string> {
+        if (this.isLoggedIn) {
+            return of();
+        } else {
+            this.localStorage.store(element.id, element.image);
+            return of("Success");
+        }
+    }
+
+    getPictures(elementsWithoutPictures, storyId): Observable<any[]> {
+        if (this.isLoggedIn) {
+            // .pipe(tap(e => e.isLocalImage = false))
+            return of();
+        } else {
+            elementsWithoutPictures.forEach(e => {
+                e.image = this.localStorage.retrieve(e.id);
+                e.isLocalImage = true;
+            });
+            return of(elementsWithoutPictures);
         }
     }
 
@@ -141,13 +191,6 @@ export class ElementsService {
         }
     }
 
-    guid() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-
     getStartingText() {
         const elements: any = [
             {
@@ -165,7 +208,7 @@ export class ElementsService {
         ];
 
         elements.forEach(e => {
-            e.id = this.guid();
+            e.id = WriteToolUtils.guid();
             e.text = this.getDefaultText(e.type, true);
             e.inputClass = ElementType.getInputClass(e.type);
             e.typeClass = ElementType.getTypeClass(e.type);

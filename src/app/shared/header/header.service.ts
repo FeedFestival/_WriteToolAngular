@@ -40,7 +40,11 @@ export class HeaderService {
             ...HttpDefaultOptions,
             responseType: 'text'
         }
-        return this.http.post<any>(WriteToolUtils.baseRequestUrl() + 'UserService/Register.php', user, requestOptions);
+        return this.http.post<any>(
+            WriteToolUtils.baseRequestUrl() + 'UserService/Register.php?a=' + WriteToolUtils.getAnotate(true),
+            user,
+            requestOptions
+        );
     }
 }
 

@@ -13,6 +13,8 @@ import { UploadDialogComponent } from '../components/upload-dialog/upload-dialog
 import { NavigationService } from '../navigation/navigation.service';
 import { OnResizeService } from '../on-resize/on-resize.service';
 import { HeaderService } from './header.service';
+import { WriteToolUtils } from 'src/app/features/home-page/story.utils';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-header',
@@ -81,6 +83,9 @@ export class HeaderComponent implements OnInit {
             this.authService.authState.subscribe((user) => {
                 this.user = user;
                 this.loggedIn = (user != null);
+                if (!this.user) {
+                    return;
+                }
                 this.storyService.loggedIn(this.user.id);
                 console.log(this.user);
                 if (!this.user) {
@@ -148,8 +153,10 @@ export class HeaderComponent implements OnInit {
         if (!story) {
             return;
         }
-        const elements = this.elementsService.getElements(story.id);
-        this.download(story.name, JSON.stringify(elements));
+        this.elementsService.getElements(story.id)
+            .subscribe(elements => {
+                this.download(story.name, elements.json);
+            });
     }
 
     download(filename, text) {
@@ -173,12 +180,12 @@ export class HeaderComponent implements OnInit {
                 const elements = JSON.parse(data.storyString).value;
                 let story = {
                     name: storyName,
-                    guid: this.elementsService.guid(),
+                    guid: WriteToolUtils.guid(),
                     description: ''
                 };
                 this.storyService.saveStory(story)
                     .subscribe(storyId => {
-                        this.storyService.saveStoryElements(elements, storyId)
+                        this.elementsService.save(elements, storyId)
                             .subscribe(_ => { });
                     });
             });

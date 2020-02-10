@@ -4,6 +4,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { PageDialogComponent } from 'src/app/shared/components/page-dialog/page-dialog.component';
 import { ElementsService } from '../element/elements.service';
 import { StoryService } from '../story.service';
+import { WriteToolUtils } from '../story.utils';
 
 @Component({
     selector: 'app-story-dialog',
@@ -66,19 +67,22 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
     }
 
     onChange(event) {
-
-        if (event.value.length === 0) {
+        const story = this.storyService.getStoryObject(event.value);
+        if (story.id.length === 0) {
             this.newStory = {
                 name: '',
                 isNew: true,
-                guid: this.elementsService.guid(),
+                guid: WriteToolUtils.guid(),
                 description: ''
             };
         } else {
-            this.newStory = this.stories.find(s => this.storyService.storiesEqual(s, event));
+            this.newStory = this.stories.find(s => this.storyService.storiesEqual(s, story));
         }
-        this.selected = this.stories[this.stories.findIndex(s => this.storyService.storiesEqual(s, event))].id;
-        this.isStorySelected = true;
+        const storyIndex = this.stories.findIndex(s => this.storyService.storiesEqual(s, story));
+        if (storyIndex >= 0) {
+            this.selected = this.stories[storyIndex].id;
+            this.isStorySelected = true;
+        }
     }
 
     save() {
@@ -86,7 +90,10 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
             .subscribe(storyId => {
                 this.newStory.id = storyId;
                 this.newStory.isNew = false;
-                this.getStories(true);
+
+                if (this.storyService.isLoggedIn === false) {
+                    this.getStories(true);
+                }
             });
     }
 

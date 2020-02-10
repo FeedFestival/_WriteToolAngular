@@ -12,11 +12,12 @@ import { SeoService } from './seo.service';
 import { HeaderService } from 'src/app/shared/header/header.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OnResizeService } from 'src/app/shared/on-resize/on-resize.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CharacterDialogComponent } from './character-dialog/character-dialog.component';
 import { MatDialog } from '@angular/material';
 import { StoryService } from './story.service';
+import { WriteToolUtils } from './story.utils';
 
 @Component({
     selector: 'app-home-page',
@@ -46,7 +47,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
         private undoService: UndoService,
         private titleService: Title,
         private metaService: Meta,
-        private localStorage: LocalStorageService,
         private elementsService: ElementsService,
         private navigationService: NavigationService,
         private onResizeService: OnResizeService,
@@ -140,7 +140,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
                     this.onStoryLoaded(story);
                 }
             });
-        
+
 
         this.elementsService.getStoryChange()
             .pipe(takeUntil(this.unsubscribe$))
@@ -252,7 +252,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
             this.story = {
                 name: 'Untitled',
                 isNew: true,
-                guid: this.elementsService.guid(),
+                guid: WriteToolUtils.guid(),
                 description: ''
             };
             this.storyService.saveStory(this.story)
@@ -266,19 +266,27 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.story.id = storyId;
         this.story.isNew = false;
         this.elementsService.setStory(this.story, this.storyService.userId);
-        this.storyService.saveStory(this.story, true).subscribe(_ => {});
-        this.storyService.saveStoryElements(this.elements, this.story.id);
-        this.headerService.emitCanSaveEvent(false);
+        this.storyService.saveStory(this.story, true).subscribe(_ => {
+            this.elementsService.save(this.elements, this.story.id)
+                .subscribe(_ => {
+                    this.headerService.emitCanSaveEvent(false);
+                });
+        });
     }
 
     onStoryLoaded = (story) => {
 
-        if (!story || (this.story && this.storyService.storiesEqual(this.story, story))) {
+        if (!story) {
             return;
         }
+
+        if (this.story && this.storyService.storiesEqual(this.story, story)) {
+            return;
+        }
+
         this.story = story;
         this.elementsService.setStory(this.story, this.storyService.userId);
-        this.storyService.saveStory(this.story, true).subscribe(_ => {});
+        this.storyService.saveStory(this.story, true).subscribe(_ => { });
 
         this.elementsService.getElements(this.story.id)
             .pipe(takeUntil(this.unsubscribe$))
@@ -286,18 +294,23 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     onElementsLoaded = (elements) => {
-        this.elements = elements;
+        this.elements = JSON.parse(elements.json);
 
         if (this.elements.length === 0) {
             this.createEmptyElement();
         }
 
+        this.elementsService.getPictures(this.elements.filter(e => e.type === ElementType.PICTURE), this.story.id)
+            .subscribe(elementsWithPictures => {
+                elementsWithPictures.forEach(eP => {
+                    const index = this.elements.findIndex(e => eP.guid === e.guid);
+                    this.elements[index].image = eP.image;
+                });
+            });
+
         this.elements.forEach(e => {
             e.underCarret = false;
             e.isEditing = false;
-            if (e.type === ElementType.PICTURE) {
-                e.image = this.localStorage.retrieve(e.id);
-            }
             if (e.type === ElementType.SCENE_HEADING || e.type === ElementType.COMMENT) {
                 e.isBookmarked = true;
             }
@@ -571,7 +584,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     createNew(elementType, dontCheckNextElement?) {
 
         const index = this.elements.findIndex(e => e.id === this.currentElement.id);
-        const newId = this.elementsService.guid();
+        const newId = WriteToolUtils.guid();
         let newIndex = index + 1;
 
         const isLastElement = (index === this.elements.length - 1);
@@ -616,7 +629,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         } else {
             const emptyElement: IElement = {
-                id: this.elementsService.guid(),
+                id: WriteToolUtils.guid(),
                 type: ElementType.EMPTY,
                 text: '',
                 inputClass: '',
@@ -701,7 +714,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         const elementsCopy = JSON.parse(JSON.stringify(this.elements));
         const index = this.getIndexUnderCarret(elementsCopy);
         setTimeout(() => {
-            const guid = this.elementsService.guid();
+            const guid = WriteToolUtils.guid();
             this.undoService.setState(guid);
 
             setTimeout(() => {
