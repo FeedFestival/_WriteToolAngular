@@ -64,11 +64,9 @@ export class ElementsService {
         this.storyChange.emit(story);
     }
 
-    getElements(storyId?, getDefault?): Observable<any> {
+    getElements(storyId?): Observable<any> {
 
-        if (getDefault) {
-            return of(this.getStartingText());
-        } else if (storyId) {
+        if (storyId) {
             if (this.isLoggedIn) {
                 return this.http.get<any[]>(
                     WriteToolUtils.baseRequestUrl() + 'ElementService/Get.php?a=' + WriteToolUtils.getAnotate(true) + '&storyId=' + storyId + '&userId=' + this.userId,
@@ -78,7 +76,7 @@ export class ElementsService {
                 return of({ json: this.localStorage.retrieve(storyId) });
             }
         } else {
-            return of([]);
+            return of({ json: "[]" });
         }
     }
 

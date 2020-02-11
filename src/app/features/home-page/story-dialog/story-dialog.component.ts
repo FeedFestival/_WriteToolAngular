@@ -40,6 +40,9 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
 
         this.storyService.getAll()
             .subscribe((stories) => {
+                if (!stories) {
+                    stories = [];
+                }
                 this.stories = [...this.stories, ...stories];
 
                 if (selectLastAdded) {
@@ -67,14 +70,20 @@ export class StoryDialogComponent implements OnInit, AfterViewInit {
     }
 
     onChange(event) {
-        const story = this.storyService.getStoryObject(event.value);
+        let story = this.storyService.getStoryObject(event.value);
         if (story.id.length === 0) {
+            if (this.newStory && this.newStory.isNew) {
+                return;
+            }
             this.newStory = {
-                name: '',
+                id: WriteToolUtils.guid(),
+                name: 'Untitled',
                 isNew: true,
                 guid: WriteToolUtils.guid(),
                 description: ''
             };
+            story = this.newStory;
+            this.stories.push(this.newStory);
         } else {
             this.newStory = this.stories.find(s => this.storyService.storiesEqual(s, story));
         }

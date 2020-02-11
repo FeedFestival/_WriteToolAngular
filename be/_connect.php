@@ -1,7 +1,6 @@
 <?php
-    $credentialsRoot = ($dir."/Credentials/"."_".$a."_credentials.php");
+    $credentialsRoot = ($dir."/Credentials/".($a != "" ? "_".$a : "")."_credentials.php");
     include($credentialsRoot);
-
     $conn = new mysqli($servername, $username, $password, $dbName);
 
     if (!$conn){

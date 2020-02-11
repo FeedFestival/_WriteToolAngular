@@ -68,6 +68,9 @@ export class StoryService {
             );
         } else {
             let stories = JSON.parse(this.localStorage.retrieve('stories'));
+            if (!stories) {
+                stories = [];
+            }
             if (!story.guid || story.guid.length === 0) {
                 story.guid = WriteToolUtils.guid();
             }
@@ -93,6 +96,13 @@ export class StoryService {
         if (this.isLoggedIn) {
             return { id: value };
         }
-        return { guid: value };
+        return {  id: '', guid: value };
+    }
+
+    comparer() {
+        if (this.isLoggedIn) {
+            return 'id';
+        }
+        return 'guid';
     }
 }

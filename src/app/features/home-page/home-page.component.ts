@@ -294,19 +294,22 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     onElementsLoaded = (elements) => {
+        
         this.elements = JSON.parse(elements.json);
 
         if (this.elements.length === 0) {
             this.createEmptyElement();
         }
 
-        this.elementsService.getPictures(this.elements.filter(e => e.type === ElementType.PICTURE), this.story.id)
-            .subscribe(elementsWithPictures => {
-                elementsWithPictures.forEach(eP => {
-                    const index = this.elements.findIndex(e => eP.guid === e.guid);
-                    this.elements[index].image = eP.image;
+        if (this.story) {
+            this.elementsService.getPictures(this.elements.filter(e => e.type === ElementType.PICTURE), this.story.id)
+                .subscribe(elementsWithPictures => {
+                    elementsWithPictures.forEach(eP => {
+                        const index = this.elements.findIndex(e => eP.guid === e.guid);
+                        this.elements[index].image = eP.image;
+                    });
                 });
-            });
+        }
 
         this.elements.forEach(e => {
             e.underCarret = false;
